@@ -1,0 +1,38 @@
+.datatable2 {
+	> colgroup > col {
+		width: auto;
+	}
+
+	> thead > tr > th {
+		white-space: nowrap;
+	}
+
+	> tfoot > tr {
+		// Used to display empty rows at the end of the table
+		border-color: transparent;
+	}
+
+	.sort-span-wrapper {
+		&:hover {
+			cursor: pointer;
+			color: var(--bs-primary);
+		}
+	}
+
+	.sort-icon-active {
+		color: var(--bs-primary);
+	}
+}
+
+.datatable-cardpill-area {
+	.datatable-cardpill {
+		.datatable-cardpill-icon:hover {
+			cursor: pointer;
+			color: var(--bs-danger);
+		}
+	}
+}
+
+.datatable2-card-body {
+	overflow-x: auto;
+}

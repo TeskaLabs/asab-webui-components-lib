@@ -1,0 +1,20 @@
+.adv-filter-dropdown {
+	/*Apply ellipsis on the dropdown title and preserve dropdown caret*/
+	.adv-filter-dropdown-toggle {
+		width: 120px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	.adv-filter-title {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.adv-filter-dropdown-menu {
+		max-height: 400px;
+	}
+}

@@ -1,2 +1,3 @@
-# asab-webui-components-lib
-React WebUI Library of components for ASAB
+# Asab Webui Components Lib
+
+Components library of ASAB used in WebUI projects.

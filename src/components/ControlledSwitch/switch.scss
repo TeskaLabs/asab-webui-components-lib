@@ -1,0 +1,82 @@
+// Switch styles
+
+.switch-container, .switch-container-disabled {
+	width: 40px;
+	height: 20px;
+	// TODO: border: 1px solid $secondary;
+	display: inline-block;
+	border-radius: 50px;
+	margin-bottom: -2.5px;
+	cursor: pointer;
+
+	&.lg {
+		width: 52px;
+		height: 26px;
+		.on .circle {
+				margin-left: 25px;
+			}
+	}
+	&.sm {
+		width: 32px;
+		height: 16px;
+		.on .circle {
+			margin-left: 15px;
+		}
+	}
+
+	* {
+		border-radius: 50px;
+		transition: background-color .2s ease-out, margin .1s;
+		height: 100%;
+	}
+
+	.on, .off {
+		position: relative;
+		width: 100%;
+		// display: inline-block;
+
+		.circle {
+			width: 50%;
+		}
+	}
+	.on {
+		.circle {
+			margin-left: 19px;
+		}
+	}
+	.off {
+		.circle {
+			margin-left: 0px;
+		}
+	}
+}
+
+.switch-container {
+	.circle {
+		background-color: white;
+	}
+
+	.on {
+		// TODO: background-color: $primary;
+		.circle {
+			// TODO: border: 2px solid $primary;
+		}
+	}
+	.off {
+		// TODO: background-color: $secondary;
+		.circle {
+			// TODO: border: 2px solid $secondary;
+		}
+	}
+}
+
+.switch-container-disabled {
+	.off, .on {
+		// TODO: background-color: $secondary;
+	}
+	.circle {
+		// TODO: background-color: #73818f;
+		// TODO: border: 2px solid $secondary;
+	}
+}
+
