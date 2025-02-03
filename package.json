@@ -1,6 +1,8 @@
 {
 	"name": "asab_webui_components",
 	"version": "25.1.2",
+	"license": "BSD-3-Clause",
+	"description": "TeskaLabs ASAB WebUI Components Library",
 	"main": "dist/index.js",
 	"files": [
 		"dist"
