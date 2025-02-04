@@ -4,14 +4,22 @@
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"main": "dist/index.js",
+	"module": "dist/index.esm.js",
+	"browserslist": [
+		"defaults"
+	],
 	"files": [
-		"dist"
+		"dist",
+		"dist/**/*.scss",
+		"dist/styles",
+		"dist/styles/**/*"
 	],
 	"publishConfig": {
-	    "registry": "https://registry.npmjs.org/"
-	 },
+		"registry": "https://registry.npmjs.org/"
+	},
 	"scripts": {
-		"build": "babel src --extensions '.js,.jsx' --out-dir dist && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
+		"prebuild": "babel src --out-dir lib --extensions '.js,.jsx' && cp -R src/**/*.scss lib/",
+		"build": "yarn prebuild && rollup -c && mkdir -p dist/styles && cp -R src/styles/**/* dist/styles/ && find src -name '*.scss' -exec cp {} dist/ \\;",
 		"clean": "rimraf dist"
 	},
 	"devDependencies": {
@@ -20,9 +28,19 @@
 		"@babel/plugin-transform-runtime": "^7.22.10",
 		"@babel/preset-env": "^7.22.10",
 		"@babel/preset-react": "^7.22.5",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@rollup/plugin-commonjs": "^28.0.2",
+		"@rollup/plugin-node-resolve": "^16.0.0",
+		"autoprefixer": "^10.4.20",
 		"babel-plugin-module-resolver": "^5.0.2",
 		"copyfiles": "^2.4.1",
-		"rimraf": "^5.0.0"
+		"postcss": "^8.5.1",
+		"rimraf": "^5.0.0",
+		"rollup": "^4.34.1",
+		"rollup-plugin-copy": "^3.5.0",
+		"rollup-plugin-peer-deps-external": "^2.2.4",
+		"rollup-plugin-postcss": "^4.0.2",
+		"sass": "^1.83.4"
 	},
 	"peerDependencies": {
 		"@babel/runtime": "^7.22.11",
