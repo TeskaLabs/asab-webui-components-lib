@@ -1,4 +1,4 @@
-# Asab WebUI Components Library
+# TeskaLabs ASAB WebUI Components Library
 
 Components library of ASAB used in WebUI projects.
 
