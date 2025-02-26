@@ -7,7 +7,7 @@ import { usePubSub } from '../Context/PubSubContext';
 import { TreeMenu } from './TreeMenu.jsx';
 import { flattenTree } from './utils/flattenTree.jsx';
 
-export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, cardBodyClassName='', disableNodeMemorySession = false, flatten = false, ...props }) => {
+export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, cardBodyClassName='', disableNodeMemorySession = false, memorySessionName = undefined, flatten = false, ...props }) => {
 	const location = useLocation();
 	// Getting application object and subscription from application PubSub
 	const { app, subscribe } = usePubSub();
@@ -53,7 +53,7 @@ export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, 
 	// Updating localStorage when openNodes are changed and allowed to remain in storage
 	useEffect(() => {
 		if (!disableNodeMemorySession) {
-			sessionStorage.setItem(location.pathname, JSON.stringify(savedOpenNodes));
+			sessionStorage.setItem(memorySessionName || location.pathname, JSON.stringify(savedOpenNodes));
 		}
 	}, [savedOpenNodes]);
 
@@ -93,7 +93,7 @@ export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, 
 
 	// Getting open nodes from sessionStorage
 	const loadStoredOpenNodes = () => {
-		const storedOpenNodes = sessionStorage.getItem(location.pathname);
+		const storedOpenNodes = sessionStorage.getItem(memorySessionName || location.pathname);
 		if (storedOpenNodes) {
 			try {
 				setSavedOpenNodes(JSON.parse(storedOpenNodes));
