@@ -5,60 +5,94 @@ import { ipCategories } from './lookups/ipCategories';
 	which are needed to represent IPv6 addresses fully.
 	Instead, operations on IPv6 addresses typically involve converting them
 	into a binary format or a numeric representation (e.g., using BigInt)
+
+	Summary of the Workflow below:
+	1. Convert the CIDR to BigInt range using 'calculateRangeBigInt()'
+	2. Convert the given IP to BigInt using 'ipv6ToBigInt()'
+	3. Check if the IP is in the range using isWithinRange()'
+	4. Return category from ipCategories
 */
 
-// Function to convert an IPv6 address to a BigInt
+// Convert an IP address (IPv4 or IPv6) to BigInt representation
 function ipv6ToBigInt(ip) {
-	/*
-		Full IPv6 addresses should have 8 blocks
-		The :: represents the missing blocks of 0000
-		Example: "2001:db8::1" -> "2001:db8:0000:0000:0000:0000:0000:1"
-	*/
+	// Determine the IP version: IPv4 (.) or IPv6 (:)
+	const version = ip.includes(':') ? 6 : ip.includes('.') ? 4 : 0;
+	if (!version) return null;
 
-	// Expand shorthand IPv6
-	const expanded = ip.replace(/::/, match => {
-		const colons = ip.match(/:/g).length; // Count total number of ":"
-		const fillZeroes = ':0'.repeat(8 - colons).slice(1); // Calculate how many "0000" blocks are missing - (":0" is shorthand of "0000")
+	let number = 0n; // Initialize BigInt to store numeric IP represenation
+	let exp = 0n; // Keep track of bit shifts per segment
 
-		return match + fillZeroes; // Replace "::" with the correct number of zero-filled groups
-	});
+	if (version === 4) {
+		// Convert IPv4 to BigInt - each octet is 8 bits, so will be shifted accordingly
+		for (const n of ip.split('.').map(BigInt).reverse()) {
+			number += n * (2n ** exp); // Shift the current segment into its correct position and add it to the total IP value
+			exp += 8n; // Increase the exponent by 8 for each segment
+		}
+	} else {
+		// Handle IPv4-mapped IPv6 addresses (::ffff:192.168.1.1)
+		if (ip.includes('.')) {
+			ip = ip.split(':').map(part => {
+				if (part.includes('.')) {
+					// Convert the last part (IPv4 address) into hexadecimal format
+					const [a, b, c, d] = part.split('.').map(str =>
+						Number(str).toString(16).padStart(2, '0')
+					);
+					return `${a}${b}:${c}${d}`; // Format as an IPv6 segment
+				}
+				return part; // Keep other parts unchanged
+			}).join(':'); // Reconstruct the IPv6 address
+		}
 
-	return expanded
-		.split(':') // Split the expanded IPv6 address into its individual segments (separated by ":")
-		.map(part => BigInt(parseInt(part || '0', 16))) // Convert each segment from hexadecimal to a BigInt value
-		.reduce((total, segment) => (total << BigInt(16)) + segment, BigInt(0)); // Combine all segments into a single 128-bit BigInt by shifting and adding
+		// Expand IPv6 shorthand notation (::) by inserting missing '0' blocks
+		const parts = ip.split(':'); // Split IPv6 address into segments
+		const index = parts.indexOf(''); // Find the '::' shorthand
+
+		if (index !== -1) {
+			// Fill missing segments with zeros to ensure there are 8 parts
+			while (parts.length < 8) parts.splice(index, 0, '');
+		}
+
+		// Convert IPv6 segments to BigInt
+		for (const n of parts.map(part => BigInt(parseInt(part || '0', 16))).reverse()) {
+			number += n * (2n ** exp); // Shift each segment accordingly
+			exp += 16n; // Each IPv6 segment is 16 bits
+		}
+	}
+
+	return number; // Return the BigInt representation of the IP address
 }
 
-// Function to calculate the range of a CIDR block (first and last IP addresses)
+// Convert a CIDR block (e.g. 2001:db8::/32) into a numerical range
 function calculateRangeBigInt(cidr) {
-	const [baseIp, prefixLength] = cidr.split('/'); // Split the CIDR into the base IP and the prefix length
-	const baseBigInt = ipv6ToBigInt(baseIp); // Convert the base IP address from IPv6 format to a BigInt
-	const maskBits = BigInt(128 - parseInt(prefixLength)); // Calculate the number of host bits (128 - prefix length)
+	const [baseIp, prefixLength] = cidr.split('/'); // Extract base IP and subnet prefix
+	const baseBigInt = ipv6ToBigInt(baseIp); // Convert base IP to BigInt
+	const maskBits = BigInt(128 - parseInt(prefixLength)); // Calculate the number of host bits
 
 	// Calculate the first address in the range
-	const firstAddress = baseBigInt & (~BigInt(0) << maskBits); // Mask the upper bits to keep the network part intact and set the host part to 0
+	const firstAddress = baseBigInt & (~BigInt(0) << maskBits);
 
 	// Calculate the last address in the range
-	const lastAddress = baseBigInt | ((BigInt(1) << maskBits) - BigInt(1)); // Set the host part to all 1
+	const lastAddress = baseBigInt | ((BigInt(1) << maskBits) - BigInt(1));
 
-	return { firstAddress, lastAddress };
+	return { firstAddress, lastAddress }; // Return the range of addresses
 }
 
-// Function to check if an IP address is within a CIDR range
-function isWithinRangeBigInt(ip, cidr) {
-	const ipBigInt = ipv6ToBigInt(ip); // Convert the IP address from IPv6 string format to BigInt
-	const { firstAddress, lastAddress } = calculateRangeBigInt(cidr); // Calculate the first and last addresses in the CIDR range using the provided CIDR
+// Check if an IP (as BigInt) falls within a CIDR range
+function isWithinRange(ipBigInt, cidr) {
+	const { firstAddress, lastAddress } = calculateRangeBigInt(cidr); // Get first and last addresses
 
-	return ipBigInt >= firstAddress && ipBigInt <= lastAddress;  // Check if the IP address falls within the range by comparing it with the first and last addresses
+	return ipBigInt >= firstAddress && ipBigInt <= lastAddress;
 }
 
-// Function to check if IP address is a special case and return it's usage
+// Convert an IP to BigInt and categorize it
 export function isSpecialIPv6(ip) {
+	const ipBigInt = ipv6ToBigInt(ip);
+
 	for (const category of ipCategories) {
-		if (isWithinRangeBigInt(ip, category.cidr)) {
+		if (isWithinRange(ipBigInt, category.cidr)) {
 			return category.usage;
 		}
 	}
 
-	return null;
+	return null; // Return null if no category matches
 }
