@@ -5,6 +5,7 @@
 .btn {
 	--bs-btn-font-size: var(--bs-body-font-size);
 	--bs-btn-border-radius: 0px;  // No radius for buttons
+	--bs-btn-border-color: transparent; // No border color for buttons
 }
 
 .btn-link {
