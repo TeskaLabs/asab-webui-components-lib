@@ -3,6 +3,8 @@
 
 [data-bs-theme=dark] {
 
+	/* Bootstrap color variables */
+
 	--bs-primary: var(--soft-sky-blue);
 	--bs-primary-rgb: var(--soft-sky-blue-rgb);
 
@@ -41,6 +43,11 @@
 
 	--bs-alert-info-color: var(--deep-space-blue);
 	--bs-alert-info-color-rgb: var(--deep-space-blue-rgb);
+
+	/* Non bootstrap color variables */
+
+	--table-row-hover-bg-color: var(--charcoal-blue);
+	--table-row-hover-bg-color-rgb: var(--charcoal-blue-rgb);
 }
 
 [data-bs-theme=dark] {
