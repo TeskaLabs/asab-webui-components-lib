@@ -7,7 +7,10 @@ import { usePubSub } from '../Context/PubSubContext';
 import { TreeMenu } from './TreeMenu.jsx';
 import { flattenTree } from './utils/flattenTree.jsx';
 
-export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, cardBodyClassName='', disableNodeMemorySession = false, memorySessionName = undefined, flatten = false, ...props }) => {
+export const TreeMenuCard = ({ loader, header, hasSearch, rows,
+	rowHeight = 21, cardClassName='', cardBodyClassName='',
+	disableNodeMemorySession = false, memorySessionName = undefined,
+	flatten = false, loaderParams = undefined, ...props }) => {
 	const location = useLocation();
 	// Getting application object and subscription from application PubSub
 	const { app, subscribe } = usePubSub();
@@ -27,7 +30,7 @@ export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, 
 		if (!disableNodeMemorySession) {
 			loadStoredOpenNodes();
 		}
-	}, []);
+	}, [loaderParams]);
 
 	// Reload based on specific PubSub message
 	useEffect(() => {
@@ -105,7 +108,7 @@ export const TreeMenuCard = ({ loader, header, hasSearch, rows, rowHeight = 21, 
 	};
 
 	return (
-		<Card className='h-100' innerRef={cardRef}>
+		<Card className={`h-100 ${cardClassName}`} innerRef={cardRef}>
 			{(header) &&
 				<CardHeader className='card-header-flex'>
 					{header}
