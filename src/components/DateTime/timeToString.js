@@ -20,27 +20,27 @@ const timeToString = (value, dateTimeFormat = "medium") => {
 	// }
 
 	let date;
+	const locale = useDateFNSLocale();
 
 	if (isNaN(value) == true) {
 		// Checking dates for parsing
 		if (parseISO(value) == "Invalid Date") {
 			return 'Invalid Date';
 		} else {
-			date = formatDate(parseISO(value), dateTimeFormat);
+			date = formatDate(parseISO(value), dateTimeFormat, locale);
 		}
 	} else {
 		if (value > 9999999999) {
-			date = formatDate(value, dateTimeFormat);
+			date = formatDate(value, dateTimeFormat, locale);
 		} else {
-			date = formatDate(value * 1000, dateTimeFormat);
+			date = formatDate(value * 1000, dateTimeFormat, locale);
 		}
 	}
 
 	return {date: date.date, distanceToNow: date.distanceToNow};
 }
 
-const formatDate = (value, dateTimeFormat) => {
-	const locale = useDateFNSLocale();
+const formatDate = (value, dateTimeFormat, locale) => {
 	switch(dateTimeFormat) {
 		case "long": return {date: format(value, 'PPpp', { locale }), distanceToNow: formatDistanceToNow(value, { addSuffix: true, locale: locale })};
 		case "iso": return {date: formatISO(value), distanceToNow: formatDistanceToNow(value, { addSuffix: true, locale: locale })};
