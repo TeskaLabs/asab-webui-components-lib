@@ -3,6 +3,8 @@
 
 :root, [data-bs-theme=light] {
 
+	/* Bootstrap color variables */
+
 	--bs-primary: var(--royal-blue);
 	--bs-primary-rgb: var(--royal-blue-rgb);
 
@@ -38,6 +40,11 @@
 
 	--bs-element-bg-color: var(--white);
 	--bs-element-bg-color-rgb: var(--white-rgb);
+
+	/* Non bootstrap color variables */
+
+	--table-row-hover-bg-color: var(--soft-gray);
+	--table-row-hover-bg-color-rgb: var(--soft-gray-rgb);
 }
 
 :root, [data-bs-theme=light] .progress-bar {
