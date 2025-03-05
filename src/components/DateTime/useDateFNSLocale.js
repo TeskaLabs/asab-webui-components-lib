@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import cs from 'date-fns/locale/cs'; // (possible exports: af, ar, arDZ, arEG, arMA, arSA, arTN, az, be, beTarask, bg, bn, bs, ca, cs, cy, da, de, deAT, el, enAU, enCA, enGB, enIE, enIN, enNZ, enUS, enZA, eo, es, et, eu, faIR, fi, fr, frCA, frCH, fy, gd, gl, gu, he, hi, hr, ht, hu, hy, id, is, it, itCH, ja, jaHira, ka, kk, km, kn, ko, lb, lt, lv, mk, mn, ms, mt, nb, nl, nlBE, nn, oc, pl, pt, ptBR, ro, ru, sk, sl, sq, sr, srLatn, sv, ta, te, th, tr, ug, uk, uz, uzCyrl, vi, zhCN, zhHK, zhTW)
+// import cs from 'date-fns/locale/cs'; // (possible exports: af, ar, arDZ, arEG, arMA, arSA, arTN, az, be, beTarask, bg, bn, bs, ca, cs, cy, da, de, deAT, el, enAU, enCA, enGB, enIE, enIN, enNZ, enUS, enZA, eo, es, et, eu, faIR, fi, fr, frCA, frCH, fy, gd, gl, gu, he, hi, hr, ht, hu, hy, id, is, it, itCH, ja, jaHira, ka, kk, km, kn, ko, lb, lt, lv, mk, mn, ms, mt, nb, nl, nlBE, nn, oc, pl, pt, ptBR, ro, ru, sk, sl, sq, sr, srLatn, sv, ta, te, th, tr, ug, uk, uz, uzCyrl, vi, zhCN, zhHK, zhTW)
 
 /*
 	To bundle the locales and avoid bundle size issues, we need to define the specific locales used.
@@ -20,14 +20,16 @@ import cs from 'date-fns/locale/cs'; // (possible exports: af, ar, arDZ, arEG, a
 	```
 */
 
-const availableLocales = { cs };
+// console.log("Loaded locale:", cs ? "OK" : "MISSING");
+
+// const availableLocales = { cs };
 
 const useDateFNSLocale = () => {
 	const language = useSelector((state) => state.language.current);
 	const [locale, setLocale] = useState(undefined);
 
 	useEffect(() => {
-		setLocale(availableLocales[language] || undefined);
+		setLocale(undefined);
 	}, [language]);
 
 	return locale;
