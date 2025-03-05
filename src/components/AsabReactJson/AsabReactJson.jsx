@@ -3,10 +3,11 @@ import React from 'react';
 import ReactJson from 'react-json-view';
 import { useSelector } from 'react-redux';
 
+// Component wraps ReactJson to handle BigInt numbers and turn them into strings
 export const AsabReactJson = ({src, ...props}) => {
 	const theme = useSelector(state => state.theme);
 
-	// TODO: need to find a way how to do this nicely
+	// The function looks through the received data and if there is a BigInt there, it transforms it into a string
 	const convertBigIntToString = (data) => {
 		if (typeof data === 'bigint') {
 			return data.toString();
