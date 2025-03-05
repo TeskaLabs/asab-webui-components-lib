@@ -5,12 +5,6 @@ import { ipCategories } from './lookups/ipCategories';
 	which are needed to represent IPv6 addresses fully.
 	Instead, operations on IPv6 addresses typically involve converting them
 	into a binary format or a numeric representation (e.g., using BigInt)
-
-	Summary of the Workflow below:
-	1. Convert the CIDR to BigInt range using 'calculateRangeBigInt()'
-	2. Convert the given IP to BigInt using 'ipv6ToBigInt()'
-	3. Check if the IP is in the range using isWithinRange()'
-	4. Return category from ipCategories
 */
 
 // Convert an IP address (IPv4 or IPv6) to BigInt representation
