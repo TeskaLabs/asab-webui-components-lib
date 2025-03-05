@@ -12,7 +12,10 @@
 
 export const ipCategories = [
 	{
-		usage: 'Unspecified',
+		usage: {
+			'c': 'Unspecified',
+			'cs': 'Nespecifikováno'
+		},
 		cidr: '::/128',
 	},
 	{
@@ -48,7 +51,10 @@ export const ipCategories = [
 		cidr: '2001:20::/28',
 	},
 	{
-		usage: 'Used in documentation examples',
+		usage: {
+			'c': 'Used in documentation examples',
+			'cs': 'Používáno v ukázkách v dokumentaci'
+		},
 		cidr: '2001:db8::/32',
 	},
 	{
@@ -64,7 +70,10 @@ export const ipCategories = [
 		cidr: '5f00::/16',
 	},
 	{
-		usage: 'Used in documentation examples',
+		usage: {
+			'c': 'Used in documentation examples',
+			'cs': 'Používáno v ukázkách v dokumentaci'
+		},
 		cidr: 'fc00::/7',
 	},
 	{
