@@ -18,8 +18,6 @@ export function Credentials({ ...props }) {
 
 	const { t } = useTranslation();
 
-	const apiPath = props.apiPath ?? 'seacat-auth';
-
 	const credentials_ids = Array.isArray(props.credentials_ids) ? props.credentials_ids : [props.credentials_ids];
 
 	// Validation on props.app
@@ -27,52 +25,54 @@ export function Credentials({ ...props }) {
 		return renderPlainCredentials(credentials_ids);
 	}
 
-	const CredentialsAPI = props.app.axiosCreate(apiPath);
-
-	const cleanupTime = props.cleanupTime ?? 1000 * 60 * 60 * 24; // 24 hrs
-
 	const [credentials, setCredentials] = useState([]);
 	// Checks if there is a SeaCatAdminFederationModule
 	const hasSeaCatAdminModule = props.app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
-		matchCredentialIds(credentials_ids);
+		const fetchCredentials = async () => {
+			const result = await credentialsToString(props.credentials_ids, props.app);
+			setCredentials(result);
+		};
+
+		fetchCredentials();
 	}, []);
 
-	// asks the server for usernames, saves them to local storage and sets usernames to render
-	const retrieveUserNames = async () => {
-		try {
-			let response = await CredentialsAPI.put(`idents`, credentials_ids);
-			if (response.data.result !== 'OK') {
-				throw new Error(t('General|There was an issue processing a request'));
-			}
-			const usernamesToLS = saveUsernamesToLS(response.data.data, credentials_ids, cleanupTime);
-			setCredentials(usernamesToLS);
-		} catch (e) {
-			console.error(e);
-			removeUsernamesFromLS();
-		}
-	}
 
-	// compares array of IDs with data in localstorage
-	const matchCredentialIds = (credentials_ids) => {
-		const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
-		let usernamesToRender = [];
-		if (usernamesInLS.credentials == undefined || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
-			removeUsernamesFromLS();
-			retrieveUserNames();
-			return;
-		}
-		for (let i = 0; i < credentials_ids.length; i++) {
-			const indexFromLS = usernamesInLS.credentials.findIndex((itemInLS) => itemInLS.id === credentials_ids[i]);
-			if (indexFromLS === -1) {
-				retrieveUserNames();
-				return;
-			}
-			usernamesToRender.push({ username: usernamesInLS.credentials[indexFromLS].username, id: usernamesInLS.credentials[indexFromLS].id });
-		}
-		setCredentials(usernamesToRender);
-	}
+	// asks the server for usernames, saves them to local storage and sets usernames to render
+	// const retrieveUserNames = async () => {
+	// 	try {
+	// 		let response = await CredentialsAPI.put(`idents`, credentials_ids);
+	// 		if (response.data.result !== 'OK') {
+	// 			throw new Error(t('General|There was an issue processing a request'));
+	// 		}
+	// 		const usernamesToLS = saveUsernamesToLS(response.data.data, credentials_ids, cleanupTime);
+	// 		setCredentials(usernamesToLS);
+	// 	} catch (e) {
+	// 		console.error(e);
+	// 		removeUsernamesFromLS();
+	// 	}
+	// }
+	//
+	// // compares array of IDs with data in localstorage
+	// const matchCredentialIds = (credentials_ids) => {
+	// 	const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
+	// 	let usernamesToRender = [];
+	// 	if (usernamesInLS.credentials == undefined || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
+	// 		removeUsernamesFromLS();
+	// 		retrieveUserNames();
+	// 		return;
+	// 	}
+	// 	for (let i = 0; i < credentials_ids.length; i++) {
+	// 		const indexFromLS = usernamesInLS.credentials.findIndex((itemInLS) => itemInLS.id === credentials_ids[i]);
+	// 		if (indexFromLS === -1) {
+	// 			retrieveUserNames();
+	// 			return;
+	// 		}
+	// 		usernamesToRender.push({ username: usernamesInLS.credentials[indexFromLS].username, id: usernamesInLS.credentials[indexFromLS].id });
+	// 	}
+	// 	setCredentials(usernamesToRender);
+	// }
 
 	function renderPlainCredentials (credentials_ids) {
 		return credentials_ids.map((credentials_id, i) => (
@@ -117,6 +117,62 @@ export function Credentials({ ...props }) {
 		</>
 	);
 }
+
+export const credentialsToString = async (credentials_ids, app, cleanupTime = 1000 * 60 * 60 * 24) => {
+	if (!credentials_ids) return [];
+
+	const idsArray = Array.isArray(credentials_ids) ? credentials_ids : [credentials_ids];
+	const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
+
+	let usernamesToRender = [];
+	let missingIds = [];
+
+	// Check if there is data in localStorage
+	if (!usernamesInLS.credentials || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
+		removeUsernamesFromLS();
+		missingIds = idsArray;
+	} else {
+		for (const id of idsArray) {
+			const found = usernamesInLS.credentials.find(cred => cred.id === id);
+			if (found) {
+				usernamesToRender.push({ username: found.username, id: found.id });
+			} else {
+				missingIds.push(id);
+			}
+		}
+	}
+
+	// If all the data is in localStorage, we return it immediately
+	if (missingIds.length === 0) {
+		return usernamesToRender;
+	}
+
+	try {
+		if (!app) throw new Error('App instance is required to fetch credentials');
+		const CredentialsAPI = app.axiosCreate('seacat-auth');
+		const response = await CredentialsAPI.put('idents', missingIds);
+
+		if (response.data.result !== 'OK') {
+			throw new Error(t('General|There was an issue processing a request'));
+		}
+
+		const fetchedCredentials = saveUsernamesToLS(response.data.data, missingIds, cleanupTime);
+
+		// Update the final data list
+		usernamesToRender = [...usernamesToRender, ...fetchedCredentials.map(cred => ({
+			username: cred.username,
+			id: cred.id
+		}))];
+
+		return usernamesToRender;
+	} catch (error) {
+		console.error(error);
+		removeUsernamesFromLS();
+		return usernamesToRender;
+	}
+};
+
+
 
 function removeUsernamesFromLS () {
 	if (localStorage) {
