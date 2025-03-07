@@ -2,7 +2,7 @@
 
 ## 25.2.4
 
-- Refactor timeToString react hook render issues by moving the locale hook out of the method (pull request #13)
+- Refactor timeToString react hook render issues by moving the locale hook out of the method (#13)
 
 ## 25.2.3
 
