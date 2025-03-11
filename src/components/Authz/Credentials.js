@@ -30,49 +30,16 @@ export function Credentials({ ...props }) {
 	const hasSeaCatAdminModule = props.app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
+		// Define an asynchronous function to fetch credentials
 		const fetchCredentials = async () => {
-			const result = await credentialsToString(props.credentials_ids, props.app);
+			// Call the function and get the credentials object with id and username fields
+			const result = await credentialsToString(props.credentials_ids, props.app, t);
 			setCredentials(result);
 		};
 
+		// Call the fetchCredentials function to load credentials data
 		fetchCredentials();
 	}, []);
-
-
-	// asks the server for usernames, saves them to local storage and sets usernames to render
-	// const retrieveUserNames = async () => {
-	// 	try {
-	// 		let response = await CredentialsAPI.put(`idents`, credentials_ids);
-	// 		if (response.data.result !== 'OK') {
-	// 			throw new Error(t('General|There was an issue processing a request'));
-	// 		}
-	// 		const usernamesToLS = saveUsernamesToLS(response.data.data, credentials_ids, cleanupTime);
-	// 		setCredentials(usernamesToLS);
-	// 	} catch (e) {
-	// 		console.error(e);
-	// 		removeUsernamesFromLS();
-	// 	}
-	// }
-	//
-	// // compares array of IDs with data in localstorage
-	// const matchCredentialIds = (credentials_ids) => {
-	// 	const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
-	// 	let usernamesToRender = [];
-	// 	if (usernamesInLS.credentials == undefined || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
-	// 		removeUsernamesFromLS();
-	// 		retrieveUserNames();
-	// 		return;
-	// 	}
-	// 	for (let i = 0; i < credentials_ids.length; i++) {
-	// 		const indexFromLS = usernamesInLS.credentials.findIndex((itemInLS) => itemInLS.id === credentials_ids[i]);
-	// 		if (indexFromLS === -1) {
-	// 			retrieveUserNames();
-	// 			return;
-	// 		}
-	// 		usernamesToRender.push({ username: usernamesInLS.credentials[indexFromLS].username, id: usernamesInLS.credentials[indexFromLS].id });
-	// 	}
-	// 	setCredentials(usernamesToRender);
-	// }
 
 	function renderPlainCredentials (credentials_ids) {
 		return credentials_ids.map((credentials_id, i) => (
@@ -118,61 +85,80 @@ export function Credentials({ ...props }) {
 	);
 }
 
-export const credentialsToString = async (credentials_ids, app, cleanupTime = 1000 * 60 * 60 * 24) => {
+// Function gets username from id. Returns an array of objects with 'id' and 'username' fields.
+export const credentialsToString = async (credentials_ids, app, t, cleanupTime = 1000 * 60 * 60 * 24) => {
+	// If credentials_ids is empty or null, return an empty array.
 	if (!credentials_ids) return [];
 
+	// Ensure credentials_ids is an array. If it's a single value, wrap it into an array.
 	const idsArray = Array.isArray(credentials_ids) ? credentials_ids : [credentials_ids];
+
+	// Get cached usernames from localStorage with expiration check.
 	const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
 
+	// Initialize an array for usernames we will return.
 	let usernamesToRender = [];
+	// Initialize an array to store IDs that are not found in localStorage.
 	let missingIds = [];
 
-	// Check if there is data in localStorage
+	// Check if there are any cached credentials and if cache is still valid (not expired).
 	if (!usernamesInLS.credentials || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
+		// If no valid cache, clear localStorage and mark all IDs as missing.
 		removeUsernamesFromLS();
 		missingIds = idsArray;
 	} else {
+		// Iterate over requested IDs to see which ones are cached.
 		for (const id of idsArray) {
+			// Try to find the credential in cached data.
 			const found = usernamesInLS.credentials.find(cred => cred.id === id);
 			if (found) {
+				// If found, add it to the result array.
 				usernamesToRender.push({ username: found.username, id: found.id });
 			} else {
+				// If not found, mark this ID as missing.
 				missingIds.push(id);
 			}
 		}
 	}
 
-	// If all the data is in localStorage, we return it immediately
+	// If all requested IDs are found in cache, return them immediately.
 	if (missingIds.length === 0) {
 		return usernamesToRender;
 	}
 
 	try {
+		// If app instance is not provided, throw an error (because it's required for API call).
 		if (!app) throw new Error('App instance is required to fetch credentials');
+
+		// Create axios instance for 'seacat-auth' service.
 		const CredentialsAPI = app.axiosCreate('seacat-auth');
+
+		// Fetch credentials data for missing IDs using PUT request.
 		const response = await CredentialsAPI.put('idents', missingIds);
 
 		if (response.data.result !== 'OK') {
 			throw new Error(t('General|There was an issue processing a request'));
 		}
 
+		// Save fetched credentials into localStorage for future usage.
 		const fetchedCredentials = saveUsernamesToLS(response.data.data, missingIds, cleanupTime);
 
-		// Update the final data list
+		// Combine cached and newly fetched credentials into the final result.
 		usernamesToRender = [...usernamesToRender, ...fetchedCredentials.map(cred => ({
 			username: cred.username,
 			id: cred.id
 		}))];
 
+		// Return the combined array of credentials.
 		return usernamesToRender;
 	} catch (error) {
 		console.error(error);
+		// Clear localStorage to avoid using potentially corrupted data.
 		removeUsernamesFromLS();
+		// Return whatever usernames were found in cache (could be empty).
 		return usernamesToRender;
 	}
 };
-
-
 
 function removeUsernamesFromLS () {
 	if (localStorage) {
