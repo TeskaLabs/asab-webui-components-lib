@@ -3,6 +3,12 @@ import React from 'react';
 import ReactJson from 'react-json-view';
 import { useSelector } from 'react-redux';
 
+/*
+	Props to pass on for AsabReactJson:
+		src - This property contains your input JSON
+		...props - all the props that can be passed to ReactJson (http://github.com/mac-s-g/react-json-view?tab=readme-ov-file#props)
+*/
+
 // Component wraps ReactJson to handle BigInt numbers and turn them into strings
 export const AsabReactJson = ({src, ...props}) => {
 	const theme = useSelector(state => state.theme);
