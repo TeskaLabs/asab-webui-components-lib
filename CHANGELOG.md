@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.5
+
+- Added new component `AsabReactJson`. `ReactJson` in `Renderer.js` is replaced by `AsabReactJson` (!7)
+
 ## 25.2.4
 
 - Refactor timeToString react hook render issues by moving the locale hook out of the method (#13)
