@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.5
+
+- Add function and lookup to detect special IPv6 addresses (#8)
+
 ## 25.2.4
 
 - Refactor timeToString react hook render issues by moving the locale hook out of the method (#13)
