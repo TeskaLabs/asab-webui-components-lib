@@ -9,8 +9,10 @@ hr {
 
 pre code {
 	color: var(--bs-code-color);  // The colour of the pre-formatted code has to match <code>
+	tab-size: 4;
 }
 
 code {
 	font-size: var(--asab-monospace-font-size);
+	tab-size: 4;
 }

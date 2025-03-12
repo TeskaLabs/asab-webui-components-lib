@@ -64,6 +64,9 @@
 
 		--bs-table-color: var(--bs-dark);
 
+		--table-row-hover-bg-color: var(--soft-gray);
+		--table-row-hover-bg-color-rgb: var(--soft-gray-rgb);
+
 		&.print-portrait {
 			width: 900px;
 		}
