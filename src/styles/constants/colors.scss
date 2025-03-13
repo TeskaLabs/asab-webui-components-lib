@@ -46,11 +46,14 @@
 	--slate-smoke: #6a6a6a8f; // The color of the disabled item text in the TreeMenu
 	--slate-smoke-rgb: 106, 106, 106;
 
-	--deep-red: #D1004A; // The color of the highest Alert severity
-	--deep-red-rgb: 209, 0, 74;
+	--light-honey: #ffe082; // The color of the lowest Alert severity
+	--light-honey-rgb: 255, 224, 130;
 
-	--deep-green: #0E6027; // The color of the lowest Alert severity
-	--deep-green-rgb: 14, 96, 39;
+	--bright-orange: #ff9800; // The color of the medium Alert severity
+	--bright-orange-rgb: 255, 125, 0;
+
+	--fiery-sunset: #ff5722; // The color of the high Alert severity
+	--fiery-sunset-rgb: 255, 87, 34;
 
 	--charcoal: #494949; // Console background dark theme
 	--charcoal-rgb: 0, 43, 54;
@@ -63,10 +66,4 @@
 
 	--moody-blues: #586E75; // Console font color for light theme
 	--moody-blues-rgb: rgb(88, 110, 117);
-
-	--soft-gray: #e1e2e7; // Emulate table hover row color for light theme
-	--soft-gray-rgb: rgb(225, 226, 231);
-
-	--charcoal-blue: #202636; // Emulate table hover row color for dark theme
-	--charcoal-blue-rgb: rgb(32, 38, 54);
 }
