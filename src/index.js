@@ -9,7 +9,7 @@ export { DataTableFilter2, DataTableAdvFilterSingleValue2, DataTableAdvFilterMul
 export { Spinner } from './components/Spinner';
 export { default as ControlledSwitch } from './components/ControlledSwitch';
 export { default as UncontrolledSwitch } from './components/UncontrolledSwitch';
-export { Credentials } from './components/Authz/Credentials';
+export { Credentials, credentialsToString } from './components/Authz/Credentials';
 export { CellContentLoader, ChartLoader } from './components/ContentLoader';
 export { DateTime } from './components/DateTime';
 export { default as timeToString } from './components/DateTime/timeToString';
@@ -32,6 +32,7 @@ export { UncontrolledSwitchWithAuthz } from './components/Authz/UncontrolledSwit
 export { isAuthorized } from './components/Authz/utils/isAuthorized.js';
 export { ResultCard } from './components/ResultCard/ResultCard';
 export { AdvancedCard } from './components/AdvancedCard/AdvancedCard.jsx';
+export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';
 export { ConsoleModeButton } from './components/Console/components/ConsoleModeButton.jsx';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
