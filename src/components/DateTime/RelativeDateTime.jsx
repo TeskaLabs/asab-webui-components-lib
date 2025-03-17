@@ -4,8 +4,8 @@ import timeToString from './timeToString';
 import useDateFNSLocale from './useDateFNSLocale';
 import InvalidDate from './InvalidDate.jsx';
 
-// Component that displays the absolute time and shows the relative time on hover
-export function DateTime(props) {
+// Component that displays the relative time and shows the absolute time on hover
+export function RelativeDateTime(props) {
 	if (props.value == undefined) {
 		return (
 			<span className='datetime'>{' '}</span>
@@ -32,10 +32,10 @@ export function DateTime(props) {
 	return (
 		<span
 			className='datetime text-nowrap'
-			title={date.distanceToNow}
+			title={date.date}
 		>
 			<i className='bi bi-clock pe-1' />
-			{date.date}
+			{date.distanceToNow}
 		</span>
 	);
 }
