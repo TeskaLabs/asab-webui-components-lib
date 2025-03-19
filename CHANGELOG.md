@@ -2,7 +2,7 @@
 
 ## 25.3.1
 
-- Implement credentialsToString function (#14)
+- Added prop in `Credentials` to display string value (#14)
 
 ## 25.2.4
 
