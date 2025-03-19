@@ -78,14 +78,14 @@ export function Credentials({ isStrCredentials = false, ...props }) {
 	if (isStrCredentials) {
 		return credentials && (credentials.length > 0)
 			? credentials.map(({ username, id }) => (
-				<div key={id} title={username || id}>
+				<span key={id} title={username || id}>
 					{username || id}
-				</div>
+				</span>
 			))
 			: credentials_ids.map((credentials_id, i) => (
-				<div key={i} title={credentials_id}>
+				<span key={i} title={credentials_id}>
 					{credentials_id}
-				</div>
+				</span>
 			));
 	}
 
