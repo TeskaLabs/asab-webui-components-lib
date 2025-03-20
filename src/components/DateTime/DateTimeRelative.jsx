@@ -5,7 +5,7 @@ import useDateFNSLocale from './useDateFNSLocale';
 import InvalidDate from './InvalidDate.jsx';
 
 // Component that displays the relative time and shows the absolute time on hover
-export function RelativeDateTime(props) {
+export function DateTimeRelative(props) {
 	if (props.value == undefined) {
 		return (
 			<span className='datetime'>{' '}</span>

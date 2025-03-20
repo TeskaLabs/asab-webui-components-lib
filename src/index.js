@@ -12,7 +12,7 @@ export { default as UncontrolledSwitch } from './components/UncontrolledSwitch';
 export { Credentials } from './components/Authz/Credentials';
 export { CellContentLoader, ChartLoader } from './components/ContentLoader';
 export { DateTime } from './components/DateTime/DateTime';
-export { RelativeDateTime } from './components/DateTime/RelativeDateTime.jsx';
+export { DateTimeRelative } from './components/DateTime/DateTimeRelative.jsx';
 export { default as timeToString } from './components/DateTime/timeToString';
 export { default as useDateFNSLocale } from './components/DateTime/useDateFNSLocale';
 export { TreeMenuCard, formatIntoLeafFolderTree, removeTreeContent, formatIntoTree } from './components/TreeMenu';
