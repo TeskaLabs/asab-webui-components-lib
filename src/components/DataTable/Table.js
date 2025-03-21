@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
 import { Table } from 'reactstrap';
 
-import { DateTime } from '../DateTime/DateTime';
+import { DateTime } from '../DateTime/DateTime.jsx';
 
 import { ActionButton } from './Buttons';
 
