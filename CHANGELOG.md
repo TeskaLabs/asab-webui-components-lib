@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.3.1
+
+- Added prop in `Credentials` to display string value (#14)
+
 ## 25.2.4
 
 - Refactor timeToString react hook render issues by moving the locale hook out of the method (#13)
