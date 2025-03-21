@@ -6,7 +6,7 @@ import { LinkWithAuthz } from './LinkWithAuthz';
 
 import './Credentials.scss';
 
-export function Credentials({ isStrCredentials = false, ...props }) {
+export function Credentials({ children, ...props }) {
 
 	// Validation on undefined credentials_ids
 	if (props.credentials_ids == undefined) {
@@ -74,21 +74,6 @@ export function Credentials({ isStrCredentials = false, ...props }) {
 		setCredentials(usernamesToRender);
 	}
 
-	// If the isStrCredentials is true, return just string credentials without links
-	if (isStrCredentials) {
-		return credentials && (credentials.length > 0)
-			? credentials.map(({ username, id }) => (
-				<span key={id} title={username || id}>
-					{username || id}
-				</span>
-			))
-			: credentials_ids.map((credentials_id, i) => (
-				<span key={i} title={credentials_id}>
-					{credentials_id}
-				</span>
-			));
-	}
-
 	function renderPlainCredentials (credentials_ids) {
 		return credentials_ids.map((credentials_id, i) => (
 			<div className='authz-credentials-link' key={i}>
@@ -98,39 +83,27 @@ export function Credentials({ isStrCredentials = false, ...props }) {
 		))
 	}
 
-	return (
-		<>
-			{credentials && (credentials.length !== 0) ?
-				credentials.map((credentialObj, i) => (
-					<div key={i} className='authz-credentials-link' title={credentialObj.username || credentialObj.id}>
-						<i className='bi bi-person pe-1' />
-						<LinkWithAuthz
-							resource={resource}
-							resources={resources}
-							to={`/auth/credentials/${credentialObj.id}`}
-							disabled={hasSeaCatAdminModule}
-						>
-							{credentialObj.username || credentialObj.id}
-						</LinkWithAuthz>
-					</div>
-				))
-			:
-				credentials_ids.map((credentials_id, i) => (
-					<div key={i} className='authz-credentials-link' title={credentials_id}>
-						<i className='bi bi-person pe-1' />
-						<LinkWithAuthz
-							resource={resource}
-							resources={resources}
-							to={`/auth/credentials/${credentials_id}`}
-							disabled={hasSeaCatAdminModule}
-						>
-							{credentials_id}
-						</LinkWithAuthz>
-					</div>
-				))
-			}
-		</>
-	);
+	// Renders a list of credential links
+	const renderList = (list) =>
+		list.map((item, i) => (
+			<div key={i} className='authz-credentials-link' title={item.username || item.id}>
+				<i className='bi bi-person pe-1' />
+				<LinkWithAuthz
+					resource={resource}
+					resources={resources}
+					to={`/auth/credentials/${item.id}`}
+					disabled={hasSeaCatAdminModule}
+				>
+					{item.username || item.id}
+				</LinkWithAuthz>
+			</div>
+		));
+
+	// If credentials are available, render them; otherwise, use IDs as placeholders
+	const content = (credentials.length !== 0) ? renderList(credentials) : renderList(credentials_ids.map(id => ({ id, username: id })));
+
+	// If children are provided, pass rendered content; otherwise, render directly
+	return children ? children(content) : <>{content}</>;
 }
 
 function removeUsernamesFromLS () {
