@@ -2,7 +2,7 @@ import React from 'react';
 
 import timeToString from './timeToString';
 import useDateFNSLocale from './useDateFNSLocale';
-import InvalidDate from './InvalidDate.jsx';
+import { InvalidDate } from './InvalidDate.jsx';
 
 // Component that displays the relative time and shows the absolute time on hover
 export function DateTimeRelative(props) {

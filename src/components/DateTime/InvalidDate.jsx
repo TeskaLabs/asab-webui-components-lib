@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Mehod for rendering invalid date component
-export default function InvalidDate() {
+export function InvalidDate() {
 	const { t } = useTranslation();
 	return (
 		<span className='datetime text-nowrap'>
