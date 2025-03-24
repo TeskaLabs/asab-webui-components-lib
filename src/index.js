@@ -20,8 +20,6 @@ export { saveToLS, getFromLS, removeFromLS } from './utils/localStorage';
 export { validateAccess, validateTenantAccess, validateResourceAccess } from './utils/validateAccess';
 export { ErrorHandler } from './utils/ErrorHandler';
 export { hexToString } from './utils/hexToString.js';
-export { isPrivateIP } from './utils/isPrivateIP.js';
-export { isValidIP } from './utils/isValidIP.js';
 export { itemExtensionHandler } from './utils/itemExtensionHandler.js';
 export { removeFileExtension } from './utils/removeFileExtension.js';
 export { deepMerge } from './utils/deepMerge.jsx';
@@ -39,7 +37,6 @@ export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { ConsoleCard } from './components/Console/ConsoleCard.jsx';
 export { isoCodeCountries } from './utils/lookups/isoCodeCountries.js';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
-export { isSpecialIPv6 } from './utils/isSpecialIPv6.js'
 
 // To apply styles, it is necessary to import them here
 // TODO: maybe make a styles a shared package library?

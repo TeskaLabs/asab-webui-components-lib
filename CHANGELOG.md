@@ -1,8 +1,11 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.6
+
+- Remove `isValidIP`, `isPrivateIP` functions (#8)
+
 ## 25.2.5
 
-- Add function and lookup to detect special IPv6 addresses (#8)
 - Add relative DateTime component that displays relative time and shows absolute time on hover (#16)
 
 ## 25.2.4
