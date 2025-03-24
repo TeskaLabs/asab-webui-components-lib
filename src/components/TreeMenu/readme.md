@@ -205,6 +205,36 @@ const Header = () => {
 };
 ```
 
+### `disableNodeMemorySession` (optional)
+
+- `bool` value
+- Disable session memory for opened nodes. The nodes will be closed (formatted) to its initial state after every tree menu re-render.
+
+**Example:**
+```jsx
+<TreeMenuCard
+	app={app}
+	loader={loader}
+	disableNodeMemorySession={true}
+/>
+```
+
+### `memorySessionName` (optional)
+
+- `str` value
+- Allows to specify the key to which will be the opened nodes stored for the particular session.
+- The session memory of opened nodes depends on the location pathname. So this option is useful when the pathname changes on the screen where the treemenu is used and it is necessary to store the opened nodes.
+- The opened nodes will be then saved under the particular name regardless the location pathname.
+
+**Example:**
+```jsx
+<TreeMenuCard
+	app={app}
+	loader={loader}
+	memorySessionName='/library'
+/>
+```
+
 ## Formatting Tree Data
 
 ### `formatIntoTree`
@@ -237,31 +267,31 @@ const loader = async () => {
 **Example of the input data to `formatIntoTree` and `formatIntoLeafFolderTree`:**
 ```
 [
-    {
-        "name": "/Test/Path/",
-        "type": "dir",
-        "layer": 0
-    },
-    {
-        "name": "/Test/PathExample/",
-        "type": "dir",
-        "layer": 0
-    },
-    {
-        "name": "/Test/test-file.json",
-        "type": "item",
-        "layer": 0
-    },
-    {
-        "name": "/Test/Path/test.json",
-        "type": "item",
-        "layer": 0
-    },
-    {
-        "name": "/Test/PathExample/test1.json",
-        "type": "item",
-        "layer": 0
-    },
+	{
+		"name": "/Test/Path/",
+		"type": "dir",
+		"layer": 0
+	},
+	{
+		"name": "/Test/PathExample/",
+		"type": "dir",
+		"layer": 0
+	},
+	{
+		"name": "/Test/test-file.json",
+		"type": "item",
+		"layer": 0
+	},
+	{
+		"name": "/Test/Path/test.json",
+		"type": "item",
+		"layer": 0
+	},
+	{
+		"name": "/Test/PathExample/test1.json",
+		"type": "item",
+		"layer": 0
+	},
 ]
 ```
 
