@@ -3,6 +3,7 @@
 ## 25.2.5
 
 - Add function and lookup to detect special IPv6 addresses (#8)
+- Add relative DateTime component that displays relative time and shows absolute time on hover (#16)
 
 ## 25.2.4
 
