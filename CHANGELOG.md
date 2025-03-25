@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.6
+
+- Update `Credentials` it can be used as a wrapper (#14)
+
 ## 25.2.5
 
 - Add relative DateTime component that displays relative time and shows absolute time on hover (#16)
