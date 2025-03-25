@@ -85,22 +85,27 @@ export function Credentials({ children, ...props }) {
 
 	// Renders a list of credential links
 	const renderList = (list) =>
-		list.map((item, i) => (
-			<div key={i} className='authz-credentials-link' title={item.username || item.id}>
-				<i className='bi bi-person pe-1' />
-				<LinkWithAuthz
-					resource={resource}
-					resources={resources}
-					to={`/auth/credentials/${item.id}`}
-					disabled={hasSeaCatAdminModule}
-				>
-					{item.username || item.id}
-				</LinkWithAuthz>
-			</div>
-		));
+		(list != undefined) && list.map((item, i) => {
+			const id = item.id || item; // Support for objects and strings (id)
+			const username = item.username || id;
+
+			return (
+				<div key={i} className='authz-credentials-link' title={username}>
+					<i className='bi bi-person pe-1' />
+					<LinkWithAuthz
+						resource={resource}
+						resources={resources}
+						to={`/auth/credentials/${id}`}
+						disabled={hasSeaCatAdminModule}
+					>
+						{username}
+					</LinkWithAuthz>
+				</div>
+			);
+		});
 
 	// If credentials are available, render them; otherwise, use IDs as placeholders
-	const content = (credentials.length !== 0) ? renderList(credentials) : renderList(credentials_ids.map(id => ({ id, username: id })));
+	const content = (credentials.length !== 0) ? renderList(credentials) : renderList(credentials_ids);
 
 	// If children are provided, pass rendered content; otherwise, render directly
 	return children ? children(content) : <>{content}</>;
