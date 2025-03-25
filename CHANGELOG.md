@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.3.1
+## 25.2.6
 
-- Added prop in `Credentials` to display string value (#14)
+- Update `Credentials` it can be used as a wrapper (#14)
+
+## 25.2.5
+
+- Add relative DateTime component that displays relative time and shows absolute time on hover (#16)
 
 ## 25.2.4
 
