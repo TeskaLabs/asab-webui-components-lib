@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactJson from 'react-json-view';
+import { RendererWrapper } from '../components/RendererWrapper.jsx';
 
 export class Renderer extends Component {
 	// Renderer defaults
@@ -8,7 +9,7 @@ export class Renderer extends Component {
 		this.App = app;
 	}
 
-	render(key, value, schemaField) {
+	render(key, value, schemaField, params = undefined) {
 		// Render ReactJson component if value is a object
 		if (typeof value === 'object') {
 			const theme = this.App.Store.getState().theme;
@@ -24,8 +25,11 @@ export class Renderer extends Component {
 					theme={theme === 'dark' ? "chalk" : "rjv-default"}
 				/>)
 		}
+
 		// Render span with value inside as a default
-		return (<span>{value}</span>);
+		return (<RendererWrapper
+				component={params?.WrapperComponent || "span"}
+				>{value}</RendererWrapper>);
 	}
 
 	plain(key, value, schemaField)	{
