@@ -20,99 +20,91 @@ export function Credentials({ ...props }) {
 
 	const apiPath = props.apiPath ?? 'seacat-auth';
 
-	const credentials_ids = Array.isArray(props.credentials_ids) ? props.credentials_ids : [props.credentials_ids];
-
 	// Validation on props.app
 	if (props.app == undefined) {
-		return renderPlainCredentials(credentials_ids);
+		return renderPlainCredentials(props.credentials_ids);
 	}
 
 	const CredentialsAPI = props.app.axiosCreate(apiPath);
 
 	const cleanupTime = props.cleanupTime ?? 1000 * 60 * 60 * 24; // 24 hrs
 
-	const [credentials, setCredentials] = useState([]);
+	const [credential, setCredential] = useState(null);
 	// Checks if there is a SeaCatAdminFederationModule
 	const hasSeaCatAdminModule = props.app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
-		matchCredentialIds(credentials_ids);
+		matchCredentialId(props.credentials_ids);
 	}, []);
 
 	// asks the server for usernames, saves them to local storage and sets usernames to render
-	const retrieveUserNames = async () => {
+	const retrieveUserName = async () => {
 		try {
-			let response = await CredentialsAPI.put(`idents`, credentials_ids);
+			let response = await CredentialsAPI.put(`idents`, [props.credentials_ids]);
 			if (response.data.result !== 'OK') {
 				throw new Error(t('General|There was an issue processing a request'));
 			}
-			const usernamesToLS = saveUsernamesToLS(response.data.data, credentials_ids, cleanupTime);
-			setCredentials(usernamesToLS);
+			const usernameToLS = saveUsernamesToLS(response.data.data, props.credentials_ids, cleanupTime);
+			setCredential(usernameToLS);
 		} catch (e) {
 			console.error(e);
 			removeUsernamesFromLS();
 		}
-	}
+	};
 
 	// compares array of IDs with data in localstorage
-	const matchCredentialIds = (credentials_ids) => {
+	const matchCredentialId = (cred_id) => {
 		const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
-		let usernamesToRender = [];
-		if (usernamesInLS.credentials == undefined || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
+		if (!usernamesInLS.credentials || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
 			removeUsernamesFromLS();
-			retrieveUserNames();
+			retrieveUserName();
 			return;
 		}
-		for (let i = 0; i < credentials_ids.length; i++) {
-			const indexFromLS = usernamesInLS.credentials.findIndex((itemInLS) => itemInLS.id === credentials_ids[i]);
-			if (indexFromLS === -1) {
-				retrieveUserNames();
-				return;
-			}
-			usernamesToRender.push({ username: usernamesInLS.credentials[indexFromLS].username, id: usernamesInLS.credentials[indexFromLS].id });
+		const found = usernamesInLS.credentials.find((item) => item.id === cred_id);
+		if (!found) {
+			retrieveUserName();
+		} else {
+			console.log(found, 'found')
+			setCredential(found);
 		}
-		setCredentials(usernamesToRender);
-	}
-	function renderPlainCredentials (credentials_ids) {
-		return credentials_ids.map((credentials_id, i) => (
-			<div className='authz-credentials-link' key={i}>
+	};
+
+	function renderPlainCredentials(cred_id) {
+		return (
+			<div className='authz-credentials-link'>
 				<i className='bi bi-person pe-1' />
-				<span title={credentials_id}>{credentials_id}</span>
+				<span title={cred_id}>{cred_id}</span>
 			</div>
-		))
+		);
 	}
 
 	return (
 		<>
-			{credentials && (credentials.length !== 0) ?
-				credentials.map((credentialObj, i) => (
-					<div key={i} className='authz-credentials-link' title={credentialObj.username || credentialObj.id}>
-						<i className='bi bi-person pe-1' />
-						<LinkWithAuthz
-							resource={resource}
-							resources={resources}
-							to={`/auth/credentials/${credentialObj.id}`}
-							disabled={hasSeaCatAdminModule}
-						>
-							{credentialObj.username || credentialObj.id}
-						</LinkWithAuthz>
-					</div>
-				))
-				:
-				credentials_ids.map((credentials_id, i) => (
-					<div key={i} className='authz-credentials-link' title={credentials_id}>
-						<i className='bi bi-person pe-1' />
-						<LinkWithAuthz
-							resource={resource}
-							resources={resources}
-							to={`/auth/credentials/${credentials_id}`}
-							disabled={hasSeaCatAdminModule}
-						>
-							{credentials_id}
-						</LinkWithAuthz>
-					</div>
-				))
-			}
+			{credential ? (
+				<div className='authz-credentials-link' title={credential.username || credential.id}>
+					<i className='bi bi-person pe-1' />
+					<LinkWithAuthz
+						resource={resource}
+						resources={resources}
+						to={`/auth/credentials/${credential.id}`}
+						disabled={hasSeaCatAdminModule}
+					>
+						{credential.username || credential.id}
+					</LinkWithAuthz>
+				</div>
+			) : (
+				<div className='authz-credentials-link' title={props.credentials_ids}>
+					<i className='bi bi-person pe-1'/>
+					<LinkWithAuthz
+						resource={resource}
+						resources={resources}
+						to={`/auth/credentials/${props.credentials_ids}`}
+						disabled={hasSeaCatAdminModule}
+					>
+						{props.credentials_ids}
+					</LinkWithAuthz>
+				</div>
+			)}
 		</>
 	);
 }
@@ -136,31 +128,17 @@ function getUsernamesFromLS (name, cleanupTime) {
 	return ls ? ls : { credentials: [], expiration: Date.now() + cleanupTime };
 }
 
-function saveUsernamesToLS (data, credentials_ids, cleanupTime) {
+function saveUsernamesToLS(data, credentials_id, cleanupTime) {
 	if (localStorage) {
 		let dataInLS = getUsernamesFromLS('Credentials', cleanupTime);
-		let dataToLS = [];
-		credentials_ids.map((credential_id) => {
-			let item = {};
-			if (data[credential_id]) {
-				item = {
-					id: credential_id,
-					username: data[credential_id],
-				};
-			}
-			if (!data[credential_id]) {
-				item = {
-					id: credential_id,
-					username: undefined
-				}
-			}
-			const indexFromLS = dataInLS.credentials.findIndex((itemInLS) => itemInLS.id === item.id);
-			if (indexFromLS === -1) {
-				dataInLS.credentials.push(item);
-			}
-			dataToLS.push(item);
-		})
+		let item = {
+			id: credentials_id,
+			username: data[credentials_id] || undefined,
+		};
+		if (!dataInLS.credentials.find((cred) => cred.id === item.id)) {
+			dataInLS.credentials.push(item);
+		}
 		localStorage.setItem('Credentials', JSON.stringify(dataInLS));
-		return dataToLS;
+		return item;
 	}
 }
