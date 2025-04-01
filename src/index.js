@@ -10,6 +10,7 @@ export { Spinner } from './components/Spinner';
 export { default as ControlledSwitch } from './components/ControlledSwitch';
 export { default as UncontrolledSwitch } from './components/UncontrolledSwitch';
 export { Credentials } from './components/Authz/Credentials';
+export { User } from './components/Authz/User';
 export { CellContentLoader, ChartLoader } from './components/ContentLoader';
 export { DateTime } from './components/DateTime/DateTime.jsx';
 export { DateTimeRelative } from './components/DateTime/DateTimeRelative.jsx';
