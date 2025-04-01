@@ -6,8 +6,8 @@ import './Credentials.scss';
 
 export function User ({ ...props }) {
 
-	// Validation on undefined credentials_ids
-	if (props.credentials_ids == undefined) {
+	// Validation on undefined user_id
+	if (props.user_id == undefined) {
 		return '';
 	}
 
@@ -19,23 +19,23 @@ export function User ({ ...props }) {
 
 	const cleanupTime = props.cleanupTime ?? 1000 * 60 * 60 * 24; // 24 hrs
 
-	const [credential, setCredential] = useState(null);
+	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		matchCredentialId(props.credentials_ids, setCredential, CredentialsAPI, cleanupTime, t);
+		matchCredentialId(props.user_id, setUser, CredentialsAPI, cleanupTime, t);
 	}, []);
 
 	return (
 		<>
-			{credential ? (
-				<div title={credential.username || credential.id}>
+			{user ? (
+				<div title={user.username || user.id}>
 					<i className='bi bi-person pe-1' />
-					<span>{credential.username || credential.id}</span>
+					<span>{user.username || user.id}</span>
 				</div>
 			) : (
-				<div title={props.credentials_ids}>
+				<div title={props.user_id}>
 					<i className='bi bi-person pe-1'/>
-					<span>{props.credentials_ids}</span>
+					<span>{props.user_id}</span>
 				</div>
 			)}
 		</>
