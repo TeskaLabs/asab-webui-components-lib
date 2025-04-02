@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { matchCredentialId } from './utils/retrieveCredentialsInfo';
 
 import './Credentials.scss';
@@ -9,8 +8,6 @@ export function User ({ ...props }) {
 	if (props.user_id == undefined) {
 		return '';
 	}
-
-	const { t } = useTranslation();
 
 	const cleanupTime = props.cleanupTime ?? 1000 * 60 * 60 * 24; // 24 hrs
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { LinkWithAuthz } from './LinkWithAuthz';
 import { matchCredentialId } from './utils/retrieveCredentialsInfo';
@@ -14,8 +13,6 @@ export function Credentials({ ...props }) {
 
 	const resources = useSelector(state => state?.auth?.resources);
 	const resource = 'seacat:credentials:access'; // Resource required to access the Credentials List Screen
-
-	const { t } = useTranslation();
 
 	// Validation on props.app
 	if (props.app == undefined) {
