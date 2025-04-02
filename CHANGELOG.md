@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.6
+
+- Add splang format processing for DateTime (#16)
+
 ## 25.2.5
 
 - Add relative DateTime component that displays relative time and shows absolute time on hover (#16)
