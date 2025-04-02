@@ -7,7 +7,6 @@ import { matchCredentialId } from './utils/retrieveCredentialsInfo';
 import './Credentials.scss';
 
 export function Credentials({ ...props }) {
-
 	// Validation on undefined credentials_ids
 	if (props.credentials_ids == undefined) {
 		return '';
@@ -18,14 +17,10 @@ export function Credentials({ ...props }) {
 
 	const { t } = useTranslation();
 
-	const apiPath = props.apiPath ?? 'seacat-auth';
-
 	// Validation on props.app
 	if (props.app == undefined) {
 		return renderPlainCredentials(props.credentials_ids);
 	}
-
-	const CredentialsAPI = props.app.axiosCreate(apiPath);
 
 	const cleanupTime = props.cleanupTime ?? 1000 * 60 * 60 * 24; // 24 hrs
 
@@ -34,7 +29,7 @@ export function Credentials({ ...props }) {
 	const hasSeaCatAdminModule = props.app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
-		matchCredentialId(props.credentials_ids, setCredential, CredentialsAPI, cleanupTime, t);
+		matchCredentialId(props.app, props.credentials_ids, setCredential, cleanupTime);
 	}, []);
 
 	function renderPlainCredentials(cred_id) {

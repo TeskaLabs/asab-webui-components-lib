@@ -5,7 +5,6 @@ import { matchCredentialId } from './utils/retrieveCredentialsInfo';
 import './Credentials.scss';
 
 export function User ({ ...props }) {
-
 	// Validation on undefined user_id
 	if (props.user_id == undefined) {
 		return '';
@@ -13,16 +12,12 @@ export function User ({ ...props }) {
 
 	const { t } = useTranslation();
 
-	const apiPath = props.apiPath ?? 'seacat-auth';
-
-	const CredentialsAPI = props.app.axiosCreate(apiPath);
-
 	const cleanupTime = props.cleanupTime ?? 1000 * 60 * 60 * 24; // 24 hrs
 
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		matchCredentialId(props.user_id, setUser, CredentialsAPI, cleanupTime, t);
+		matchCredentialId(props.app, props.user_id, setUser, cleanupTime);
 	}, []);
 
 	return (

@@ -1,25 +1,28 @@
+import i18next from 'i18next';
+
 // compares array of IDs with data in localstorage
-export const matchCredentialId = (cred_id, setCredential, CredentialsAPI, cleanupTime, t) => {
+export const matchCredentialId = (app, cred_id, setCredential, cleanupTime) => {
 	const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
 	if (!usernamesInLS.credentials || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
 		removeUsernamesFromLS();
-		retrieveUserName(cred_id, setCredential, CredentialsAPI, cleanupTime, t);
+		retrieveUserName(app, cred_id, setCredential, cleanupTime);
 		return;
 	}
 	const found = usernamesInLS.credentials.find((item) => item.id === cred_id);
 	if (!found) {
-		retrieveUserName(cred_id, setCredential, CredentialsAPI, cleanupTime, t);
+		retrieveUserName(app, cred_id, setCredential, cleanupTime);
 	} else {
 		setCredential(found);
 	}
 };
 
 // asks the server for usernames, saves them to local storage and sets usernames to render
-const retrieveUserName = async (cred_id, setCredential, CredentialsAPI, cleanupTime, t) => {
+const retrieveUserName = async (app, cred_id, setCredential, cleanupTime,) => {
+	const CredentialsAPI = app.axiosCreate('seacat-auth');
 	try {
 		let response = await CredentialsAPI.put(`idents`, [cred_id]);
 		if (response.data.result !== 'OK') {
-			throw new Error(t('General|There was an issue processing a request'));
+			throw new Error(i18next.t('General|There was an issue processing a request'));
 		}
 		const usernameToLS = saveUsernamesToLS(response.data.data, cred_id, cleanupTime);
 		setCredential(usernameToLS);
