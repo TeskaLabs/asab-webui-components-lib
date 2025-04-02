@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.5
+
+- Add relative DateTime component that displays relative time and shows absolute time on hover (#16)
+
 ## 25.2.4
 
 - Refactor timeToString react hook render issues by moving the locale hook out of the method (#13)
