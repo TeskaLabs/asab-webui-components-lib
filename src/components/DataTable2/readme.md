@@ -1,7 +1,5 @@
 # DataTable2
 
-See `/demo/asab-webui/datatable2` for more detailed usage.
-
 Use:
 
 ```
