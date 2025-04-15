@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactJson from 'react-json-view';
+import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
 
 export class Renderer extends Component {
 	// Renderer defaults
@@ -11,8 +11,8 @@ export class Renderer extends Component {
 	render(key, value, schemaField) {
 		// Render ReactJson component if value is a object
 		if (typeof value === 'object') {
-			const theme = this.App.Store.getState().theme;
-			return (<ReactJson
+			return (
+				<AsabReactJson
 					src={value}
 					name={false}
 					collapsed={false}
@@ -21,8 +21,8 @@ export class Renderer extends Component {
 					quotesOnKeys={false}
 					enableClipboard={false}
 					indentWidth={8}
-					theme={theme === 'dark' ? "chalk" : "rjv-default"}
-				/>)
+				/>
+			)
 		}
 		// Render span with value inside as a default
 		return (<span>{value}</span>);
