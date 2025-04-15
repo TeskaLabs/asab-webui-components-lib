@@ -26,7 +26,9 @@ export function Credentials({ ...props }) {
 	const hasSeaCatAdminModule = props.app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
-		matchCredentialId(props.app, props.credentials_ids, setCredential, cleanupTime);
+		// fallback if credentials_ids sent as an array
+		const fallbackCredentialId = Array.isArray(props.credentials_ids) ? props.credentials_ids[0] : props.credentials_ids;
+		matchCredentialId(props.app, fallbackCredentialId, setCredential, cleanupTime);
 	}, []);
 
 	function renderPlainCredentials(cred_id) {
