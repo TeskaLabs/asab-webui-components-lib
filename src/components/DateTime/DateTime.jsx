@@ -7,7 +7,6 @@ import { splDatetimeToIso } from './splDatetimeToIso';
 
 // Component that displays the absolute time and shows the relative time on hover
 export function DateTime(props) {
-	console.log(props)
 	if (props.value == undefined) {
 		return (
 			<span className='datetime'>{' '}</span>
@@ -46,48 +45,56 @@ export function DateTime(props) {
 }
 
 function validateDateTime(value) {
+	// Return 'Invalid Date' if the input is null or undefined
 	if (value == null) {
 		return 'Invalid Date';
 	}
 
-	console.log(typeof value )
-
-	// Обработка BigInt сразу
+	// Handle BigInt values explicitly
 	if (typeof value === 'bigint') {
-		// SP-Lang datetime (BigInt всегда)
+		// SP-Lang datetime format is represented as BigInt
 		return splDatetimeToIso(value);
 	}
 
-	// Обработка строк
+	// Handle string values
 	if (typeof value === 'string') {
-		const parsed = new Date(value);
+		const parsed = new Date(value); // Try to parse the string into a Date object
+		// If the parsed date is invalid, return 'Invalid Date'; otherwise, return the date
 		return isNaN(parsed.getTime()) ? 'Invalid Date' : parsed;
 	}
 
-	// Обработка чисел
+	// Handle number values
 	if (typeof value === 'number') {
+		// Reject infinite, NaN, or negative numbers
 		if (!Number.isFinite(value) || value < 0) {
 			return 'Invalid Date';
 		}
 
-		// Очень большие числа — SP-Lang (возможно ошибка, но ты сам решаешь как обрабатывать)
+		// Consider numbers ≥ 1e17 as SP-Lang datetime format
 		if (value >= 1e17) {
+			// Convert number to BigInt and parse as SP-Lang datetime
 			return splDatetimeToIso(BigInt(value));
 		}
 
+		// Handle Unix timestamp in seconds (less than 1e10)
 		if (value < 1e10) {
-			return new Date(value * 1000); // секунды
-		}
-		if (value < 1e13) {
-			return new Date(value); // миллисекунды
-		}
-		if (value < 1e16) {
-			return new Date(value / 1000); // микросекунды
+			return new Date(value * 1000); // Convert seconds to milliseconds
 		}
 
-		// Слишком большие числа, не распознали
+		// Handle timestamps in milliseconds (less than 1e13)
+		if (value < 1e13) {
+			return new Date(value); // Already in milliseconds
+		}
+
+		// Handle timestamps in microseconds (less than 1e16)
+		if (value < 1e16) {
+			return new Date(value / 1000); // Convert microseconds to milliseconds
+		}
+
+		// Numbers that don't fall into any known range are considered invalid
 		return 'Invalid Date';
 	}
 
+	// All other types are unsupported and result in 'Invalid Date'
 	return 'Invalid Date';
 }
