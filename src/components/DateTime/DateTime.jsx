@@ -7,6 +7,7 @@ import { splDatetimeToIso } from './splDatetimeToIso';
 
 // Component that displays the absolute time and shows the relative time on hover
 export function DateTime(props) {
+	console.log(props)
 	if (props.value == undefined) {
 		return (
 			<span className='datetime'>{' '}</span>
@@ -45,23 +46,48 @@ export function DateTime(props) {
 }
 
 function validateDateTime(value) {
-	if (value == null) return 'Invalid Date';
-
-	// Reject non-numeric values
-	if ((typeof value !== 'number') || !Number.isFinite(value)) return new Date(value);
-
-	// Reject negative numbers (timestamps are always positive)
-	if (value < 0) return 'Invalid Date';
-
-	// SP-Lang datetime (BigInt or number >= 10^17)
-	if (typeof value === 'bigint' || value >= 10n ** 17n) {
-		return splDatetimeToIso(BigInt(value));
+	if (value == null) {
+		return 'Invalid Date';
 	}
 
-	// Defining the time format by range
-	if (value < 1e10) return new Date(value * 1000); // Seconds → milliseconds
-	if (value < 1e13) return new Date(value); // Milliseconds
-	if (value < 1e16) return new Date(value / 1000); // Microseconds
+	console.log(typeof value )
+
+	// Обработка BigInt сразу
+	if (typeof value === 'bigint') {
+		// SP-Lang datetime (BigInt всегда)
+		return splDatetimeToIso(value);
+	}
+
+	// Обработка строк
+	if (typeof value === 'string') {
+		const parsed = new Date(value);
+		return isNaN(parsed.getTime()) ? 'Invalid Date' : parsed;
+	}
+
+	// Обработка чисел
+	if (typeof value === 'number') {
+		if (!Number.isFinite(value) || value < 0) {
+			return 'Invalid Date';
+		}
+
+		// Очень большие числа — SP-Lang (возможно ошибка, но ты сам решаешь как обрабатывать)
+		if (value >= 1e17) {
+			return splDatetimeToIso(BigInt(value));
+		}
+
+		if (value < 1e10) {
+			return new Date(value * 1000); // секунды
+		}
+		if (value < 1e13) {
+			return new Date(value); // миллисекунды
+		}
+		if (value < 1e16) {
+			return new Date(value / 1000); // микросекунды
+		}
+
+		// Слишком большие числа, не распознали
+		return 'Invalid Date';
+	}
 
 	return 'Invalid Date';
 }
