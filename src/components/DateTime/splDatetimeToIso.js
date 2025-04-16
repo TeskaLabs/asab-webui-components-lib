@@ -3,7 +3,7 @@ export function splDatetimeToIso(datetime) {
 	if ((typeof datetime !== 'bigint') && (typeof datetime !== 'number')) {
 		return 'Invalid Date';
 	}
-	let BigIntDatetime = BigInt(datetime); // Convert to BigInt for correct bitwise operations
+	const BigIntDatetime = BigInt(datetime); // Convert to BigInt for correct bitwise operations
 
 	// Year extraction (bits 46-60)
 	let year = Number((BigIntDatetime >> BigInt(46)) & BigInt(0b111111111111)); // 14 bits
@@ -15,19 +15,19 @@ export function splDatetimeToIso(datetime) {
 	let month = Number((BigIntDatetime >> BigInt(42)) & BigInt(0b1111)); // 4 bits
 
 	// Day extraction (bits 37-42)
-	let day = Number((BigIntDatetime >> BigInt(37)) & BigInt(0b11111)); // 5 bits
+	const day = Number((BigIntDatetime >> BigInt(37)) & BigInt(0b11111)); // 5 bits
 
 	// Hour extraction (bits 32-37)
-	let hour = Number((BigIntDatetime >> BigInt(32)) & BigInt(0b11111)); // 5 bits
+	const hour = Number((BigIntDatetime >> BigInt(32)) & BigInt(0b11111)); // 5 bits
 
 	// Minute extraction (bits 26-32)
-	let minute = Number((BigIntDatetime >> BigInt(26)) & BigInt(0b111111)); // 6 bits
+	const minute = Number((BigIntDatetime >> BigInt(26)) & BigInt(0b111111)); // 6 bits
 
 	// Second extraction (bits 20-26)
-	let second = Number((BigIntDatetime >> BigInt(20)) & BigInt(0b111111)); // 6 bits
+	const second = Number((BigIntDatetime >> BigInt(20)) & BigInt(0b111111)); // 6 bits
 
 	// Microsecond extraction (bits 0-20)
-	let microsecond = Number(BigIntDatetime & BigInt(0b111111111111111111111)); // 20 bits
+	const microsecond = Number(BigIntDatetime & BigInt(0b111111111111111111111)); // 20 bits
 
 	// Adjust for zero-based month
 	month += 1;

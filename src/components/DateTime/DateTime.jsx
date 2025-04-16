@@ -45,23 +45,56 @@ export function DateTime(props) {
 }
 
 function validateDateTime(value) {
-	if (value == null) return 'Invalid Date';
-
-	// Reject non-numeric values
-	if ((typeof value !== 'number') || !Number.isFinite(value)) return new Date(value);
-
-	// Reject negative numbers (timestamps are always positive)
-	if (value < 0) return 'Invalid Date';
-
-	// SP-Lang datetime (BigInt or number >= 10^17)
-	if (typeof value === 'bigint' || value >= 10n ** 17n) {
-		return splDatetimeToIso(BigInt(value));
+	// Return 'Invalid Date' if the input is null or undefined
+	if (value == null) {
+		return 'Invalid Date';
 	}
 
-	// Defining the time format by range
-	if (value < 1e10) return new Date(value * 1000); // Seconds → milliseconds
-	if (value < 1e13) return new Date(value); // Milliseconds
-	if (value < 1e16) return new Date(value / 1000); // Microseconds
+	// Handle BigInt values explicitly
+	if (typeof value === 'bigint') {
+		// SP-Lang datetime format is represented as BigInt
+		return splDatetimeToIso(value);
+	}
 
+	// Handle string values
+	if (typeof value === 'string') {
+		const parsed = new Date(value); // Try to parse the string into a Date object
+		// If the parsed date is invalid, return 'Invalid Date'; otherwise, return the date
+		return isNaN(parsed.getTime()) ? 'Invalid Date' : parsed;
+	}
+
+	// Handle number values
+	if (typeof value === 'number') {
+		// Reject infinite, NaN, or negative numbers
+		if (!Number.isFinite(value) || value < 0) {
+			return 'Invalid Date';
+		}
+
+		// Consider numbers ≥ 1e17 as SP-Lang datetime format
+		if (value >= 1e17) {
+			// Convert number to BigInt and parse as SP-Lang datetime
+			return splDatetimeToIso(BigInt(value));
+		}
+
+		// Handle Unix timestamp in seconds (less than 1e10)
+		if (value < 1e10) {
+			return new Date(value * 1000); // Convert seconds to milliseconds
+		}
+
+		// Handle timestamps in milliseconds (less than 1e13)
+		if (value < 1e13) {
+			return new Date(value); // Already in milliseconds
+		}
+
+		// Handle timestamps in microseconds (less than 1e16)
+		if (value < 1e16) {
+			return new Date(value / 1000); // Convert microseconds to milliseconds
+		}
+
+		// Numbers that don't fall into any known range are considered invalid
+		return 'Invalid Date';
+	}
+
+	// All other types are unsupported and result in 'Invalid Date'
 	return 'Invalid Date';
 }
