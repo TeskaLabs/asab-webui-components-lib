@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { matchCredentialId } from './utils/retrieveCredentialsInfo';
 
-import './Credentials.scss';
+import './User.scss';
 
 export function User ({ ...props }) {
 	// Validation on undefined user_id
@@ -20,12 +20,12 @@ export function User ({ ...props }) {
 	return (
 		<>
 			{user ? (
-				<div title={user.username || user.id}>
+				<div title={user.username || user.id} className='authz-user'>
 					<i className='bi bi-person pe-1' />
 					<span>{user.username || user.id}</span>
 				</div>
 			) : (
-				<div title={props.user_id}>
+				<div title={props.user_id} className='authz-user'>
 					<i className='bi bi-person pe-1'/>
 					<span>{props.user_id}</span>
 				</div>
