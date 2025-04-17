@@ -12,15 +12,15 @@ import './ConsoleCard.scss';
 	Props:
 	logs -  'array or string', required. Representing the logs to be displayed.
 	header - 'component', optional. The header to be displayed at the CardHeader
-
 	cardBodyClass - 'string', optional. Additional CSS classes for the CardBody element.
+	isWrap - 'bool', optional. Initially makes text wrap
 */
 
-export function ConsoleCard ({ logs, header, cardBodyClass = '' }) {
+export function ConsoleCard ({ logs, header, cardBodyClass = '', isWrap = false }) {
 	const logEndRef = useRef(null); // Reference for scroll to the end of the logs
 
 	const [isScrolledToBottom, setIsScrolledToBottom] = useState(true); // Indicates whether the card is scrolled to the bottom
-	const [isContentWrapped, setIsContentWrapped] = useState(false); // Toggles wrapping the console content
+	const [isContentWrapped, setIsContentWrapped] = useState(isWrap); // Toggles wrapping the console content
 
 	// Auto-scroll to the bottom when new logs are added and user is already at the bottom
 	useEffect(() => {
