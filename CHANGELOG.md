@@ -2,7 +2,7 @@
 
 ## 25.2.7
 
-- Update `Credentials` it can be used as a wrapper (#14)
+- Update `Credentials` and create `User` component (#14)
 
 ## 25.2.6
 
