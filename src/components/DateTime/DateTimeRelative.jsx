@@ -2,8 +2,10 @@ import React from 'react';
 
 import timeToString from './timeToString';
 import useDateFNSLocale from './useDateFNSLocale';
+import { InvalidDate } from './InvalidDate.jsx';
 
-export function DateTime(props) {
+// Component that displays the relative time and shows the absolute time on hover
+export function DateTimeRelative(props) {
 	if (props.value == undefined) {
 		return (
 			<span className='datetime'>{' '}</span>
@@ -18,7 +20,7 @@ export function DateTime(props) {
 		);
 	}
 
-	const date = timeToString(props.value, props.dateTimeFormat);
+	const date = timeToString(props.value, props.dateTimeFormat, locale);
 
 	// Check for invalid date from timeToString method
 	if (date === 'Invalid Date') {
@@ -30,20 +32,10 @@ export function DateTime(props) {
 	return (
 		<span
 			className='datetime text-nowrap'
-			title={date.distanceToNow}
+			title={date.date}
 		>
 			<i className='bi bi-clock pe-1' />
-			{date.date}
-		</span>
-	);
-}
-
-// Mehod for rendering invalid date component
-function InvalidDate(props) {
-	return (
-		<span className='datetime text-nowrap'>
-			<i className='bi bi-clock pe-1' />
-			Invalid Date
+			{date.distanceToNow}
 		</span>
 	);
 }
