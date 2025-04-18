@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.7
+
+- Update colors for Alerts (!11)
+
 ## 25.2.6
 
 - Added new component `AsabReactJson`. `ReactJson` in `Renderer.js` is replaced by `AsabReactJson` (!7)
