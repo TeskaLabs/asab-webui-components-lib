@@ -33,6 +33,7 @@ export { UncontrolledSwitchWithAuthz } from './components/Authz/UncontrolledSwit
 export { isAuthorized } from './components/Authz/utils/isAuthorized.js';
 export { ResultCard } from './components/ResultCard/ResultCard';
 export { AdvancedCard } from './components/AdvancedCard/AdvancedCard.jsx';
+export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';
 export { ConsoleModeButton } from './components/Console/components/ConsoleModeButton.jsx';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
