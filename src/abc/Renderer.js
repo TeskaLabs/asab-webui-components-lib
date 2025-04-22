@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
-import { RendererWrapper } from '../components/RendererWrapper.jsx';
+import { RendererWrapper } from '../components/RendererWrapper/RendererWrapper.jsx';
 
 export class Renderer extends Component {
 	// Renderer defaults
