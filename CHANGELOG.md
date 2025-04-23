@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.8
+
+- ConsoleCard - Add a `shouldWrap` option to specify default wrapping (!20)
+
 ## 25.2.7
 
-- ConsoleCard - Add a `isWrap` option to specify default wrapping (!20)
+- Upgrade axios peer dependency to `^1.8.4` (!18)
 
 ## 25.2.6
 
