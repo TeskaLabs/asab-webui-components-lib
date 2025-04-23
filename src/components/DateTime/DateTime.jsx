@@ -58,9 +58,7 @@ function validateDateTime(value) {
 
 	// Handle string values
 	if (typeof value === 'string') {
-		const parsed = new Date(value); // Try to parse the string into a Date object
-		// If the parsed date is invalid, return 'Invalid Date'; otherwise, return the date
-		return isNaN(parsed.getTime()) ? 'Invalid Date' : parsed;
+		return new Date(value);
 	}
 
 	// Handle number values
@@ -90,9 +88,6 @@ function validateDateTime(value) {
 		if (value < 1e16) {
 			return new Date(value / 1000); // Convert microseconds to milliseconds
 		}
-
-		// Numbers that don't fall into any known range are considered invalid
-		return 'Invalid Date';
 	}
 
 	// All other types are unsupported and result in 'Invalid Date'
