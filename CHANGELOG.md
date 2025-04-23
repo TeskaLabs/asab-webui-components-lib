@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.7
+
+- Upgrade axios peer dependency to `^1.8.4` (!18)
+
 ## 25.2.6
 
 - Added new component `AsabReactJson`. `ReactJson` in `Renderer.js` is replaced by `AsabReactJson` (!7)
