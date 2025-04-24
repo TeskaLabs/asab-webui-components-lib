@@ -1,9 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.8
+
+- Add splang format processing for DateTime (#16)
 
 ## 25.2.7
 
-- Add splang format processing for DateTime (#16)
+- Upgrade axios peer dependency to `^1.8.4` (!18)
 
 ## 25.2.6
 
