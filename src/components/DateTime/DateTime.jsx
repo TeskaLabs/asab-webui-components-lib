@@ -68,12 +68,6 @@ function validateDateTime(value) {
 			return 'Invalid Date';
 		}
 
-		// Consider numbers ≥ 1e17 as SP-Lang datetime format
-		if (value >= 1e17) {
-			// Convert number to BigInt and parse as SP-Lang datetime
-			return splDatetimeToIso(BigInt(value));
-		}
-
 		// Handle Unix timestamp in seconds (less than 1e10)
 		if (value < 1e10) {
 			return new Date(value * 1000); // Convert seconds to milliseconds
