@@ -20,15 +20,18 @@
 	"homepage": "https://github.com/TeskaLabs/asab-webui-components-lib",
 	"main": "dist/index.js",
 	"files": [
-		"dist"
+		"dist",
+		"dist/lmio"
 	],
+
 	"publishConfig": {
 	    "registry": "https://registry.npmjs.org/"
 	 },
 	"scripts": {
-		"build": "babel src --extensions '.js,.jsx' --out-dir dist && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
+		"build": "babel src --extensions '.js,.jsx' --out-dir dist && babel lmio/src --extensions '.js,.jsx' --out-file dist/lmio/index.js && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
 		"clean": "rimraf dist"
 	},
+
 	"devDependencies": {
 		"@babel/cli": "^7.22.11",
 		"@babel/core": "^7.22.11",
