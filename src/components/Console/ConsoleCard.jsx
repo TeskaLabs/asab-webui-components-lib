@@ -13,7 +13,7 @@ import './ConsoleCard.scss';
 	logs -  'array or string', required. Representing the logs to be displayed.
 	header - 'component', optional. The header to be displayed at the CardHeader
 	cardBodyClass - 'string', optional. Additional CSS classes for the CardBody element.
-	isWrap - 'bool', optional. Initially makes text wrap
+	shouldWrap - 'bool', optional. Initially makes text wrap
 */
 
 export function ConsoleCard ({ logs, header, cardBodyClass = '', shouldWrap = false }) {
