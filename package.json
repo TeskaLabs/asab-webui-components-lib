@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "25.2.7",
+	"version": "24.1.1",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -19,19 +19,20 @@
 	},
 	"homepage": "https://github.com/TeskaLabs/asab-webui-components-lib",
 	"main": "dist/index.js",
+	"exports": {
+		".": "./dist/index.js",
+		"./lmio": "./dist/lmio/index.js"
+	},
 	"files": [
-		"dist",
-		"dist/lmio"
+		"dist"
 	],
-
 	"publishConfig": {
 	    "registry": "https://registry.npmjs.org/"
 	 },
 	"scripts": {
-		"build": "babel src --extensions '.js,.jsx' --out-dir dist && babel lmio/src --extensions '.js,.jsx' --out-file dist/lmio/index.js && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
+		"build": "babel src --extensions '.js,.jsx' --out-dir dist && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
 		"clean": "rimraf dist"
 	},
-
 	"devDependencies": {
 		"@babel/cli": "^7.22.11",
 		"@babel/core": "^7.22.11",

@@ -95,6 +95,7 @@ export function Credentials({ ...props }) {
 							to={`/auth/credentials/${credentialObj.id}`}
 							disabled={hasSeaCatAdminModule}
 						>
+							Hello ari 5678
 							{credentialObj.username || credentialObj.id}
 						</LinkWithAuthz>
 					</div>
