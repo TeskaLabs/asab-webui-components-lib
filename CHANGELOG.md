@@ -2,7 +2,7 @@
 
 ## 25.2.9
 
-- Add splang format processing for DateTime (#16)
+- Add splang format processing for DateTime (#17)
 
 ## 25.2.8
 
