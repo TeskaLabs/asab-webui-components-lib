@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.2.8
+## 25.2.9
 
 - Add splang format processing for DateTime (#16)
+
+## 25.2.8
+
+- ConsoleCard - Add a `shouldWrap` option to specify default wrapping (!20)
 
 ## 25.2.7
 
