@@ -1,5 +1,13 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.9
+
+- Add splang format processing for DateTime (#17)
+
+## 25.2.8
+
+- ConsoleCard - Add a `shouldWrap` option to specify default wrapping (!20)
+
 ## 25.2.7
 
 - Upgrade axios peer dependency to `^1.8.4` (!18)
