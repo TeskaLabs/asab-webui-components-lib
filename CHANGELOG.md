@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.10
+
+- Create lmio folder with User component. Create retrieveCredentialsInfo file in the utils with retrieving credentials data for Credentials and User component (#21)
+
 ## 25.2.9
 
 - Add splang format processing for DateTime (#17)
