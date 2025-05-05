@@ -3,6 +3,7 @@ import React from 'react';
 import timeToString from './timeToString.js';
 import useDateFNSLocale from './useDateFNSLocale.js';
 import { InvalidDate } from './InvalidDate.jsx';
+import { splDatetimeToIso } from './splDatetimeToIso';
 
 // Component that displays the absolute time and shows the relative time on hover
 export function DateTime(props) {
@@ -14,13 +15,16 @@ export function DateTime(props) {
 
 	// Declaration of locale must be below span returned for `undefined` values to avoid bad react state handling in useDateFNSLocale
 	const locale = useDateFNSLocale();
-	if (new Date(props.value).toString() === 'Invalid Date') {
+
+	const datetime = validateDateTime(props.value);
+
+	if (datetime.toString() === 'Invalid Date') {
 		return (
 			<InvalidDate />
 		);
 	}
 
-	const date = timeToString(props.value, props.dateTimeFormat, locale);
+	const date = timeToString(datetime, props.dateTimeFormat, locale);
 
 	// Check for invalid date from timeToString method
 	if (date === 'Invalid Date') {
@@ -38,4 +42,48 @@ export function DateTime(props) {
 			{date.date}
 		</span>
 	);
+}
+
+function validateDateTime(value) {
+	// Return 'Invalid Date' if the input is null or undefined
+	if (value == null) {
+		return 'Invalid Date';
+	}
+
+	// Handle BigInt values explicitly
+	if (typeof value === 'bigint') {
+		// SP-Lang datetime format is represented as BigInt
+		return splDatetimeToIso(value);
+	}
+
+	// Handle string values
+	if (typeof value === 'string') {
+		return new Date(value);
+	}
+
+	// Handle number values
+	if (typeof value === 'number') {
+		// Reject infinite, NaN, or negative numbers
+		if (!Number.isFinite(value) || value < 0) {
+			return 'Invalid Date';
+		}
+
+		// Handle Unix timestamp in seconds (less than 1e10)
+		if (value < 1e10) {
+			return new Date(value * 1000); // Convert seconds to milliseconds
+		}
+
+		// Handle timestamps in milliseconds (less than 1e13)
+		if (value < 1e13) {
+			return new Date(value); // Already in milliseconds
+		}
+
+		// Handle timestamps in microseconds (less than 1e16)
+		if (value < 1e16) {
+			return new Date(value / 1000); // Convert microseconds to milliseconds
+		}
+	}
+
+	// All other types are unsupported and result in 'Invalid Date'
+	return 'Invalid Date';
 }
