@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { _matchCredentialId } from "../../utils/retrieveCredentialsInfo";
 
 export function User({ app, user_id, apiPath = 'seacat-auth', cleanupTime = 1000 * 60 * 60 * 24 }) {
-
 	// Validation on undefined user_id
 	if (user_id == undefined) {
 		return '';
 	}
 
 	const CredentialsAPI = app.axiosCreate(apiPath);
-
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
@@ -32,4 +30,3 @@ export function User({ app, user_id, apiPath = 'seacat-auth', cleanupTime = 1000
 		</>
 	);
 }
-

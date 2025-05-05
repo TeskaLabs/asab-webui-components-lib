@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { LinkWithAuthz } from './LinkWithAuthz';
-import { _matchCredentialId } from "../../utils/retrieveCredentialsInfo";
+import { _matchCredentialId } from '../../utils/retrieveCredentialsInfo';
 
 import './Credentials.scss';
 
@@ -20,16 +20,14 @@ export function Credentials({  app, credentials_ids, apiPath = 'seacat-auth', cl
 	}
 
 	const CredentialsAPI = app.axiosCreate(apiPath);
-
 	const [credential, setCredential] = useState(null);
 	// Checks if there is a SeaCatAdminFederationModule
 	const hasSeaCatAdminModule = app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
-		// fallback if credentials_ids sent as an array
+		// Fallback if credentials_ids sent as an array
 		const fallbackCredentialId = Array.isArray(credentials_ids) ? credentials_ids[0] : credentials_ids;
 		_matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime, CredentialsAPI)
-		// matchCredentialId(props.app, fallbackCredentialId, setCredential, cleanupTime);
 	}, []);
 
 	function renderPlainCredentials(cred_id) {
