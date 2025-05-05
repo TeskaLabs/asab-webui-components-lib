@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 
-// compares array of IDs with data in localstorage
+// Compares array of IDs with data in localstorage
 export const _matchCredentialId = (app, id, setData, cleanupTime, CredentialsAPI) => {
 	const usernamesInLS = getUsernamesFromLS('Credentials', cleanupTime);
 	if (!usernamesInLS.credentials || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
