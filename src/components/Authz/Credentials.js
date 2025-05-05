@@ -119,6 +119,7 @@ export function Credentials({ ...props }) {
 	);
 }
 
+// todo create ticket, update sessionstorage
 function removeUsernamesFromLS () {
 	if (localStorage) {
 		localStorage.removeItem('Credentials');
