@@ -7,7 +7,7 @@ import { matchCredentialId } from './utils/fetchAndStoreUser';
 	Props:
 	- app (object, required): The app configuration object containing credential module data.
 	- api (object, required): Optional API client used for fetching credential data. Example: api={app.axiosCreate('your-api')}
-	- credentials_ids (string, required): One user ID to display or resolve to user information.
+	- user_id (string, required): One user ID to display or resolve to user information.
 	- cleanupTime (number, optional): Time in milliseconds after which cached credentials can be cleared; defaults to 24 hours (1000 * 60 * 60 * 24).
 */
 
