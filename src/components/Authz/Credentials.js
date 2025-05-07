@@ -5,7 +5,17 @@ import { matchCredentialId } from './utils/fetchAndStoreCredentials';
 
 import './Credentials.scss';
 
-export function Credentials({  app, credentials_ids, apiPath = 'seacat-auth', cleanupTime = 1000 * 60 * 60 * 24 }) {
+/*
+	This component displays a credential reference and links to their details page if available.
+
+	Props:
+	- app (object, required): The app configuration object containing credential module data.
+	- credentials_ids (string or array, required): One or more credential IDs to display or resolve to user information.
+	- api (object, optional): Optional API client used for fetching credential data. Example: api={app.axiosCreate('your-api')}
+	- cleanupTime (number, optional): Time in milliseconds after which cached credentials can be cleared; defaults to 24 hours (1000 * 60 * 60 * 24).
+*/
+
+export function Credentials({ app, credentials_ids, api, cleanupTime = 1000 * 60 * 60 * 24 }) {
 	// Validation on undefined credentials_ids
 	if (credentials_ids == undefined) {
 		return '';
@@ -19,7 +29,6 @@ export function Credentials({  app, credentials_ids, apiPath = 'seacat-auth', cl
 		return renderPlainCredentials(credentials_ids);
 	}
 
-	const CredentialsAPI = app.axiosCreate(apiPath);
 	const [credential, setCredential] = useState(null);
 	// Checks if there is a SeaCatAdminFederationModule
 	const hasSeaCatAdminModule = app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
@@ -27,7 +36,7 @@ export function Credentials({  app, credentials_ids, apiPath = 'seacat-auth', cl
 	useEffect(() => {
 		// Fallback if credentials_ids sent as an array
 		const fallbackCredentialId = Array.isArray(credentials_ids) ? credentials_ids[0] : credentials_ids;
-		matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime, CredentialsAPI);
+		matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime, api);
 	}, []);
 
 	function renderPlainCredentials(cred_id) {
