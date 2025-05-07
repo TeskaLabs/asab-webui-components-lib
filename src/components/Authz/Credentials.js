@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { LinkWithAuthz } from './LinkWithAuthz';
-import { _matchCredentialId } from '../../utils/retrieveCredentialsInfo';
+import { matchCredentialId } from './utils/fetchAndStoreCredentials';
 
 import './Credentials.scss';
 
@@ -27,7 +27,7 @@ export function Credentials({  app, credentials_ids, apiPath = 'seacat-auth', cl
 	useEffect(() => {
 		// Fallback if credentials_ids sent as an array
 		const fallbackCredentialId = Array.isArray(credentials_ids) ? credentials_ids[0] : credentials_ids;
-		_matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime, CredentialsAPI)
+		matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime, CredentialsAPI);
 	}, []);
 
 	function renderPlainCredentials(cred_id) {

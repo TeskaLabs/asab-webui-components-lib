@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { _matchCredentialId } from "../../utils/retrieveCredentialsInfo";
+import { matchCredentialId } from './utils/fetchAndStoreUser';
 
 export function User({ app, user_id, apiPath = 'seacat-auth', cleanupTime = 1000 * 60 * 60 * 24 }) {
 	// Validation on undefined user_id
@@ -11,7 +11,7 @@ export function User({ app, user_id, apiPath = 'seacat-auth', cleanupTime = 1000
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		_matchCredentialId(app, user_id, setUser, cleanupTime, CredentialsAPI);
+		matchCredentialId(app, user_id, setUser, cleanupTime, CredentialsAPI);
 	}, []);
 
 	return (
