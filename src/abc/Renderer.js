@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
+import { RendererWrapper } from '../components/RendererWrapper/RendererWrapper.jsx';
 
 export class Renderer extends Component {
 	// Renderer defaults
@@ -8,7 +9,7 @@ export class Renderer extends Component {
 		this.App = app;
 	}
 
-	render(key, value, schemaField) {
+	render(key, value, schemaField, params = undefined) {
 		// Render ReactJson component if value is a object
 		if (typeof value === 'object') {
 			return (
@@ -24,8 +25,13 @@ export class Renderer extends Component {
 				/>
 			)
 		}
+
 		// Render span with value inside as a default
-		return (<span>{value}</span>);
+		return (<RendererWrapper
+			data-value={value} // Passing value (to eventually work with in the external wrapper)
+			data-key={key} // Passing key (to eventually work with in the external wrapper)
+			component={params?.WrapperComponent || "span"}
+		>{value}</RendererWrapper>);
 	}
 
 	plain(key, value, schemaField)	{
