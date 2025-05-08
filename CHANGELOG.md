@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.2.10
+## 25.2.11
 
 - Create lmio folder with User component. Create retrieveCredentialsInfo file in the utils with retrieving credentials data for Credentials and User component (#21)
+
+## 25.2.10
+
+- Display biging values in the Renderer. Convert bigint to string (#22)
 
 ## 25.2.9
 
