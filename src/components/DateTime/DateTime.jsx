@@ -58,9 +58,7 @@ function validateDateTime(value) {
 
 	// Handle string values
 	if (typeof value === 'string') {
-		const parsed = new Date(value); // Try to parse the string into a Date object
-		// If the parsed date is invalid, return 'Invalid Date'; otherwise, return the date
-		return isNaN(parsed.getTime()) ? 'Invalid Date' : parsed;
+		return new Date(value);
 	}
 
 	// Handle number values
@@ -68,12 +66,6 @@ function validateDateTime(value) {
 		// Reject infinite, NaN, or negative numbers
 		if (!Number.isFinite(value) || value < 0) {
 			return 'Invalid Date';
-		}
-
-		// Consider numbers ≥ 1e17 as SP-Lang datetime format
-		if (value >= 1e17) {
-			// Convert number to BigInt and parse as SP-Lang datetime
-			return splDatetimeToIso(BigInt(value));
 		}
 
 		// Handle Unix timestamp in seconds (less than 1e10)
@@ -90,9 +82,6 @@ function validateDateTime(value) {
 		if (value < 1e16) {
 			return new Date(value / 1000); // Convert microseconds to milliseconds
 		}
-
-		// Numbers that don't fall into any known range are considered invalid
-		return 'Invalid Date';
 	}
 
 	// All other types are unsupported and result in 'Invalid Date'
