@@ -25,7 +25,7 @@ export class Renderer extends Component {
 			)
 		}
 		// Render span with value inside as a default
-		return (<span>{value}</span>);
+		return (<span>{(typeof value === "bigint") ? value.toString() : value}</span>);
 	}
 
 	plain(key, value, schemaField)	{
