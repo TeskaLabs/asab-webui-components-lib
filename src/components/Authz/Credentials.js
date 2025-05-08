@@ -6,7 +6,7 @@ import { LinkWithAuthz } from './LinkWithAuthz';
 
 import './Credentials.scss';
 
-export function Credentials({ ...props }) {
+export function Credentials({ isPlainCredentials = false, ...props }) {
 
 	// Validation on undefined credentials_ids
 	if (props.credentials_ids == undefined) {
@@ -74,11 +74,26 @@ export function Credentials({ ...props }) {
 		setCredentials(usernamesToRender);
 	}
 
+	if ((isPlainCredentials === true) && credentials && (credentials.length !== 0)) {
+		return renderPlainUsername();
+	}
+
 	function renderPlainCredentials (credentials_ids) {
 		return credentials_ids.map((credentials_id, i) => (
 			<div className='authz-credentials-link' key={i}>
 				<i className='bi bi-person pe-1' />
 				<span title={credentials_id}>{credentials_id}</span>
+			</div>
+		))
+	}
+
+	function renderPlainUsername () {
+		return credentials.map((credentialObj, i) => (
+			<div key={i} title={credentialObj.username || credentialObj.id}>
+				<i className='bi bi-person pe-1' />
+				<span>
+					{credentialObj.username || credentialObj.id}
+				</span>
 			</div>
 		))
 	}
@@ -99,7 +114,7 @@ export function Credentials({ ...props }) {
 						</LinkWithAuthz>
 					</div>
 				))
-			:
+				:
 				credentials_ids.map((credentials_id, i) => (
 					<div key={i} className='authz-credentials-link' title={credentials_id}>
 						<i className='bi bi-person pe-1' />
