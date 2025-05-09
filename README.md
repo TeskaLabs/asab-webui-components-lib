@@ -39,8 +39,7 @@ Possible imports:
 - ConsoleCard
 - AttentionBadge
 - hexToString
-- isPrivateIP
-- isValidIP
+- classifyIPAddress
 - itemExtensionHandler
 - removeFileExtension
 - deepMerge
