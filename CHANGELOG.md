@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.10
+
+- Display biging values in the Renderer. Convert bigint to string (#22)
+
 ## 25.2.9
 
 - Add splang format processing for DateTime (#17)
