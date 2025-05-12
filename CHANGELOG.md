@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.11
+
+- Replace isValidIP and isPrivateIP utils by classifyIPAddress feature which classifies the IP addresses (#23)
+
 ## 25.2.10
 
 - Display biging values in the Renderer. Convert bigint to string (#22)
