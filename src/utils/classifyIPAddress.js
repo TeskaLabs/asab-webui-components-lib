@@ -196,7 +196,7 @@ function classifyIPv4(ipAddress) {
 		}
 	}
 
-	return "IPv4 public";
+	return "IPv4 public"; // If no range matches, it's a public IP
 }
 
 function classifyIPv6(ipAddress) {
@@ -212,7 +212,7 @@ function classifyIPv6(ipAddress) {
 		}
 	}
 
-	return "IPv6 public";
+	return "IPv6 public"; // If no range matches, it's a public IP
 }
 
 
