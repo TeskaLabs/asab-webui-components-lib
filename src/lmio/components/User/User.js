@@ -6,12 +6,11 @@ import { matchCredentialId } from './utils/fetchAndStoreUser';
 
 	Props:
 	- app (object, required): The app configuration object containing credential module data.
-	- api (object, required): API client used for fetching user data. Example: api={app.axiosCreate('your-api')}
 	- user_id (string, required): One user ID to display or resolve to user information.
 	- cleanupTime (number, optional): Time in milliseconds after which cached credentials can be cleared; defaults to 24 hours (1000 * 60 * 60 * 24).
 */
 
-export function User({ app, user_id, api, cleanupTime = 1000 * 60 * 60 * 24 }) {
+export function User({ app, user_id, cleanupTime = 1000 * 60 * 60 * 24 }) {
 	// Validation on undefined user_id
 	if (user_id == undefined) {
 		return '';
@@ -20,7 +19,7 @@ export function User({ app, user_id, api, cleanupTime = 1000 * 60 * 60 * 24 }) {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		matchCredentialId(app, user_id, setUser, cleanupTime, api);
+		matchCredentialId(app, user_id, setUser, cleanupTime);
 	}, []);
 
 	return (

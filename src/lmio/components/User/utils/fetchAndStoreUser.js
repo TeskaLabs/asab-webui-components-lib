@@ -1,24 +1,24 @@
 import i18next from 'i18next';
 
 // Compares array of IDs with data in localstorage
-export const matchCredentialId = (app, id, setData, cleanupTime, api) => {
+export const matchCredentialId = (app, id, setData, cleanupTime) => {
 	const usernamesInLS = _getUsernamesFromLS('Credentials', cleanupTime);
 	if (!usernamesInLS.credentials || usernamesInLS.credentials.length === 0 || usernamesInLS.expiration <= Date.now()) {
 		_removeUsernamesFromLS();
-		_retrieveUserName(app, id, setData, cleanupTime, api);
+		_retrieveUserName(app, id, setData, cleanupTime);
 		return;
 	}
 	const found = usernamesInLS.credentials.find((item) => item.id === id);
 	if (!found) {
-		_retrieveUserName(app, id, setData, cleanupTime, api);
+		_retrieveUserName(app, id, setData, cleanupTime);
 	} else {
 		setData(found);
 	}
 };
 
 // asks the server for usernames, saves them to local storage and sets usernames to render
-const _retrieveUserName = async (app, cred_id, setData, cleanupTime, api) => {
-	const CredentialsAPI = app.axiosCreate(api);
+const _retrieveUserName = async (app, cred_id, setData, cleanupTime) => {
+	const SeacatAuthAPI = app.axiosCreate('seacat-auth');
 	try {
 		let response = await CredentialsAPI.put(`idents`, [cred_id]);
 		if (response.data.result !== 'OK') {
