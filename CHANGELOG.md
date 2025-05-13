@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.12
+
+- Update babel.config to allow handling recent features like BigInt on compilation (#24)
+
 ## 25.2.11
 
 - Replace isValidIP and isPrivateIP utils by classifyIPAddress feature which classifies the IP addresses (#23)
