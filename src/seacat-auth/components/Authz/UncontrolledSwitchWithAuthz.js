@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { default as ControlledSwitch } from '../ControlledSwitch';
+import { default as UncontrolledSwitch } from '../../../components/UncontrolledSwitch';
 import { authz } from './utils/authz';
 
 /*
-	ControlledSwitchWithAuthz component emulates the functionality of asab-webui <ControlledSwitch/> component
+	UncontrolledSwitchWithAuthz component emulates the functionality of asab-webui <UncontrolledSwitch/> component
 	and extend it by disable feature based on resources.
 
 	* resource
@@ -16,7 +16,7 @@ import { authz } from './utils/authz';
 		* the option to hide the button completely instead of disabling it, default is false
 
 	* Language localisations for generic `unauthorized message` can be added to the translation.json files of
-	  public/locales/en & public/locales/cs of the product where component ControlledSwitchWithAuthz is used. The default
+	  public/locales/en & public/locales/cs of the product where component UncontrolledSwitchWithAuthz is used. The default
 	  message is `You do not have rights` and it can be re-set in locales as e.g.
 
 	  {
@@ -27,7 +27,7 @@ import { authz } from './utils/authz';
 
 	Example:
 
-	import { ControlledSwitchWithAuthz } from 'asab_webui_components';
+	import { UncontrolledSwitchWithAuthz } from 'asab_webui_components';
 	import { useSelector } from 'react-redux';
 
 	...
@@ -38,11 +38,12 @@ import { authz } from './utils/authz';
 
 	return(
 		...
-			<ControlledSwitchWithAuthz
+			<UncontrolledSwitchWithAuthz
 				title={t(`MyModule|${isDisabled ? "Enable" : "Disable"} file`)}
 				size="sm"
-				isOn={!isFileDisabled}
-				toggle={switchFileState}
+				register={register}
+				setValue={setValue}
+				name='setTotp'
 				resource="myapp:mylist:write"
 				resources={resources}
 				hideOnUnauthorizedAccess={true}
@@ -52,7 +53,7 @@ import { authz } from './utils/authz';
 
 */
 
-export function ControlledSwitchWithAuthz(props) {
+export function UncontrolledSwitchWithAuthz(props) {
 	let childProps = {...props}; // Create a new child component to have option to remove props
 	let authzObj = authz(childProps);
 
@@ -62,7 +63,7 @@ export function ControlledSwitchWithAuthz(props) {
 
 	return (
 		hide && disabled ? null :
-		<ControlledSwitch
+		<UncontrolledSwitch
 			{...childProps}
 			title={title}
 			disabled={disabled}

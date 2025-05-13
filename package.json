@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "25.2.11",
+	"version": "25.2.11111",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -21,7 +21,8 @@
 	"main": "dist/index.js",
 	"exports": {
 		".": "./dist/index.js",
-		"./lmio": "./dist/lmio/index.js"
+		"./lmio": "./dist/lmio/index.js",
+		"./seacat-auth": "./dist/seacat-auth/index.js"
 	},
 	"files": [
 		"dist"

@@ -11,13 +11,15 @@ import './Credentials.scss';
 	Props:
 	- app (object, required): The app configuration object containing credential module data.
 	- api (object, required): API client used for fetching credential data. Example: api={app.axiosCreate('your-api')}
-	- credentials_ids (string or array, required): One or more credential IDs to display or resolve to user information.
+	- credentials_id (string or array, required): One or more credential IDs to display or resolve to user information.
 	- cleanupTime (number, optional): Time in milliseconds after which cached credentials can be cleared; defaults to 24 hours (1000 * 60 * 60 * 24).
 */
 
-export function Credentials({ app, credentials_ids, api, cleanupTime = 1000 * 60 * 60 * 24 }) {
-	// Validation on undefined credentials_ids
-	if (credentials_ids == undefined) {
+export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 * 24 }) {
+
+	console.log('JHeelllo cred')
+	// Validation on undefined credentials_id
+	if (credentials_id == undefined) {
 		return '';
 	}
 
@@ -26,7 +28,7 @@ export function Credentials({ app, credentials_ids, api, cleanupTime = 1000 * 60
 
 	// Validation on props.app
 	if (app == undefined) {
-		return renderPlainCredentials(credentials_ids);
+		return renderPlainCredentials(credentials_id);
 	}
 
 	const [credential, setCredential] = useState(null);
@@ -34,9 +36,9 @@ export function Credentials({ app, credentials_ids, api, cleanupTime = 1000 * 60
 	const hasSeaCatAdminModule = app?.Modules.some((obj) => obj.Name === 'SeaCatAdminFederationModule') === false;
 
 	useEffect(() => {
-		// Fallback if credentials_ids sent as an array
-		const fallbackCredentialId = Array.isArray(credentials_ids) ? credentials_ids[0] : credentials_ids;
-		matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime, api);
+		// Fallback if credentials_id sent as an array
+		const fallbackCredentialId = Array.isArray(credentials_id) ? credentials_id[0] : credentials_id;
+		matchCredentialId(app, fallbackCredentialId, setCredential, cleanupTime);
 	}, []);
 
 	function renderPlainCredentials(cred_id) {
@@ -63,15 +65,15 @@ export function Credentials({ app, credentials_ids, api, cleanupTime = 1000 * 60
 					</LinkWithAuthz>
 				</div>
 			) : (
-				<div className='authz-credentials-link' title={credentials_ids}>
+				<div className='authz-credentials-link' title={credentials_id}>
 					<i className='bi bi-person pe-1'/>
 					<LinkWithAuthz
 						resource={resource}
 						resources={resources}
-						to={`/auth/credentials/${credentials_ids}`}
+						to={`/auth/credentials/${credentials_id}`}
 						disabled={hasSeaCatAdminModule}
 					>
-						{credentials_ids}
+						{credentials_id}
 					</LinkWithAuthz>
 				</div>
 			)}
