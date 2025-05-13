@@ -4,9 +4,9 @@ module.exports = {
 			"@babel/preset-env",
 			{
 				targets: {
-					esmodules: true, // Use node 14 or higher
+					esmodules: true, // Targeting modern environments that support ESModules
 				},
-				shippedProposals: true, // Allows modern features like BigInt
+				shippedProposals: true, // Allows modern (proposed/not widely implemented) features like BigInt regardless the environment
 			}
 		],
 		"@babel/preset-react"
