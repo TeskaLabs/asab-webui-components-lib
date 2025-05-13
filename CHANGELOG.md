@@ -1,8 +1,8 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.2.11
+## 25.2.12
 
-- Create lmio folder with User component. Create retrieveCredentialsInfo file in the utils with retrieving credentials data for Credentials and User component (#21)
+- Create lmio and seacat-auth folder. Implement User. Replace Authz folder to seacat-auth. (#21)
 
 ## 25.2.10
 
