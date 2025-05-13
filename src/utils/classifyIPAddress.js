@@ -183,36 +183,33 @@ const ipv6Ranges = [
 	}
 ]
 
+
 function classifyIPv4(ipAddress) {
-	const ip = BigInt(ipAddress); // Ensure input is BigInt
-
 	for (const range of ipv4Ranges) {
-		const mask = (1n << BigInt(32 - range.mask)) - 1n;
+		const mask = BigInt(2) ** BigInt(32 - range.mask) - BigInt(1);
 		const network = range.block & ~mask;
-		const ipNetwork = ip & ~mask;
-
+		const ipNetwork = ipAddress & ~mask;
+		
 		if (network === ipNetwork) {
 			return range.class;
 		}
 	}
 
-	return "IPv4 public"; // If no range matches, it's a public IP
+	return "IPv4 public";  // If no range matches, it's a public IP
 }
 
 function classifyIPv6(ipAddress) {
-	const ip = BigInt(ipAddress); // Ensure input is BigInt
-
 	for (const range of ipv6Ranges) {
-		const mask = (1n << BigInt(128 - range.mask)) - 1n;
+		const mask = BigInt(2) ** BigInt(128 - range.mask) - BigInt(1);
 		const network = range.block & ~mask;
-		const ipNetwork = ip & ~mask;
-
+		const ipNetwork = ipAddress & ~mask;
+		
 		if (network === ipNetwork) {
 			return range.class;
 		}
 	}
 
-	return "IPv6 public"; // If no range matches, it's a public IP
+	return "IPv6 public";  // If no range matches, it's a public IP
 }
 
 
