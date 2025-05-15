@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { default as UncontrolledSwitch } from '../../components/UncontrolledSwitch';
+import { UncontrolledSwitch } from './UncontrolledSwitch';
 import { authz } from '../utils/authz';
 
 /*
