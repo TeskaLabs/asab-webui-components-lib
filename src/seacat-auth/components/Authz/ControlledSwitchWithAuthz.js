@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { default as ControlledSwitch } from '../../../components/ControlledSwitch';
-import { authz } from './utils/authz';
+import { authz } from '../../utils/authz';
 
 /*
 	ControlledSwitchWithAuthz component emulates the functionality of asab-webui <ControlledSwitch/> component

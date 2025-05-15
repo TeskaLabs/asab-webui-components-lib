@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import { authz } from './utils/authz';
+import { authz } from '../../utils/authz';
 
 /*
 	ButtonWithAutz component emulates the functionality of reactstrap <Button/> component

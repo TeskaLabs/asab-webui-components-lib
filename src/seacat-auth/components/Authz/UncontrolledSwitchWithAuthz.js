@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { default as UncontrolledSwitch } from '../../../components/UncontrolledSwitch';
-import { authz } from './utils/authz';
+import { authz } from '../../utils/authz';
 
 /*
 	UncontrolledSwitchWithAuthz component emulates the functionality of asab-webui <UncontrolledSwitch/> component

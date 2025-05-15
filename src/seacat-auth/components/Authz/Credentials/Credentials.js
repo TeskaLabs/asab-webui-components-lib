@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { LinkWithAuthz } from './LinkWithAuthz';
-import { matchCredentialId } from './utils/fetchAndStoreCredentials';
+import { LinkWithAuthz } from '../LinkWithAuthz';
+import { matchCredentialId } from '../../../utils/fetchAndStoreCredentials';
 
 import './Credentials.scss';
 
@@ -17,7 +17,6 @@ import './Credentials.scss';
 
 export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 * 24 }) {
 
-	console.log('JHeelllo cred')
 	// Validation on undefined credentials_id
 	if (credentials_id == undefined) {
 		return '';
