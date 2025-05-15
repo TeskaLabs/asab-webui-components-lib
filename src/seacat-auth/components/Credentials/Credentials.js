@@ -10,7 +10,6 @@ import './Credentials.scss';
 
 	Props:
 	- app (object, required): The app configuration object containing credential module data.
-	- api (object, required): API client used for fetching credential data. Example: api={app.axiosCreate('your-api')}
 	- credentials_id (string or array, required): One or more credential IDs to display or resolve to user information.
 	- cleanupTime (number, optional): Time in milliseconds after which cached credentials can be cleared; defaults to 24 hours (1000 * 60 * 60 * 24).
 */
