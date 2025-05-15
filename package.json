@@ -23,8 +23,8 @@
 		"dist"
 	],
 	"publishConfig": {
-	    "registry": "https://registry.npmjs.org/"
-	 },
+		"registry": "https://registry.npmjs.org/"
+	},
 	"scripts": {
 		"build": "babel src --extensions '.js,.jsx' --out-dir dist && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
 		"clean": "rimraf dist"
@@ -41,6 +41,8 @@
 	},
 	"peerDependencies": {
 		"@babel/runtime": "^7.22.11",
+		"@xterm/xterm": "^5.5.0",
+		"@xterm/addon-fit": "^0.10.0",
 		"axios": "^1.8.4",
 		"bootstrap": "^5.3.1",
 		"bootstrap-icons": "^1.10.5",
