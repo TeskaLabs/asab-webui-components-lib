@@ -81,7 +81,7 @@ export function ASABTerminal({ loader, loaderParams, header, cardBodyClass = '' 
 				<CardHeader className="card-header-flex">{header}</CardHeader>
 			)}
 			<CardBody className={`${cardBodyClass} overflow-hidden px-1 py-0`}>
-				<div ref={terminalRef} className='h-100 w-100 px-1'></div>
+				<div ref={terminalRef} className='h-100 w-100'></div>
 			</CardBody>
 		</Card>
 	);
