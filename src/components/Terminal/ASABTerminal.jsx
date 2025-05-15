@@ -13,6 +13,7 @@ import '@xterm/xterm/css/xterm.css'; // Import the xterm.css
 	- write README with usage (for websocket and for regular get API calls)
 	- add styling based on theme
 	- play with other setting
+	- extend by option to write (and send) commands within the terminal (in future iterations)
 
 */
 
@@ -49,6 +50,14 @@ export function ASABTerminal({ loader, loaderParams, header, cardBodyClass = '' 
 		// Observe the terminal container
 		if (terminalRef.current) {
 			resizeObserver.observe(terminalRef.current);
+		}
+
+		// Row padding of the terminal
+		if (terminalRef.current) {
+			const terminalRows = terminalRef.current.querySelector('.xterm-rows');
+			if (terminalRows) {
+				terminalRows.style.paddingLeft = '10px';
+			}
 		}
 
 		// Cleanup on component unmount
