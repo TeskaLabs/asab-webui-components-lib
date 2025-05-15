@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { LinkWithAuthz } from '../LinkWithAuthz';
-import { matchCredentialId } from '../../../utils/fetchAndStoreCredentials';
+import { matchCredentialId } from '../../utils/fetchAndStoreCredentials';
 
 import './Credentials.scss';
 

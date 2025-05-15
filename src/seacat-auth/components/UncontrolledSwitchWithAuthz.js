@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
-import { authz } from '../../utils/authz';
+import { default as UncontrolledSwitch } from '../../components/UncontrolledSwitch';
+import { authz } from '../utils/authz';
 
 /*
-	ButtonWithAutz component emulates the functionality of reactstrap <Button/> component
+	UncontrolledSwitchWithAuthz component emulates the functionality of asab-webui <UncontrolledSwitch/> component
 	and extend it by disable feature based on resources.
 
 	* resource
@@ -16,7 +16,7 @@ import { authz } from '../../utils/authz';
 		* the option to hide the button completely instead of disabling it, default is false
 
 	* Language localisations for generic `unauthorized message` can be added to the translation.json files of
-	  public/locales/en & public/locales/cs of the product where component ButtonWithAuthz is used. The default
+	  public/locales/en & public/locales/cs of the product where component UncontrolledSwitchWithAuthz is used. The default
 	  message is `You do not have rights` and it can be re-set in locales as e.g.
 
 	  {
@@ -27,7 +27,7 @@ import { authz } from '../../utils/authz';
 
 	Example:
 
-	import { ButtonWithAuthz } from 'asab_webui_components';
+	import { UncontrolledSwitchWithAuthz } from 'asab_webui_components';
 	import { useSelector } from 'react-redux';
 
 	...
@@ -38,24 +38,22 @@ import { authz } from '../../utils/authz';
 
 	return(
 		...
-			<ButtonWithAuthz
-				title={t('MyApp|Delete')}
-				color="danger"
+			<UncontrolledSwitchWithAuthz
+				title={t(`MyModule|${isDisabled ? "Enable" : "Disable"} file`)}
 				size="sm"
-				onClick={() => { deleteApp() }}
+				register={register}
+				setValue={setValue}
+				name='setTotp'
 				resource="myapp:mylist:write"
 				resources={resources}
 				hideOnUnauthorizedAccess={true}
-				>
-				<span className="bi bi-code-slash pe-2" />
-				{t('MyApp|Delete')}
-			</ButtonWithAuthz>
+			/>
 		...
 	)
 
 */
 
-export function ButtonWithAuthz(props) {
+export function UncontrolledSwitchWithAuthz(props) {
 	let childProps = {...props}; // Create a new child component to have option to remove props
 	let authzObj = authz(childProps);
 
@@ -65,12 +63,10 @@ export function ButtonWithAuthz(props) {
 
 	return (
 		hide && disabled ? null :
-		<Button
+		<UncontrolledSwitch
 			{...childProps}
 			title={title}
 			disabled={disabled}
-		>
-			{childProps.children}
-		</Button>
+		/>
 	)
 }

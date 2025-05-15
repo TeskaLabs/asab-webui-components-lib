@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { authz } from '../../utils/authz';
+import { authz } from '../utils/authz';
 
 /*
 	LinkWithAuthz component creates a link that is enabled or disabled based on the user's authorized resources.

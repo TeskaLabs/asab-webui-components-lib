@@ -1,6 +1,6 @@
-export { Credentials } from './components/Authz/Credentials/Credentials';
-export { ButtonWithAuthz } from './components/Authz/ButtonWithAuthz';
-export { LinkWithAuthz } from './components/Authz/LinkWithAuthz';
-export { ControlledSwitchWithAuthz } from './components/Authz/ControlledSwitchWithAuthz';
-export { UncontrolledSwitchWithAuthz } from './components/Authz/UncontrolledSwitchWithAuthz';
+export { Credentials } from './components/Credentials/Credentials';
+export { ButtonWithAuthz } from './components/ButtonWithAuthz';
+export { LinkWithAuthz } from './components/LinkWithAuthz';
+export { ControlledSwitchWithAuthz } from './components/ControlledSwitchWithAuthz';
+export { UncontrolledSwitchWithAuthz } from './components/UncontrolledSwitchWithAuthz';
 export { isAuthorized } from './utils/isAuthorized';
