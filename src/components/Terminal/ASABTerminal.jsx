@@ -29,7 +29,8 @@ export function ASABTerminal({ loader, loaderParams, header, cardBodyClass = '' 
 		terminal.current = new Terminal({
 			fontFamily: 'var(--bs-font-monospace)', // Font type
 			fontSize: 14, // Font size
-			convertEol: true,
+			lineHeight: 1.2, // Optimal line height for 14 fontsize and monospace font family
+			convertEol: true, // Enable automatic conversion of \r to \n (converting end of line)
 			scrollback: 2000, // Max. number of lines displayed TODO: reconsider if use at all
 		});
 
