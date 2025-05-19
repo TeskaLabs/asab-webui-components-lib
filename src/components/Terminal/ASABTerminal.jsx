@@ -71,14 +71,14 @@ export function ASABTerminal({ loader, loaderParams, header, cardBodyClass = '' 
 	// Fetch logs when the component mounts
 	useEffect(() => {
 		fetchLogs();
-	}, [loader]);
+	}, [loaderParams]);
 
 	// Fetch logs or data using the loader from the parent component
 	const fetchLogs = async () => {
 		if (loader && terminal.current) {
 			try {
 				// Call the loader function passed from the parent and insert a terminal as a prop
-				await loader({ terminal: terminal.current });
+				await loader({ terminal: terminal.current, loaderParams });
 			} catch (e) {
 				console.error('Unable to load Terminal logs:', e);
 			}
