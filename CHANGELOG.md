@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.13
+
+- Increased visibility of hr separators (#26)
+
 ## 25.2.12
 
 - Update babel.config to allow handling recent features like BigInt on compilation (#24)
