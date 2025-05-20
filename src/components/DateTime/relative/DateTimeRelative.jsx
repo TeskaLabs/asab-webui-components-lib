@@ -33,7 +33,6 @@ export function DateTimeRelative(props) {
 		);
 	}
 
-
 	return (
 		<span
 			className='datetime text-nowrap'
