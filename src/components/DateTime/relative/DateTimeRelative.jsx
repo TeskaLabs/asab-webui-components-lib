@@ -27,10 +27,10 @@ export function DateTimeRelative(props) {
 	return (
 		<span
 			className='datetime text-nowrap'
-			title={date.date}
+			title={date.absoluteTime}
 		>
 			<i className='bi bi-clock pe-1' />
-			{date.distanceToNow}
+			{date.date}
 		</span>
 	);
 }
