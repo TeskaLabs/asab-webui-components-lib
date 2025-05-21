@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.15
+
+- Implemented more defensiveness in DateTime components to avoid application crashes when invalid datetime value is being injected. (#28)
+
 ## 25.2.14
 
 - Refactor DateTime and RelativeDateTime components with unification of methods which can be reused. Update structure of DateTime section. Create timeToStringRelative method. Add option to RelativeDateTime to display/not display suffix. (#27)

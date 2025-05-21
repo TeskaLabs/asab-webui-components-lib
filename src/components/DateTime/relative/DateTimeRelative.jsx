@@ -18,9 +18,9 @@ export function DateTimeRelative(props) {
 	const date = timeToStringRelative(props.value, props.dateTimeFormat, props.addSuffix, locale);
 
 	// Check for invalid date from timeToString method
-	if (date === 'Invalid Date') {
+	if (date.date === 'Invalid Date') {
 		return (
-			<InvalidDate />
+			<InvalidDate value={props.value} />
 		);
 	}
 
