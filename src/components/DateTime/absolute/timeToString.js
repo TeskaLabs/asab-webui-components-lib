@@ -4,7 +4,7 @@ import { timeToStringCommon } from '../utils/timeToStringCommon.jsx';
 export const timeToString = (value, dateTimeFormat = "medium", locale = undefined) => {
 	const { date, distanceToNow } = timeToStringCommon(value, dateTimeFormat, locale, true); // addSuffix = true
 	if (date === 'Invalid Date') {
-		return 'Invalid Date';
+		return { date };
 	}
 	return { date, distanceToNow };
 }
