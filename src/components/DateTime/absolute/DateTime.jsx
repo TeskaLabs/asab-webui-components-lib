@@ -20,7 +20,7 @@ export function DateTime(props) {
 	// Check for invalid date from timeToString method
 	if (date === 'Invalid Date') {
 		return (
-			<InvalidDate />
+			<InvalidDate value={props.value} />
 		);
 	}
 
