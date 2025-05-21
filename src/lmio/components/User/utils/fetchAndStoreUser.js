@@ -20,7 +20,7 @@ export const matchCredentialId = (app, id, setData, cleanupTime) => {
 const _retrieveUserName = async (app, cred_id, setData, cleanupTime) => {
 	const SeacatAuthAPI = app.axiosCreate('seacat-auth');
 	try {
-		let response = await CredentialsAPI.put(`idents`, [cred_id]);
+		let response = await SeacatAuthAPI.put(`idents`, [cred_id]);
 		if (response.data.result !== 'OK') {
 			throw new Error(i18next.t('General|There was an issue processing a request'));
 		}
