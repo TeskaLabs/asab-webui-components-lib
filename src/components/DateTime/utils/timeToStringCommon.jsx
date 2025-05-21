@@ -59,7 +59,7 @@ const formatDate = (datetime, dateTimeFormat, locale, addSuffix) => {
 			default: return {date: format(datetime, dateTimeFormat), distanceToNow: formatDistanceToNow(datetime, { addSuffix, locale: locale })};
 		}
 	} catch(e) {
-		console.error(`Ivalid date value: ${datetime}. `, e);
+		console.error(`Invalid date value: ${datetime}. `, e);
 		return { date: 'Invalid Date' };
 	}
 }
