@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { default as ControlledSwitch } from './ControlledSwitch';
+import { ControlledSwitch } from './ControlledSwitch/ControlledSwitch';
 
 // documentation available in asab-webui/doc/switch-components.md
 
-const UncontrolledSwitch = ({
+export const UncontrolledSwitch = ({
 	defaultValue = false, disabled = false,
 	title, register, setValue, name = 'uncontrolled switch', id,
 	size = 'md'
@@ -34,5 +34,3 @@ const UncontrolledSwitch = ({
 		</>
 	)
 }
-
-export default UncontrolledSwitch;

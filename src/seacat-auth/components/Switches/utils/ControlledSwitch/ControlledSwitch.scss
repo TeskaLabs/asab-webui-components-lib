@@ -1,9 +1,8 @@
 // Switch styles
 
-.switch-container, .switch-container-disabled {
+.seacat-auth.switch-container, .seacat-auth.switch-container-disabled {
 	width: 40px;
 	height: 20px;
-	// TODO: border: 1px solid $secondary;
 	display: inline-block;
 	border-radius: 50px;
 	margin-bottom: -2.5px;
@@ -33,7 +32,6 @@
 	.on, .off {
 		position: relative;
 		width: 100%;
-		// display: inline-block;
 
 		.circle {
 			width: 50%;
@@ -46,37 +44,13 @@
 	}
 	.off {
 		.circle {
-			margin-left: 0px;
+			margin-left: 0;
 		}
 	}
 }
 
-.switch-container {
+.seacat-auth.switch-container {
 	.circle {
 		background-color: white;
 	}
-
-	.on {
-		// TODO: background-color: $primary;
-		.circle {
-			// TODO: border: 2px solid $primary;
-		}
-	}
-	.off {
-		// TODO: background-color: $secondary;
-		.circle {
-			// TODO: border: 2px solid $secondary;
-		}
-	}
 }
-
-.switch-container-disabled {
-	.off, .on {
-		// TODO: background-color: $secondary;
-	}
-	.circle {
-		// TODO: background-color: #73818f;
-		// TODO: border: 2px solid $secondary;
-	}
-}
-

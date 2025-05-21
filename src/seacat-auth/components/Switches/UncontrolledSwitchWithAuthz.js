@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { UncontrolledSwitch } from './UncontrolledSwitch';
-import { authz } from '../utils/authz';
+import React from 'react';
+import { authz } from '../../utils/authz';
+import { UncontrolledSwitch } from './utils/UncontrolledSwitch';
 
 /*
 	UncontrolledSwitchWithAuthz component emulates the functionality of asab-webui <UncontrolledSwitch/> component
