@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.14
+
+- Refactor DateTime and RelativeDateTime components with unification of methods which can be reused. Update structure of DateTime section. Create timeToStringRelative method. Add option to RelativeDateTime to display/not display suffix. (#27)
+
 ## 25.2.13
 
 - Increased visibility of hr separators (#26)
