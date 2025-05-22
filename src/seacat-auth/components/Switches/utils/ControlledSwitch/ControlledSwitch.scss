@@ -1,0 +1,56 @@
+// Switch styles
+
+.seacat-auth.switch-container, .seacat-auth.switch-container-disabled {
+	width: 40px;
+	height: 20px;
+	display: inline-block;
+	border-radius: 50px;
+	margin-bottom: -2.5px;
+	cursor: pointer;
+
+	&.lg {
+		width: 52px;
+		height: 26px;
+		.on .circle {
+			margin-left: 25px;
+		}
+	}
+	&.sm {
+		width: 32px;
+		height: 16px;
+		.on .circle {
+			margin-left: 15px;
+		}
+	}
+
+	* {
+		border-radius: 50px;
+		transition: background-color .2s ease-out, margin .1s;
+		height: 100%;
+	}
+
+	.on, .off {
+		position: relative;
+		width: 100%;
+
+		.circle {
+			width: 50%;
+		}
+	}
+	.on {
+		.circle {
+			margin-left: 19px;
+		}
+	}
+	.off {
+		.circle {
+			margin-left: 0;
+		}
+	}
+}
+
+.seacat-auth.switch-container {
+	.circle {
+		background-color: white;
+	}
+}

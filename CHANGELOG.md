@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.3.1
+
+- Create lmio and seacat-auth folder. Implement User. Replace Authz folder to seacat-auth. (#21)
+
 ## 25.2.15
 
 - Implemented more defensiveness in DateTime components to avoid application crashes when invalid datetime value is being injected. (#28)
