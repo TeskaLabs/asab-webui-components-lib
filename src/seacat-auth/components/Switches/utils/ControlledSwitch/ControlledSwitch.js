@@ -4,7 +4,9 @@ import './ControlledSwitch.scss';
 
 export const ControlledSwitch = ({ isOn, toggle, disabled=false, title, size='md' }) => {
 	const onClick = () => {
-		if (!disabled) toggle();
+		if (!disabled) {
+			toggle();
+		}
 	}
 
 	return (

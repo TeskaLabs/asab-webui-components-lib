@@ -11,8 +11,8 @@ export const UncontrolledSwitch = ({
 	const [isOn, setIsOn] = useState(defaultValue);
 
 	useEffect(() => {
-		setValue(name, isOn, { shouldDirty: true })
-	}, [isOn])
+		setValue(name, isOn, { shouldDirty: true });
+	}, [isOn]);
 
 	return (
 		<>
