@@ -4,6 +4,18 @@
 
 - Create lmio and seacat-auth folder. Implement User. Replace Authz folder to seacat-auth. (#21)
 
+## 25.2.15
+
+- Implemented more defensiveness in DateTime components to avoid application crashes when invalid datetime value is being injected. (#28)
+
+## 25.2.14
+
+- Refactor DateTime and RelativeDateTime components with unification of methods which can be reused. Update structure of DateTime section. Create timeToStringRelative method. Add option to RelativeDateTime to display/not display suffix. (#27)
+
+## 25.2.13
+
+- Increased visibility of hr separators (#26)
+
 ## 25.2.12
 
 - Update babel.config to allow handling recent features like BigInt on compilation (#24)

@@ -25,7 +25,7 @@ Possible imports:
 - ControlledSwitch
 - UncontrolledSwitch
 - CellContentLoader, ChartLoader
-- DateTime, timeToString, useDateFNSLocale
+- DateTime, DateTimeRelative, timeToString, timeToStringRelative, useDateFNSLocale
 - TreeMenuCard, formatIntoLeafFolderTree, removeTreeContent, formatIntoTree
 - saveToLS, getFromLS, removeFromLS
 - validateAccess, validateTenantAccess, validateResourceAccess

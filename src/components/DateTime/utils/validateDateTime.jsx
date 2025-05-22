@@ -1,4 +1,48 @@
-export function splDatetimeToIso(datetime) {
+export function validateDateTime(value) {
+	// Return 'Invalid Date' if the input is null or undefined
+	if (value == null) {
+		return 'Invalid Date';
+	}
+
+	// Handle BigInt values explicitly
+	if (typeof value === 'bigint') {
+		// SP-Lang datetime format is represented as BigInt
+		return splDatetimeToIso(value);
+	}
+
+	// Handle string values
+	if (typeof value === 'string') {
+		return new Date(value);
+	}
+
+	// Handle number values
+	if (typeof value === 'number') {
+		// Reject infinite, NaN, or negative numbers
+		if (!Number.isFinite(value) || value < 0) {
+			return 'Invalid Date';
+		}
+
+		// Handle Unix timestamp in seconds (less than 1e10)
+		if (value < 1e10) {
+			return new Date(value * 1000); // Convert seconds to milliseconds
+		}
+
+		// Handle timestamps in milliseconds (less than 1e13)
+		if (value < 1e13) {
+			return new Date(value); // Already in milliseconds
+		}
+
+		// Handle timestamps in microseconds (less than 1e16)
+		if (value < 1e16) {
+			return new Date(value / 1000); // Convert microseconds to milliseconds
+		}
+	}
+
+	// All other types are unsupported and result in 'Invalid Date'
+	return 'Invalid Date';
+}
+
+function splDatetimeToIso(datetime) {
 	// Check if datetime is a number or BigInt
 	if ((typeof datetime !== 'bigint') && (typeof datetime !== 'number')) {
 		return 'Invalid Date';
