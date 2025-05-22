@@ -1,5 +1,29 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.15
+
+- Implemented more defensiveness in DateTime components to avoid application crashes when invalid datetime value is being injected. (#28)
+
+## 25.2.14
+
+- Refactor DateTime and RelativeDateTime components with unification of methods which can be reused. Update structure of DateTime section. Create timeToStringRelative method. Add option to RelativeDateTime to display/not display suffix. (#27)
+
+## 25.2.13
+
+- Increased visibility of hr separators (#26)
+
+## 25.2.12
+
+- Update babel.config to allow handling recent features like BigInt on compilation (#24)
+
+## 25.2.11
+
+- Replace isValidIP and isPrivateIP utils by classifyIPAddress feature which classifies the IP addresses (#23)
+
+## 25.2.10
+
+- Display biging values in the Renderer. Convert bigint to string (#22)
+
 ## 25.2.9
 
 - Add splang format processing for DateTime (#17)

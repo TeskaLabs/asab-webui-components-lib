@@ -31,7 +31,7 @@ export class Renderer extends Component {
 				data-value={value} // Passing value (to eventually work with in the external wrapper)
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
-				>{value}</RendererWrapper>);
+				>{(typeof value === "bigint") ? value.toString() : value}</RendererWrapper>);
 	}
 
 	plain(key, value, schemaField)	{
