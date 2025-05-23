@@ -44,7 +44,7 @@ export function LinkWithAuthz(props) {
 	let childProps = {...props};
 	let authzObj = authz(childProps);
 	const disabled = authzObj.disabled;
-	const title = authzObj.title
+	const title = authzObj.title;
 
 	return (
 		disabled ? 
