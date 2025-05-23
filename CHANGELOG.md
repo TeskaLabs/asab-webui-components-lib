@@ -1,5 +1,17 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.16
+
+- Add title for unauthorized access using LinkWithAuthz. (#29)
+
+## 25.2.15
+
+- Implemented more defensiveness in DateTime components to avoid application crashes when invalid datetime value is being injected. (#28)
+
+## 25.2.14
+
+- Refactor DateTime and RelativeDateTime components with unification of methods which can be reused. Update structure of DateTime section. Create timeToStringRelative method. Add option to RelativeDateTime to display/not display suffix. (#27)
+
 ## 25.2.13
 
 - Increased visibility of hr separators (#26)
