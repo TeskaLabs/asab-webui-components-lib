@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { authz } from './utils/authz';
 
+
 /*
 	LinkWithAuthz component creates a link that is enabled or disabled based on the user's authorized resources.
 
@@ -43,10 +44,11 @@ export function LinkWithAuthz(props) {
 	let childProps = {...props};
 	let authzObj = authz(childProps);
 	const disabled = authzObj.disabled;
+	const title = authzObj.title
 
 	return (
 		disabled ? 
-			<span {...childProps}>{childProps.children}</span>
+			<span title={title} {...childProps}>{childProps.children}</span>
 		:
 			<Link {...childProps}>{childProps.children}</Link>
 	)
