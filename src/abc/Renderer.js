@@ -26,6 +26,11 @@ export class Renderer extends Component {
 			)
 		}
 
+		// Convert bigint to string (to preserve precision and to display the value when no other renderer is applied)
+		if (typeof value === "bigint") {
+			value = value.toString();
+		}
+
 		// Render span with value inside as a default
 		return (<RendererWrapper
 				data-value={value} // Passing value (to eventually work with in the external wrapper)
@@ -44,6 +49,12 @@ export class Renderer extends Component {
 				return value;
 			}
 		}
+
+		// Convert bigint to string (to preserve precision and to display the value when no other renderer is applied)
+		if (typeof value === "bigint") {
+			value = value.toString();
+		}
+
 		return value;
 	}
 }
