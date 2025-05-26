@@ -26,12 +26,17 @@ export class Renderer extends Component {
 			)
 		}
 
+		// Convert bigint to string (to preserve precision and to display the value when no other renderer is applied)
+		if (typeof value === "bigint") {
+			value = value.toString();
+		}
+
 		// Render span with value inside as a default
 		return (<RendererWrapper
 				data-value={value} // Passing value (to eventually work with in the external wrapper)
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
-				>{(typeof value === "bigint") ? value.toString() : value}</RendererWrapper>);
+				>{value}</RendererWrapper>);
 	}
 
 	plain(key, value, schemaField)	{
@@ -44,6 +49,12 @@ export class Renderer extends Component {
 				return value;
 			}
 		}
+
+		// Convert bigint to string (to preserve precision and to display the value when no other renderer is applied)
+		if (typeof value === "bigint") {
+			value = value.toString();
+		}
+
 		return value;
 	}
 }
