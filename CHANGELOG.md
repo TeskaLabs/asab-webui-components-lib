@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.17
+
+- Create a RendererWrapper component. (#19)
+
 ## 25.2.16
 
 - Add title for unauthorized access using LinkWithAuthz. (#29)
