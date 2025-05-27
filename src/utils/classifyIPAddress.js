@@ -1,28 +1,74 @@
 function parseIPv4(ipAddress) {
-	const ipv4Octets = ipAddress.split('.'); // Octet is on of the segments of an IP address
-	if (ipv4Octets.length == 4) {
-		return ipv4Octets.reduce((acc, octet) => (acc << 8n) + BigInt(octet), 0n);
+
+	if (typeof ipAddress == 'string') {
+		const ipv4Octets = ipAddress.split('.'); // Octet is on of the segments of an IP address
+		if (ipv4Octets.length == 4) {
+			return ipv4Octets.reduce((acc, octet) => (acc << 8n) + BigInt(octet), 0n);
+		} else {
+			return undefined;
+		}
+	}
+
+	var bigintIP4Address = undefined;
+	if (typeof ipAddress === 'bigint') {
+		bigintIP4Address = ipAddress;
+	}
+	else if (typeof ipAddress === 'object' && ipAddress.h && ipAddress.l) {
+		// This part can be removed in Jan 2026 when object form of IP address is removed from the codebase
+		bigintIP4Address = (BigInt(ipAddress.h) << 64n) + BigInt(ipAddress.l);
+	}
+	else if (typeof ipAddress === 'number') {
+		bigintIP4Address = BigInt(ipAddress);
+	}
+
+	if (bigintIP4Address !== undefined) {
+		// Check if the address is in the ::ffff:0:0/96 range (IPv4-mapped IPv6 addresses) - then it is an IPv4 address
+		const ipv4MappedPrefix = BigInt('0x0000000000000000FFFF00000000');
+		const ipv4Mask = BigInt('0xFFFFFFFF');
+		if ((bigintIP4Address & BigInt('0xFFFFFFFFFFFFFFFFFFFF00000000')) === ipv4MappedPrefix) {
+			return bigintIP4Address & ipv4Mask
+		}
+
+		// Check if the address is in the ::/96 range - then it is an IPv4 address
+		const ipv6Prefix = BigInt('0x00000000000000000000000000000000');
+		if ((bigintIP4Address & BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFF00000000')) === ipv6Prefix) {
+			return bigintIP4Address;
+		}
 	}
 
 	return undefined;
 }
 
 function parseIPv6(ipAddress) {
-	let ipv6Address = ipAddress;
+	if (typeof ipAddress == 'string') {
+		let ipv6Address = ipAddress;
 
-	if (ipv6Address.includes('::')) {
-		const parts = ipv6Address.split('::');
-		const left = parts[0] ? parts[0].split(':') : [];
-		const right = parts[1] ? parts[1].split(':') : [];
-		const missing = 8 - (left.length + right.length);
-		const zeros = Array(missing).fill('0000');
-		const full = [...left, ...zeros, ...right];
-		ipv6Address = full.map(block => block.padStart(4, '0')).join(':');
+		if (ipv6Address.includes('::')) {
+			const parts = ipv6Address.split('::');
+			const left = parts[0] ? parts[0].split(':') : [];
+			const right = parts[1] ? parts[1].split(':') : [];
+			const missing = 8 - (left.length + right.length);
+			const zeros = Array(missing).fill('0000');
+			const full = [...left, ...zeros, ...right];
+			ipv6Address = full.map(block => block.padStart(4, '0')).join(':');
+		}
+
+		const ipv6Blocks = ipv6Address.split(':'); // Block is on of the segments of an IP address
+		if (ipv6Blocks.length == 8) {
+			return ipv6Blocks.reduce((acc, block) => (acc << 16n) + BigInt(parseInt(block, 16)), 0n);
+		} else {
+			return undefined;
+		}
 	}
-
-	const ipv6Blocks = ipv6Address.split(':'); // Block is on of the segments of an IP address
-	if (ipv6Blocks.length == 8) {
-		return ipv6Blocks.reduce((acc, block) => (acc << 16n) + BigInt(parseInt(block, 16)), 0n);
+	else if (typeof ipAddress === 'bigint') {
+		return ipAddress;
+	}
+	else if (typeof ipAddress === 'object' && ipAddress.h && ipAddress.l) {
+		// This part can be removed in Jan 2026 when object form of IP address is removed from the codebase
+		return (BigInt(ipAddress.h) << 64n) + BigInt(ipAddress.l);
+	}
+	else if (typeof ipAddress === 'number') {
+		return BigInt(ipAddress);
 	}
 
 	return undefined;
@@ -39,6 +85,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv4",
+			msg: "IPv4 private"
 		}
 	},
 	{
@@ -48,6 +95,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv4",
+			msg: "IPv4 private"
 		}
 	},
 	{
@@ -56,6 +104,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv4",
+			msg: "IPv4 private"
 		}
 	},
 	{
@@ -64,7 +113,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "reserved"
+			msg: "IPv4 reserved"
 		}
 	},
 	{
@@ -73,7 +122,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "reserved"
+			msg: "IPv4 reserved"
 		}
 	},
 	{
@@ -83,7 +132,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "link-local"
+			msg: "IPv4 link-local"
 		}
 	},
 	{
@@ -93,7 +142,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "Shared Address Space"
+			msg: "IPv4 Shared Address Space"
 		}
 	},
 	{
@@ -102,7 +151,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "loopback"
+			msg: "IPv4 loopback"
 		}
 	},
 	{
@@ -111,6 +160,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
+			msg: "IPv4 reserved"
 		}
 	},
 	{
@@ -119,7 +169,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "ds-lite"
+			msg: "IPv4 ds-lite"
 		}
 	},
 	{
@@ -129,7 +179,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "documentation"
+			msg: "IPv4 documentation"
 		}
 	},
 	{
@@ -139,7 +189,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "6to4"
+			msg: "IPv4 6to4"
 		}
 	},
 	{
@@ -148,7 +198,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "benchmarking"
+			msg: "IPv4 benchmarking"
 		}
 	},
 	{
@@ -158,7 +208,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "documentation"
+			msg: "IPv4 documentation"
 		}
 	},
 	{
@@ -168,7 +218,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "documentation"
+			msg: "IPv4 documentation"
 		}
 	},
 	{
@@ -178,7 +228,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "reserved"
+			msg: "IPv4 reserved"
 		}
 	},
 	{
@@ -187,7 +237,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "limited-broadcast"
+			msg: "IPv4 limited-broadcast"
 		}
 	}	
 ]
@@ -200,7 +250,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "loopback"
+			msg: "IPv6 loopback"
 		}
 	},
 	{
@@ -210,7 +260,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "unspecified"
+			msg: "IPv6 unspecified"
 		}
 	},
 	{
@@ -220,7 +270,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv4-IPv6"
+			msg: "IPv6 IPv4-IPv6"
 		}
 	},
 	{
@@ -229,7 +279,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv4-mapped"
+			msg: "IPv6 IPv4-mapped"
 		}
 	},
 	{
@@ -239,7 +289,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "discard"
+			msg: "IPv6 discard"
 		}
 	},
 	{
@@ -249,7 +299,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "terredo"
+			msg: "IPv6 terredo"
 		}
 	},
 	{
@@ -259,7 +309,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "benchmarking"
+			msg: "IPv6 benchmarking"
 		}
 	},
 	{
@@ -269,7 +319,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "documentation"
+			msg: "IPv6 documentation"
 		}
 	},
 	{
@@ -279,7 +329,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "orchid"
+			msg: "IPv6 orchid"
 		}
 	},
 	{
@@ -289,7 +339,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "6to4"
+			msg: "IPv6 6to4"
 		}
 	},
 	{
@@ -299,6 +349,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv6",
+			msg: "IPv6 unique local"
 		}
 	},
 	{
@@ -307,7 +358,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "link-local"
+			msg: "IPv6 link-local"
 		}
 	}
 ]
@@ -320,14 +371,15 @@ function classifyIPv4(ipAddress) {
 		const ipNetwork = ipAddress & ~mask;
 		
 		if (network === ipNetwork) {
-			return range.attrs;
+			return {...range.attrs, normalizedValue: stringifyIPv4(ipAddress)};
 		}
 	}
 
 	return {
 		cls: "public",
 		family: "IPv4",
-		value: ipAddress,
+		normalizedValue: stringifyIPv4(ipAddress),
+		msg: "IPv4 public"
 	}
 }
 
@@ -338,14 +390,15 @@ function classifyIPv6(ipAddress) {
 		const ipNetwork = ipAddress & ~mask;
 		
 		if (network === ipNetwork) {
-			return range.attrs;
+			return {...range.attrs, normalizedValue: stringifyIPv6(ipAddress)};
 		}
 	}
 
 	return {
 		cls: "public",
 		family: "IPv6",
-		value: ipAddress,
+		normalizedValue: stringifyIPv6(ipAddress),
+		msg: "IPv6 public"
 	}
 }
 
@@ -353,7 +406,7 @@ function classifyIPv6(ipAddress) {
 /*
 	Classify an IP address.
 	Input:
-		ipAddress - string, IP address to classify
+		ipAddress - string/BigInt/object{h: number, l: number}, IP address to classify
 	
 	Returns:
 		Dictionary
@@ -363,13 +416,22 @@ export function classifyIPAddress(ipAddress) {
 	let ipv4 = undefined;
 	let ipv6 = undefined;
 
+	if (ipAddress == undefined) {
+		return {
+			cls: "invalid",
+			normalizedValue: "N/A",
+			msg:"Not an IP address",
+		};
+	}
+
 	// Parse IPv4 address
 	try {
 		ipv4 = parseIPv4(ipAddress);
 	} catch (error) {
+		console.error(error);
 		return {
 			cls: "invalid",
-			value: ipAddress,
+			normalizedValue: sanitizeInvalidIPAddress(ipAddress),
 			msg:"invalid parse ipv4",
 		};
 	}
@@ -383,7 +445,7 @@ export function classifyIPAddress(ipAddress) {
 	} catch (error) {
 		return {
 			cls: "invalid",
-			value: ipAddress,
+			normalizedValue: sanitizeInvalidIPAddress(ipAddress),
 			msg:"invalid parse ipv6",
 		};
 	}
@@ -393,6 +455,82 @@ export function classifyIPAddress(ipAddress) {
 
 	return {
 		cls: "invalid",
-		value: ipAddress,
+		normalizedValue: sanitizeInvalidIPAddress(ipAddress),
+		msg: "Not an IP address",
 	};
+}
+
+
+// Improved function to compress IPv6 addresses, fully replicating Python's `.compressed` behavior.
+const stringifyIPv6 = (bigintIP6Address) => {
+	const parts = [];
+	for (let i = 0; i < 8; i++) {
+		parts.unshift(Number(bigintIP6Address & 0xFFFFn).toString(16));
+		bigintIP6Address >>= 16n;
+	}
+
+	// Variables to track the start and length of the longest sequence of zeros.
+	let zeroStart = -1; // Start index of the longest zero sequence
+	let zeroMax = 0; // Length of the longest zero sequence
+	let zeroTempStart = -1; // Start index of the current zero sequence being checked
+	let zeroTempLen = 0; // Length of the current zero sequence being checked
+
+	// Iterate through the parts of the IPv6 address to find the longest sequence of zeros.
+	for (let i = 0; i < parts.length; i++) {
+		if (parts[i] === '0') {
+			// If the current part is zero, start or continue tracking a zero sequence.
+			if (zeroTempStart === -1) zeroTempStart = i; // Mark the start of the sequence
+			zeroTempLen++; // Increment the length of the current sequence
+		} else {
+			// If the current part is not zero, check if the current zero sequence is the longest.
+			if (zeroTempLen > zeroMax) {
+				zeroStart = zeroTempStart; // Update the start of the longest sequence
+				zeroMax = zeroTempLen; // Update the length of the longest sequence
+			}
+			// Reset the tracking variables for the next potential zero sequence.
+			zeroTempStart = -1;
+			zeroTempLen = 0;
+		}
+	}
+
+	// After the loop, check if the last zero sequence is the longest.
+	if (zeroTempLen > zeroMax) {
+		zeroStart = zeroTempStart;
+		zeroMax = zeroTempLen;
+	}
+
+	// If a sequence of more than one zero is found, replace it with `::` to compress the IPv6 address.
+	if (zeroMax > 1) {
+		parts.splice(zeroStart, zeroMax, ''); // Replace the zero sequence with an empty string
+	}
+
+	// Join the parts with colons to form the final compressed IPv6 address.
+	return parts.join(':');
+};
+
+const stringifyIPv4 = (bigintIP4Address) => {
+	const parts = [];
+	for (let i = 0; i < 4; i++) {
+		parts.push(Number(bigintIP4Address & 0xFFn));
+		bigintIP4Address >>= 8n;
+	}
+	return parts.reverse().join('.');
+};
+
+// This function is used to sanitize the input which is NOT the IP address to a string.
+const sanitizeInvalidIPAddress = (ipAddress) => {
+	if (typeof ipAddress === 'string') {
+		return ipAddress;
+	}
+	else if (typeof ipAddress === 'bigint') {
+		return ipAddress.toString();
+	}
+	else if (typeof ipAddress === 'object') {
+		return `${ipAddress}`;  // TODO: This can be more clever if needed
+	}
+	else if (typeof ipAddress === 'number') {
+		return ipAddress.toString();
+	} else {
+		return "???";
+	}
 }
