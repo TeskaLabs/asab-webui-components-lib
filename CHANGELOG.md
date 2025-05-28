@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.18
+
+- Refactor IP address classification to comphrehend the value normalization and proper IP address classification. (#30)
+
 ## 25.2.17
 
 - Add option to return `level` in TreeMenu. Add option to configure the TreeMenu over memoized paths on opened nodes. (#6)
