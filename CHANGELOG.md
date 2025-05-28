@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.17
+
+- Add option to return `level` in TreeMenu. Add option to configure the TreeMenu over memoized paths on opened nodes. (#6)
+
 ## 25.2.16
 
 - Add title for unauthorized access using LinkWithAuthz. (#29)

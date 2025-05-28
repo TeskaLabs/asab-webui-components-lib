@@ -29,7 +29,7 @@ export const TreeMenu = ({
 							{hasSearch &&
 								<Input
 									onChange={e => search(e.target.value)}
-									placeholder={t('General|Search')}
+									placeholder={t('General|Search by phrase')}
 									name='search'
 								/>}
 							<List className='m-0' type='unstyled'>
