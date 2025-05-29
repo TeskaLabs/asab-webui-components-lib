@@ -1,0 +1,83 @@
+/* Tabs */
+
+.global-tab-container {
+	display: flex;
+	align-items: center;
+}
+
+.global-tab {
+	max-width: 20ch;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	
+	&.active {
+		background-color: var(--bs-card-bg) !important;
+		border-bottom-color: var(--bs-card-bg) !important;
+	}
+}
+
+.global-tab:hover {
+	cursor: pointer;
+}
+
+.global-tabs-flex-wrapper {
+	/* Ensures horizontally scrollable tabs */
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+
+// this is the tabs styling from ASAB Library
+
+// .new-tab-container {
+// 	display: flex;
+// 	align-items: center; /* Align items vertically */
+// }
+
+// .new-tab {
+// 	max-width: 20ch;
+// 	overflow: hidden;
+// 	text-overflow: ellipsis;
+// 	white-space: nowrap;
+// }
+
+// .new-tab-remove:hover {
+// 	cursor: pointer;
+// 	color: var(--bs-danger);
+// }
+
+// .new-problems-indication {
+// 	color: var(--bs-danger);
+// }
+
+// .new-tabs-flex-wrapper {
+// 	/* Ensures horizontally scrollable tabs */
+// 	overflow-x: auto;
+// 	overflow-y: hidden;
+// 	white-space: nowrap;
+// }
+
+
+// this is what default reactstrap styling does:
+// .nav-link {
+//   display: block;
+//   padding: 0.5rem 1rem;
+//   color: #0d6efd; /* Bootstrap's primary color */
+//   text-decoration: none;
+// }
+
+// .nav-link:hover, .nav-link:focus {
+//   color: #0a58ca; /* Slightly darker blue on hover */
+// }
+
+// .nav-link.disabled {
+//   color: #6c757d; /* Gray color */
+//   pointer-events: none;
+// }
+
+// .nav-link.active {
+//   color: #0d6efd;
+//   font-weight: 600;
+// }
+
