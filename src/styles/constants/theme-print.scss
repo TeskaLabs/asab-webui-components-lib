@@ -73,9 +73,9 @@
 	}
 
 	#app {
-		height: 100%;
-		overflow: visible;
-		display: block;
+		height: 100% !important;
+		overflow: visible !important;
+		display: block !important;
 	}
 
 	button, .btn-sm, .btn .btn-primary, .btn-primary {
