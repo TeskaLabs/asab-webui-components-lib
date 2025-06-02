@@ -21,7 +21,7 @@
 $card-flex-height: 3.2rem;
 
 // Extending `.card-header` class to accept flex sub-items
-.card-header-flex {	
+.card-header-flex {
 	// @extend .d-flex from bootstrap
 	display: flex !important;
 
@@ -79,23 +79,31 @@ $card-flex-height: 3.2rem;
 	}
 
 	> .nav {
-		padding: 0;
-		display: contents;
+		// overflow-x: auto;
+		// white-space: nowrap;
+		// padding: 0 0 2px 0;
+		// padding-bottom: 3px;
+		// display: contents;
+		// display: inline-block;
 
-		.nav-item a {
-			border: none;
-			background: inherit;
-			border-bottom: 2px solid transparent;
-		}
+		// > *:last-child {
+		// 	margin-right: 1rem;
+		// }
 
-		.nav-item a:hover {
-			cursor: pointer;
-			border-bottom: 2px solid var(--bs-secondary);
-		}
+		// .nav-item a {
+		// 	border: none;
+		// 	background: inherit;
+		// 	border-bottom: 2px solid transparent;
+		// }
 
-		.nav-item a.active {
-			border-bottom: 2px solid var(--bs-primary);
-		}
+		// .nav-item a:hover {
+		// 	cursor: pointer;
+		// 	border-bottom: 2px solid var(--bs-secondary);
+		// }
+
+		// .nav-item a.active {
+		// 	border-bottom: 2px solid var(--bs-primary);
+		// }
 	}
 
 	h2, h3, h4, h5, h6 {
@@ -104,7 +112,7 @@ $card-flex-height: 3.2rem;
 }
 
 
-.card-footer-flex {	
+.card-footer-flex {
 	// @extend .d-flex from bootstrap
 	display: flex!important;
 

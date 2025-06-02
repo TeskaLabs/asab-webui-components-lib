@@ -13,6 +13,14 @@
 	}
 }
 
+.global-tabs-flex-wrapper {
+	/* Ensures horizontally scrollable tabs */
+	// overflow-x: auto;
+	// overflow-y: hidden;
+	// white-space: nowrap;
+}
+
+
 
 	// .nav-link.active {
 	// 		background-color: var(--bs-card-bg);
