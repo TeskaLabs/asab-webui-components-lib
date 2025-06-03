@@ -2,7 +2,7 @@
 
 ## 25.2.19
 
-- Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#31)
+- Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#33)
 
 ## 25.2.18
 
