@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.19
+
+- Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#31)
+
 ## 25.2.18
 
 - Refactor IP address classification to comphrehend the value normalization and proper IP address classification. (#30)
