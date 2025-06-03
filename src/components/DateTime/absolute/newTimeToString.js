@@ -1,8 +1,8 @@
-import originalTimeToString from "./timeToString.js";
+import timeToString from "./timeToString.js";
 
-
+// Simplifies original timeToString
 export const newTimeToString = (value, dateTimeFormat = "medium", locale= undefined) => {
-    const result = originalTimeToString(value, dateTimeFormat, locale);
+    const result = timeToString(value, dateTimeFormat, locale);
     return result.date;
 }
 
