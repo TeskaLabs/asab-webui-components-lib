@@ -40,6 +40,7 @@ export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { ConsoleCard } from './components/Console/ConsoleCard.jsx';
 export { isoCodeCountries } from './utils/lookups/isoCodeCountries.js';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
+export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
 
 // To apply styles, it is necessary to import them here
 // TODO: maybe make a styles a shared package library?
