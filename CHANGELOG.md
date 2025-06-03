@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.2.19
+## 25.2.20
 
 - Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#33)
+
+## 25.2.19
+
+- Update colors for Alerts (!11)
 
 ## 25.2.18
 
