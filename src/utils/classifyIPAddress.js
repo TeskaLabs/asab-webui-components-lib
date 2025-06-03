@@ -13,7 +13,7 @@ function parseIPv4(ipAddress) {
 	if (typeof ipAddress === 'bigint') {
 		bigintIP4Address = ipAddress;
 	}
-	else if (typeof ipAddress === 'object' && ipAddress.h && ipAddress.l) {
+	else if (typeof ipAddress === 'object' && 'h' in ipAddress && 'l' in ipAddress) {
 		// This part can be removed in Jan 2026 when object form of IP address is removed from the codebase
 		bigintIP4Address = (BigInt(ipAddress.h) << 64n) + BigInt(ipAddress.l);
 	}
@@ -63,7 +63,7 @@ function parseIPv6(ipAddress) {
 	else if (typeof ipAddress === 'bigint') {
 		return ipAddress;
 	}
-	else if (typeof ipAddress === 'object' && ipAddress.h && ipAddress.l) {
+	else if (typeof ipAddress === 'object' && 'h' in ipAddress && 'l' in ipAddress) {
 		// This part can be removed in Jan 2026 when object form of IP address is removed from the codebase
 		return (BigInt(ipAddress.h) << 64n) + BigInt(ipAddress.l);
 	}

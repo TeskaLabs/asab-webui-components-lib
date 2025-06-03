@@ -3,6 +3,8 @@
 ## 25.2.19
 
 - Create a RendererWrapper component. (#19)
+- Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#33)
+- Update colors for Alerts (!11)
 
 ## 25.2.18
 
