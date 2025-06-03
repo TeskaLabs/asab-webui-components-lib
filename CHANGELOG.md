@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.19
+
+- Update colors for Alerts (!11)
+
 ## 25.2.18
 
 - Refactor IP address classification to comphrehend the value normalization and proper IP address classification. (#30)
