@@ -1,7 +1,7 @@
-import { timeToStringRelativeWithMetadata } from "./timeToStringRelativeWithMetadata.jsx";
+import { getFormattedRelativeTime } from "./getFormattedRelativeTime.jsx";
 
-// Simplifies original timeToStringRelative (now timeToStringRelativeWithMetadata)
+// Simplifies original timeToStringRelative (now getFormattedRelativeTime)
 export const timeToStringRelative = (value, dateTimeFormat = "medium", addSuffix = false, locale = undefined) => {
-    const result = timeToStringRelativeWithMetadata(value, dateTimeFormat, addSuffix, locale);
-    return result.date
+	const result = getFormattedRelativeTime(value, dateTimeFormat, addSuffix, locale);
+	return result.date
 }

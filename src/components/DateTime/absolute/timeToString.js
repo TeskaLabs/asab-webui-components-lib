@@ -1,10 +1,9 @@
-// import timeToS from "./timeToString.js";
-import timeToStringWithMetadata from "./timeToStringWithMetadata.js";
+import getFormattedTime from "./getFormattedTime.js";
 
-// Simplifies original timeToString (now timeToStringWithMetadata)
+// Simplifies original timeToString (now getFormattedTime)
 export const timeToString = (value, dateTimeFormat = "medium", locale= undefined) => {
-    const result = timeToStringWithMetadata(value, dateTimeFormat, locale);
-    return result.date;
+	const result = getFormattedTime(value, dateTimeFormat, locale);
+	return result.date;
 }
 
 export default timeToString;
