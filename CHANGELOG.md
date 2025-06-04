@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.3.1
+
+- Create lmio and seacat-auth folder. Implement User. Replace Authz folder to seacat-auth. (#21)
+
 ## 25.2.19
 
 - Create a RendererWrapper component. (#19)
