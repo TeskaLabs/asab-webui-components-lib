@@ -1,12 +1,10 @@
-import { timeToStringCommon } from '../utils/timeToStringCommon.jsx';
+// import timeToS from "./timeToString.js";
+import timeToStringWithMetadata from "./timeToStringWithMetadata.js";
 
-// Absolute time formatting with "ago"
-export const timeToString = (value, dateTimeFormat = "medium", locale = undefined) => {
-	const { date, distanceToNow } = timeToStringCommon(value, dateTimeFormat, locale, true); // addSuffix = true
-	if (date === 'Invalid Date') {
-		return { date };
-	}
-	return { date, distanceToNow };
+// Simplifies original timeToString (now timeToStringWithMetadata)
+export const timeToString = (value, dateTimeFormat = "medium", locale= undefined) => {
+    const result = timeToStringWithMetadata(value, dateTimeFormat, locale);
+    return result.date;
 }
 
 export default timeToString;

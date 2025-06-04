@@ -1,11 +1,7 @@
-import { timeToStringCommon } from '../utils/timeToStringCommon.jsx';
+import { timeToStringRelativeWithMetadata } from "./timeToStringRelativeWithMetadata.jsx";
 
-// Relative time formatting without "ago"
+// Simplifies original timeToStringRelative (now timeToStringRelativeWithMetadata)
 export const timeToStringRelative = (value, dateTimeFormat = "medium", addSuffix = false, locale = undefined) => {
-	// TODO: add addSuffix = true for values which are to the future from now (we can use of isAfter from date-fns)
-	const { date, distanceToNow } = timeToStringCommon(value, dateTimeFormat, locale, addSuffix);
-	if (date === 'Invalid Date') {
-		return { date };
-	}
-	return { date: distanceToNow, absoluteTime: date };
+    const result = timeToStringRelativeWithMetadata(value, dateTimeFormat, addSuffix, locale);
+    return result.date
 }
