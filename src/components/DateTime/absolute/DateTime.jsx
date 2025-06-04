@@ -1,6 +1,6 @@
 import React from 'react';
 
-import timeToString from './timeToString.js';
+import timeToStringWithMetadata from './timeToStringWithMetadata.js';
 import useDateFNSLocale from '../utils/useDateFNSLocale.js';
 import { InvalidDate } from '../components/InvalidDate.jsx';
 
@@ -15,9 +15,9 @@ export function DateTime(props) {
 	// Declaration of locale must be below span returned for `undefined` values to avoid bad react state handling in useDateFNSLocale
 	const locale = useDateFNSLocale();
 
-	const date = timeToString(props.value, props.dateTimeFormat, locale);
+	const date = timeToStringWithMetadata(props.value, props.dateTimeFormat, locale);
 
-	// Check for invalid date from timeToString method
+	// Check for invalid date from timeToStringWithMetadata method
 	if (date.date === 'Invalid Date') {
 		return (
 			<InvalidDate value={props.value} />
