@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.2.20
+
+- Refactor `timeToString` and `timeToStringRelative` methods to return just the value of time. (#34)
+
 ## 25.2.19
 
 - Create a RendererWrapper component. (#19)
