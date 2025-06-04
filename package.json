@@ -21,7 +21,6 @@
 	"main": "dist/index.js",
 	"exports": {
 		".": "./dist/index.js",
-		"./lmio": "./dist/lmio/index.js",
 		"./seacat-auth": "./dist/seacat-auth/index.js"
 	},
 	"files": [
