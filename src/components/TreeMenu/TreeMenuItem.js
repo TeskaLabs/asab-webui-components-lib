@@ -57,7 +57,7 @@ export const TreeMenuFolder = ({
 				type - string "folder" or "file"
 				isDisabled - bool, true or false
 			*/}
-			{folder(label, parent, type, isDisabled)}
+			{folder(label, parent, type, isDisabled, level)}
 		</li>
 	);
 };
@@ -107,7 +107,7 @@ export const TreeMenuFile = ({
 				type - string "folder" or "file"
 				isDisabled - bool, true or false
 			*/}
-			{file(label, parent, type, isDisabled)}
+			{file(label, parent, type, isDisabled, level)}
 		</li>
 	);
 };

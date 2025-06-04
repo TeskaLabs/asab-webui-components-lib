@@ -4,6 +4,24 @@
 
 - Create lmio and seacat-auth folder. Implement User. Replace Authz folder to seacat-auth. (#21)
 
+## 25.2.19
+
+- Create a RendererWrapper component. (#19)
+- Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#33)
+- Update colors for Alerts (!11)
+
+## 25.2.18
+
+- Refactor IP address classification to comphrehend the value normalization and proper IP address classification. (#30)
+
+## 25.2.17
+
+- Add option to return `level` in TreeMenu. Add option to configure the TreeMenu over memoized paths on opened nodes. (#6)
+
+## 25.2.16
+
+- Add title for unauthorized access using LinkWithAuthz. (#29)
+
 ## 25.2.15
 
 - Implemented more defensiveness in DateTime components to avoid application crashes when invalid datetime value is being injected. (#28)
