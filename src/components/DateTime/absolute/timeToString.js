@@ -1,12 +1,9 @@
-import { timeToStringCommon } from '../utils/timeToStringCommon.jsx';
+import getFormattedTime from "./getFormattedTime.js";
 
-// Absolute time formatting with "ago"
-export const timeToString = (value, dateTimeFormat = "medium", locale = undefined) => {
-	const { date, distanceToNow } = timeToStringCommon(value, dateTimeFormat, locale, true); // addSuffix = true
-	if (date === 'Invalid Date') {
-		return { date };
-	}
-	return { date, distanceToNow };
+// Simplifies original timeToString
+export const timeToString = (value, dateTimeFormat = "medium", locale= undefined) => {
+	const result = getFormattedTime(value, dateTimeFormat, locale);
+	return result.date;
 }
 
 export default timeToString;

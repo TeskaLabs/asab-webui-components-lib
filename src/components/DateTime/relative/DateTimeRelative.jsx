@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { timeToStringRelative } from './timeToStringRelative.jsx';
+import { getFormattedTimeRelative } from './getFormattedTimeRelative.jsx';
 import useDateFNSLocale from '../utils/useDateFNSLocale';
 import { InvalidDate } from '../components/InvalidDate.jsx';
 
@@ -15,9 +15,9 @@ export function DateTimeRelative(props) {
 	// Declaration of locale must be below span returned for `undefined` values to avoid bad react state handling in useDateFNSLocale
 	const locale = useDateFNSLocale();
 
-	const date = timeToStringRelative(props.value, props.dateTimeFormat, props.addSuffix, locale);
+	const date = getFormattedTimeRelative(props.value, props.dateTimeFormat, props.addSuffix, locale);
 
-	// Check for invalid date from timeToString method
+	// Check for invalid date from getFormattedTimeRelative method
 	if (date.date === 'Invalid Date') {
 		return (
 			<InvalidDate value={props.value} />
