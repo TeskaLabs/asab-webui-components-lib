@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.3.1
+## 25.3.2
 
 - Remove styles folder and move in to asab_webui_shell_lib (#31)
 
