@@ -2,7 +2,7 @@
 
 ## 25.3.3
 
-- Replace Authz folder to seacat-auth folder (#21)
+- Move Authz folder to seacat-auth folder (#21)
 
 ## 25.3.2
 
