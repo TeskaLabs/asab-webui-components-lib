@@ -1,14 +1,18 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.3.1
+## 25.3.3
 
-- Create lmio and seacat-auth folder. Implement User. Replace Authz folder to seacat-auth. (#21)
+- Replace Authz folder to seacat-auth folder (#21)
+
+## 25.3.2
+
+- Remove styles folder and move in to asab_webui_shell_lib (#31)
 
 ## 25.2.19
 
 - Create a RendererWrapper component. (#19)
 - Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#33)
-- Update colors for Alerts (!11)
+- Update colors for Alerts (#11)
 
 ## 25.2.18
 

@@ -36,10 +36,6 @@ export { isoCodeCountries } from './utils/lookups/isoCodeCountries.js';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
 
-// To apply styles, it is necessary to import them here
-// TODO: maybe make a styles a shared package library?
-import './styles/index.scss';
-
 // OBSOLETED COMPONENTS (Aug 2023) - don't use this in a new designs
 export { default as Pagination } from './components/DataTable/Pagination';
 export { DataTable } from './components/DataTable';
