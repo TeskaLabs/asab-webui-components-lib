@@ -1,14 +1,18 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.2.20
+## 25.3.3
 
 - Refactor `timeToString` and `timeToStringRelative` methods to return just the value of time. (#34)
+
+## 25.3.2
+
+- Remove styles folder and move in to asab_webui_shell_lib (#31)
 
 ## 25.2.19
 
 - Create a RendererWrapper component. (#19)
 - Updated conditions for the `classyfyIPAddress` to check ip spalng objects with keys `h` and `l`. (#33)
-- Update colors for Alerts (!11)
+- Update colors for Alerts (#11)
 
 ## 25.2.18
 
