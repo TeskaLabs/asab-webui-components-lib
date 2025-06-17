@@ -25,6 +25,7 @@ export { classifyIPAddress } from './utils/classifyIPAddress.js';
 export { itemExtensionHandler } from './utils/itemExtensionHandler.js';
 export { removeFileExtension } from './utils/removeFileExtension.js';
 export { deepMerge } from './utils/deepMerge.jsx';
+export { translateFromContent } from './utils/translateFromContent.js';
 export { problemMarkers } from './utils/monaco/problemMarkers.jsx';
 export { ButtonWithAuthz } from './components/Authz/ButtonWithAuthz';
 export { LinkWithAuthz } from './components/Authz/LinkWithAuthz';
