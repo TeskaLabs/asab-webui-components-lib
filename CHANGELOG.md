@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.3.3
+## 25.4.1
 
 - Move Authz folder to seacat-auth folder (#21)
 
