@@ -15,7 +15,7 @@
 ## timeToString
 
 ```
-timeToString('2025-01-02T03:04:05.123456Z')?.date;
+timeToString('2025-01-02T03:04:05.123456Z');
 ```
 
 `props`
@@ -41,7 +41,7 @@ timeToString('2025-01-02T03:04:05.123456Z')?.date;
 ## timeToStringRelative
 
 ```
-timeToStringRelative('2025-01-02T03:04:05.123456Z')?.date;
+timeToStringRelative('2025-01-02T03:04:05.123456Z');
 ```
 
 `props`
