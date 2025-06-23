@@ -1,5 +1,13 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.4.1
+
+- Move Authz folder to seacat-auth folder (#21)
+
+## 25.3.3
+
+- Refactor `timeToString` and `timeToStringRelative` methods to return just the value of time. (#34)
+
 ## 25.3.2
 
 - Remove styles folder and move in to asab_webui_shell_lib (#31)
