@@ -24,20 +24,18 @@ export function translateFromContent(content) {
 		return acc;
 	}, {});
 
-	// Try current language first
+	// First try to get text in current language, if not found
+	// try fallback 'c' language, if still not found
+	// try first string value found in object, otherwise
+	// return error message
 	if (typeof normalizedKeys[currentLang] === 'string') {
 		return normalizedKeys[currentLang];
-	}
-
-	// Try 'c' language second as fallback
-	if (typeof normalizedKeys['c'] === 'string') {
+	} else if (typeof normalizedKeys['c'] === 'string') {
 		return normalizedKeys['c'];
-	}
-
-	// Finally try first available translation
-	if (typeof Object.values(normalizedKeys)[0] === 'string') {
+	} else if (typeof Object.values(normalizedKeys)[0] === 'string') {
 		return Object.values(normalizedKeys)[0];
+	} else {
+		console.warn(errorMessage + " " + JSON.stringify(normalizedKeys));
+		return errorMessage;
 	}
-
-	return errorMessage;
 }
