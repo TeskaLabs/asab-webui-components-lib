@@ -1,18 +1,21 @@
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 // Translates content based on the current language setting
 // Handles translation of content objects that contain language-specific text
 export function translateFromContent(content) {
-	const currentLang = (i18n?.language || 'c').toLowerCase();
+	const { t, i18n } = useTranslation();
+	const currentLang = i18n?.language || 'c';
+	const errorMessage = t("General|Content cannot be translated - invalid format");
 
 	// If the content is a string, return it as-is
 	if (typeof content === 'string') {
 		return content;
 	}
 
-	// If the content is not an object (or is an array), return empty string
-	if (!content || typeof content !== 'object' || Array.isArray(content)) {
-		return '';
+	// If the content is not an object, is an array, or is an empty object, return translation error
+	if (!content || typeof content !== 'object' || Array.isArray(content) || Object.keys(content).length === 0) {
+		console.warn(errorMessage + " " + JSON.stringify(content));
+		return errorMessage;
 	}
 
 	// Normalize keys to lowercase
@@ -21,6 +24,20 @@ export function translateFromContent(content) {
 		return acc;
 	}, {});
 
-	// Return the translation for the current language with fallback to 'c' and first available translation
-	return normalizedKeys[currentLang] || normalizedKeys['c'] || Object.values(normalizedKeys)[0] || '';
+	// Try current language first
+	if (typeof normalizedKeys[currentLang] === 'string') {
+		return normalizedKeys[currentLang];
+	}
+
+	// Try 'c' language second as fallback
+	if (typeof normalizedKeys['c'] === 'string') {
+		return normalizedKeys['c'];
+	}
+
+	// Finally try first available translation
+	if (typeof Object.values(normalizedKeys)[0] === 'string') {
+		return Object.values(normalizedKeys)[0];
+	}
+
+	return errorMessage;
 }
