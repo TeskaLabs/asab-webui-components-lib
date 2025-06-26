@@ -12,9 +12,9 @@ export function translateFromContent(content) {
 		return content;
 	}
 
-	// If the content is not an object, is an array, or is an empty object, return translation error
-	if (!content || typeof content !== 'object' || Array.isArray(content) || Object.keys(content).length === 0) {
-		console.warn(errorMessage + " " + JSON.stringify(content));
+	// If content is null, not an object, or is an array, return error message
+	if (!content || typeof content !== 'object' || Array.isArray(content)) {
+		console.warn(errorMessage + " " + content);
 		return errorMessage;
 	}
 
@@ -24,18 +24,23 @@ export function translateFromContent(content) {
 		return acc;
 	}, {});
 
-	// First try to get text in current language, if not found
-	// try fallback 'c' language, if still not found
-	// try first string value found in object, otherwise
-	// return error message
+	// If the normalizedKeys object is empty, return empty string
+	if (Object.keys(normalizedKeys).length === 0) {
+		console.warn('Content for translation is empty');
+		return '';
+	}
+
+	/* Try to get text in current language
+	if not found try fallback 'c' language
+	otherwise return error message */
 	if (typeof normalizedKeys[currentLang] === 'string') {
 		return normalizedKeys[currentLang];
-	} else if (typeof normalizedKeys['c'] === 'string') {
-		return normalizedKeys['c'];
-	} else if (typeof Object.values(normalizedKeys)[0] === 'string') {
-		return Object.values(normalizedKeys)[0];
-	} else {
-		console.warn(errorMessage + " " + JSON.stringify(normalizedKeys));
-		return errorMessage;
 	}
+	
+	if (typeof normalizedKeys['c'] === 'string') {
+		return normalizedKeys['c'];
+	}
+
+	console.warn(content);
+	return errorMessage;
 }
