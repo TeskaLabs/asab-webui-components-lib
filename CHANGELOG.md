@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.4.2
+
+- Update ResulCard styles. Card alignment on top of the screen (#37)
+
 ## 25.4.1
 
 - Move Authz folder to seacat-auth folder (#21)
