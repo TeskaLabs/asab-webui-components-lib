@@ -1,12 +1,10 @@
-import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
+import i18next from 'i18next';
 
 // Translates content based on the current language setting
 // Handles translation of content objects that contain language-specific text
 export function translateFromContent(content) {
-	const { t } = useTranslation();
-	const currentLang = i18n?.language || 'c';
-	const errorMessage = t("General|Content cannot be translated - invalid format");
+	const currentLang = i18next?.language || 'c';
+	const errorMessage = i18next.t("General|Content cannot be translated - invalid format");
 
 	// If the content is a string, return it as-is
 	if (typeof content === 'string') {
