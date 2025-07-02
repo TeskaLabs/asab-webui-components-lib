@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-
-import {
-	Dropdown, DropdownToggle, DropdownItem, DropdownMenu
-} from 'reactstrap';
+import React, { useEffect } from 'react';
 
 import { useDataTableContext } from '../../DataTableContext.jsx';
-import './DataTableAdvFilter2.scss';
 
+// Custom component for filtering in the table
 export function DataTableAdvCustomFilter({ field, content }) {
 	const { updateSingleValueFilter, setFilterField } = useDataTableContext();
 
@@ -16,7 +11,7 @@ export function DataTableAdvCustomFilter({ field, content }) {
 		setFilterField(field);
 	},[]);
 
-	return (
-		content(updateSingleValueFilter)
-	)
+	// Transferring a function to the custom content for correct filter assignment
+	return content(updateSingleValueFilter);
+
 }
