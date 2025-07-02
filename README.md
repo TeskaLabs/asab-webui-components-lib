@@ -20,7 +20,7 @@ Possible imports:
 - Service
 - Renderer
 - Humanize, humanizeToString
-- DataTable2, DataTableCard2, DataTableCardFooter2, DataTableFilter2, DataTableAdvFilterSingleValue2, DataTableAdvFilterMultiValue2
+- DataTable2, DataTableCard2, DataTableCardFooter2, DataTableFilter2, DataTableAdvFilterSingleValue2, DataTableAdvFilterMultiValue2, DataTableAdvCustomFilter
 - Spinner
 - ControlledSwitch
 - UncontrolledSwitch
