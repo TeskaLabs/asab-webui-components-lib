@@ -351,6 +351,25 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 		}
 	}, [watchParams]);
 
+	// Get credentials id from localstorage
+	function getCredentialsIdFromLS () {
+		let ls;
+		if (localStorage) {
+			try {
+				ls = JSON.parse(localStorage.getItem('Credentials'));
+			} catch (e) {
+				/*Ignore*/
+			}
+		}
+		return ls ? ls?.credentials : [];
+	}
+
+	function getUsernameOrValue(valueArray) {
+		const value = Array.isArray(valueArray) ? valueArray[0] : valueArray;
+		const found = getCredentialsIdFromLS().find(item => item.id === value);
+		return found?.username || value;
+	}
+
 	return(
 		displayPillArea &&
 		<div className="datatable-cardpill-area" style={{minHeight: rowHeight}}>
@@ -387,7 +406,7 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 								className="datatable-cardpill mx-1"
 							>
 								<Badge color="primary" pill>
-									{`${getFilterField(key.substring(1))}: ${value}`}
+									{`${getFilterField(key.substring(1))}: ${getUsernameOrValue(value)}`}
 									{(isLoading == true) ?
 										<i
 											className="bi bi-x ps-1"
