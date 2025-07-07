@@ -1,5 +1,21 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.4.3
+
+- Update ResulCard styles. Card alignment on top of the screen (#37)
+
+## 25.4.2
+
+- Add `translateFromContent` utility function for handling multi-language content objects with language-specific text (#36)
+
+## 25.4.1
+
+- Move Authz folder to seacat-auth folder (#21)
+
+## 25.3.3
+
+- Refactor `timeToString` and `timeToStringRelative` methods to return just the value of time. (#34)
+
 ## 25.3.2
 
 - Remove styles folder and move in to asab_webui_shell_lib (#31)
