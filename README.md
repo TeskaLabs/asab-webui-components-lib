@@ -44,7 +44,6 @@ Possible imports:
 - removeFileExtension
 - deepMerge
 - problemMarkers
-- isoCodeCountries
 
 ## Documentation
 
