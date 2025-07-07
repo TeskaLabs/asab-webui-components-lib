@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.4.4
+
+- Implement new `DataTableAdvCustomFilter` for `DataTable2` (#38)
+
 ## 25.4.3
 
 - Update ResulCard styles. Card alignment on top of the screen (#37)
