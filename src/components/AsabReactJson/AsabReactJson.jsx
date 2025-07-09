@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ReactJson from 'react-json-view';
+import ReactJsonView from '@microlink/react-json-view'
 import { useSelector } from 'react-redux';
 
 /*
@@ -28,7 +28,7 @@ export const AsabReactJson = ({src, ...props}) => {
 	};
 
 	return (
-		<ReactJson
+		<ReactJsonView
 			src={convertBigIntToString((src))}
 			theme={(theme === 'dark') ? 'chalk' : 'rjv-default'}
 			{...props}

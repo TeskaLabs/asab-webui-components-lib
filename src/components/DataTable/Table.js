@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ReactJson from 'react-json-view';
+import ReactJsonView from '@microlink/react-json-view'
 import { Table } from 'reactstrap';
 
 import { DateTime } from '../DateTime/absolute/DateTime.jsx';
@@ -51,7 +51,7 @@ const TableCell = ({
 	}
 
 	else if (header.json) cell = (
-		<ReactJson
+		<ReactJsonView
 			className="data-table-reactjson"
 			src={obj[header.key]}
 			name={false}
@@ -240,7 +240,7 @@ const TableRow = ({
 						colSpan={category?.sublistKey ? headers.length+2 : headers.length+1}
 						className="data-table-adv-td"
 					>
-						<ReactJson
+						<ReactJsonView
 							theme={theme === 'dark' ? "chalk" : "rjv-default"}
 							src={obj}
 							name={false}
