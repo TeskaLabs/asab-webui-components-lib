@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.4.4
+
+- Remove TreeMenu, Console components. Move TreeMenu to lmio_components_webui (#39)
+
 ## 25.4.3
 
 - Update ResulCard styles. Card alignment on top of the screen (#37)
