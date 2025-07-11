@@ -364,6 +364,7 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 		return ls ? ls?.credentials : [];
 	}
 
+	// Getting a username if the value matches the credentials id
 	function getUsernameOrValue(valueArray) {
 		const value = Array.isArray(valueArray) ? valueArray[0] : valueArray;
 		const found = getCredentialsIdFromLS().find(item => item.id === value);
