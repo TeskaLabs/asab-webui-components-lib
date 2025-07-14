@@ -36,6 +36,7 @@ export { ConsoleCard } from './components/Console/ConsoleCard.jsx';
 export { isoCodeCountries } from './utils/lookups/isoCodeCountries.js';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
+export { InformationalCard } from './components/InformationalCard/InformationalCard.jsx';
 
 // OBSOLETED COMPONENTS (Aug 2023) - don't use this in a new designs
 export { default as Pagination } from './components/DataTable/Pagination';
