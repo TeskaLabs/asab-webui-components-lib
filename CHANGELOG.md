@@ -2,7 +2,7 @@
 
 ## 25.5.1
 
-- Remove TreeMenu, Console components. Move TreeMenu to lmio_components_webui (#39)
+- Remove TreeMenu and Console component. This has been moved into lmio_webui_components (#39)
 
 ## 25.4.3
 
