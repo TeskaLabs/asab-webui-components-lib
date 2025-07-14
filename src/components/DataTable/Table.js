@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ReactJsonView from '@microlink/react-json-view'
 import { Table } from 'reactstrap';
+import { useAppSelector } from 'asab_webui_shell';
 
 import { DateTime } from '../DateTime/absolute/DateTime.jsx';
 
@@ -153,7 +153,7 @@ const TableRow = ({
 }) => {
 	const [isAdvUnwrapped, setAdvUnwrapped] = useState(false);
 	const [isSubUnwrapped, setSubUnwrapped] = useState((collapseChildren == false) ? true : false);
-	const theme = useSelector(state => state?.theme);
+	const theme = useAppSelector(state => state?.theme);
 
 	const getStyle = (obj) => {
 		if (rowStyle?.condition && rowStyle?.condition(obj)) {
@@ -268,8 +268,4 @@ const ASABTable = ({
 	</Table>
 );
 
-const mapStateToProps = (state) => ({
-	theme: state.theme
-});
-
-export default connect(mapStateToProps)(ASABTable);
+export default ASABTable;
