@@ -79,6 +79,63 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	*/
 
 	// Method to update advanced single value filter
+// Method to update advanced single value filter
+	const updateRangeValueFilter = (field, value) => {
+		console.log('updateRangeValueFilter', field	);
+		// Если field - объект (новый формат)
+		if (typeof field === 'object' && field !== null) {
+			const { sc, ec, timestamp, startDate, endDate } = field;
+			const timestampSuffix = timestamp ? `_${timestamp}` : '';
+
+			if (!disableParams) {
+				let updatedSearchParams = new URLSearchParams();
+				// Сохраняем все существующие параметры, кроме тех, которые начинаются с rsc__ или rec__
+				searchParams.forEach((value, key) => {
+					if (!key.startsWith('rsc') && !key.startsWith('rec')) {
+						updatedSearchParams.append(key, value);
+					}
+				});
+
+				updateLimit("decrease", updatedSearchParams);
+				updatedSearchParams.set("p", 1);
+
+				// Добавляем новые параметры диапазона
+				if (startDate !== undefined) {
+					updatedSearchParams.set(`rsc${timestampSuffix}`, startDate);
+				}
+				if (endDate !== undefined) {
+					updatedSearchParams.set(`rec${timestampSuffix}`, endDate);
+				}
+
+				setSearchParams(updatedSearchParams);
+			} else {
+				setStateParams(prevState => {
+					let updatedState = {};
+					// Сохраняем все существующие параметры, кроме тех, которые начинаются с rsc__ или rec__
+					Object.keys(prevState).forEach(key => {
+						if (!key.startsWith('rsc') && !key.startsWith('rec')) {
+							updatedState[key] = prevState[key];
+						}
+					});
+
+					updateStateLimit("decrease", updatedState);
+					updatedState['p'] = 1;
+
+					// Добавляем новые параметры диапазона
+					if (startDate !== undefined) {
+						updatedState[`rsc${timestampSuffix}`] = startDate;
+					}
+					if (endDate !== undefined) {
+						updatedState[`rec${timestampSuffix}`] = endDate;
+					}
+
+					return updatedState;
+				});
+			}
+		}
+	};
+
+	// Method to update advanced single value filter
 	const updateSingleValueFilter = (field, value) => {
 		// Add/replace value
 		if (!disableParams) {
@@ -283,6 +340,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 
 	// Method to get the current filter fields based on a given key
 	const getFilterField = (key) => {
+		console.log(filterFieldsRef.current, key)
 		return filterFieldsRef.current[key];
 	};
 
@@ -314,6 +372,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		getAllParams,
 		setParams,
 		removeParam,
+		updateRangeValueFilter,
 		updateSingleValueFilter,
 		updateMultiValueFilter,
 		clearMultiValueFilter,

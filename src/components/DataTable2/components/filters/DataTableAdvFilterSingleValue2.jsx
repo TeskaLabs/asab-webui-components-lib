@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
 	Dropdown, DropdownToggle, DropdownItem, DropdownMenu
@@ -10,7 +9,6 @@ import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	const { updateSingleValueFilter, setFilterField } = useDataTableContext();
-	const { t } = useTranslation();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
 
