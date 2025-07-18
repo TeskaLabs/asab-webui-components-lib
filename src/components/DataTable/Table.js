@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import ReactJsonView from '@microlink/react-json-view'
 import { Table } from 'reactstrap';
-import { useAppSelector } from 'asab_webui_shell';
+import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 import { DateTime } from '../DateTime/absolute/DateTime.jsx';
 

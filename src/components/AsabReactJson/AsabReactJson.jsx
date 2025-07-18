@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactJsonView from '@microlink/react-json-view'
-import { useAppSelector } from 'asab_webui_shell';
+import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 /*
 	Props to pass on for AsabReactJson:
