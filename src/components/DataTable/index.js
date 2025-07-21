@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 import {
 	Card, Row, Col,
@@ -39,7 +39,7 @@ export function DataTable ({
 	const timeoutRef = useRef(null);
 	const [countDigit, setCountDigit] = useState(1);
 
-	const advMode = useSelector(state => state.advmode.enabled);
+	const advMode = useAppSelector(state => state.advmode.enabled);
 
 	const { t } = useTranslation();
 
