@@ -22,13 +22,20 @@ export function getAppStoreDispatch() {
 	return globalDispatch;
 }
 
+// Singleton reference for getting the state within classes (outside of React)
+let globalState = null;
+export function getAppStoreState() {
+	return globalState;
+}
+
 // App store
 export function AppStoreProvider({ children }) {
 	const reducers = getReducers();
 	const initialState = getInitialStates();
 	const [state, dispatch] = useReducer(combineReducers(reducers), initialState);
-	// Set the global dispatch reference
+	// Set the global dispatch and state references
 	globalDispatch = dispatch;
+	globalState = state;
 
 	return (
 		<AppStoreContext.Provider value={{ state, dispatch }}>
