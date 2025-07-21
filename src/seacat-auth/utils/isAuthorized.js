@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../components/Context/store/AppStore.jsx'; // TODO: change import when separated from asab-webui-components-lib
 
 /*
 This component validates if the resource is suitable or not to grant access to parts of the application. If the isAuthorized returns true, the resource is valid.
@@ -16,7 +16,7 @@ Usage:
 */
 
 export function isAuthorized(resourcesArray) {
-	const resources = useSelector(state => state.auth?.resources || []);
+	const resources = useAppSelector(state => state.auth?.resources || []);
 
 	return resources.includes('authz:superuser') || resourcesArray.some(resource => resources.includes(resource));
 }

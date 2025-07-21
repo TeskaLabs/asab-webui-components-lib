@@ -27,12 +27,11 @@ import { ControlledSwitch } from './utils/ControlledSwitch/ControlledSwitch';
 
 	Example:
 
-	import { ControlledSwitchWithAuthz } from 'asab_webui_components';
-	import { useSelector } from 'react-redux';
+	import { ControlledSwitchWithAuthz, useAppSelector } from 'asab_webui_components';
 
 	...
 
-	const resources = useSelector(state => state.auth?.resources);
+	const resources = useAppSelector(state => state.auth?.resources);
 
 	...
 
