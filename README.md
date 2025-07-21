@@ -26,7 +26,6 @@ Possible imports:
 - UncontrolledSwitch
 - CellContentLoader, ChartLoader
 - DateTime, DateTimeRelative, timeToString, timeToStringRelative, useDateFNSLocale
-- TreeMenuCard, formatIntoLeafFolderTree, removeTreeContent, formatIntoTree
 - saveToLS, getFromLS, removeFromLS
 - validateAccess, validateTenantAccess, validateResourceAccess
 - ErrorHandler
@@ -36,7 +35,6 @@ Possible imports:
 - PubSubProvider, usePubSub
 - ConsoleModeButton
 - FullscreenButton
-- ConsoleCard
 - AttentionBadge
 - hexToString
 - classifyIPAddress
