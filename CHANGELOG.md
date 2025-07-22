@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.5.2
+## 25.6.1
 
 - Remove `isoCodeCountries` lookup util. This has been moved into lmio_webui_components (#40)
 
