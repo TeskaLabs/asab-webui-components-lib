@@ -1,55 +1,33 @@
-// create reusable progress bar Component, import and reuse one from reactstrap
-
-{/* <ASABProgress bar value={value} color="danger" striped />
-
-
-<ASABProgress bar value={value} color="danger" striped>
-	Honza <<< tohle je child
-</ASABProgress>
-
-.........
-
-
-import react from 'react'; 
-
-export function ASABPRogress({...props, child}) {
-	
-	return(
-		<div class="progress">
-  			<div class="progress-bar" role="progressbar" {...props}>{child}</div>
-		</div>
-	)
-} */}
- 
-
-	// // TODO: will be replaced by reusable asab-webui component
-	// const progressValue = row?.docs_found > 0 
-	// ? Math.round((row.docs_processed / row.docs_found) * 100) 
-	// : 0;
-
-	// return (
-	// 	<div className="d-flex align-items-center">
-	// 		<Progress animated color="primary" value={progressValue} className='w-100 me-2'/>
-	// 		<span style={{ width: '2.4rem', textAlign: 'right' }}>{progressValue}%</span>
-	// 	</div>
-	// );
-
 import React from 'react';
 import { Progress } from 'reactstrap';
 
 export function ASABProgress({
+	value = 0,
 	color = 'primary',
+	animated = true,
 	showPercentage = true,
-	children }) {
-
-	const progressValue = 0; // This should be replaced with actual logic to determine the value
+	children,
+	...props
+}) {
+	// Ensure value is a number
+	let progressValue = Number(value);
+	if (!Number.isFinite(progressValue)) {
+		progressValue = 0;
+	}
+	progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100)); // Clamp between 0-100 & round to nearest integer
 
 	return (
 		<div className="d-flex align-items-center">
-			<Progress animated color={color} value={progressValue} className='w-100 me-2'>
+			<Progress
+				animated={animated}
+				color={color}
+				value={progressValue}
+				className={`w-100 ${showPercentage && 'me-2'}`}
+				{...props}
+			>
 				{children}
 			</Progress>
-			{showPercentage && 
+			{showPercentage &&
 				<span style={{ width: '2.4rem', textAlign: 'right' }}>
 					{progressValue}%
 				</span>
