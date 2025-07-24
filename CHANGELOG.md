@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.6.1
+
+- Remove `isoCodeCountries` lookup util. This has been moved into lmio_webui_components (#40)
+
 ## 25.5.1
 
 - Remove TreeMenu and Console component. This has been moved into lmio_webui_components (#39)

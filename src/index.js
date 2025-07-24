@@ -30,7 +30,6 @@ export { AdvancedCard } from './components/AdvancedCard/AdvancedCard.jsx';
 export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
-export { isoCodeCountries } from './utils/lookups/isoCodeCountries.js';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
 
