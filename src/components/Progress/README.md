@@ -5,7 +5,7 @@
 ## Usage
 
 ```jsx
-import { ASABProgress} from 'asab_webui_components';
+import { ASABProgress } from 'asab_webui_components';
 
 return <ASABProgress value={progressValue}/>
 ```
