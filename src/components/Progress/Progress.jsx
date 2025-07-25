@@ -1,6 +1,8 @@
 import React from 'react';
 import { Progress } from 'reactstrap';
 
+import './Progress.scss';
+
 export function ASABProgress({
 	value = 0,
 	color = 'primary',
@@ -15,10 +17,11 @@ export function ASABProgress({
 	if (!Number.isFinite(progressValue)) {
 		progressValue = 0;
 	}
-	progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100)); // Clamp between 0-100 & round to nearest integer
+	// Clamp between 0-100 & round to nearest integer
+	progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100));
 
 	return (
-		<div className="d-flex align-items-center">
+		<div className='d-flex align-items-center'>
 			<Progress
 				animated={animated}
 				color={color}
@@ -29,7 +32,7 @@ export function ASABProgress({
 				{children}
 			</Progress>
 			{showPercentage &&
-				<span style={{ width: '2.4rem', textAlign: 'right' }}>
+				<span className='progress-percentage text-end'>
 					{progressValue}%
 				</span>
 			}
