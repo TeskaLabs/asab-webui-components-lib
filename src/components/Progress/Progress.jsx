@@ -6,6 +6,7 @@ export function ASABProgress({
 	color = 'primary',
 	animated = true,
 	showPercentage = true,
+	className = '',
 	children,
 	...props
 }) {
@@ -22,7 +23,7 @@ export function ASABProgress({
 				animated={animated}
 				color={color}
 				value={progressValue}
-				className={`w-100 ${showPercentage && 'me-2'}`}
+				className={`w-100 ${showPercentage && 'me-2'} ${className}`}
 				{...props}
 			>
 				{children}
