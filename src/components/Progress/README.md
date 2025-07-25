@@ -12,7 +12,7 @@ return <ASABProgress value={progressValue}/>
 
 - for displaying without numeric value %, use `showPercentage={false}` prop
 
-- accepts {children} prop, will be displayed in the middle of "progressed" part of bar (```<Asabprogress>Child Here...</Asabprogress>```)
+- accepts {children} prop, will be displayed in the middle of "progressed" part of bar (```<ASABProgress>Child Here...</ASABProgress>```)
 
 - Invalid values handled, clamping and rounding happens in the component
 
