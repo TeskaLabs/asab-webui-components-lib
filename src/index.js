@@ -32,7 +32,7 @@ export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
-export { ASABProgress } from './components/Progress/Progress.jsx';
+export { ASABProgress } from './components/Progress/ASABProgress.jsx';
 
 // OBSOLETED COMPONENTS (Aug 2023) - don't use this in a new designs
 export { default as Pagination } from './components/DataTable/Pagination';

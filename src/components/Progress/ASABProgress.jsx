@@ -1,45 +1,53 @@
 import React from 'react';
 import { Progress } from 'reactstrap';
 
-import './Progress.scss';
+import './ASABProgress.scss';
 
 export function ASABProgress({
-	// value = 0,
-	// color = 'primary',
-	animated = true,
 	showLabel = true,
-	// className = '',
 	children,
 	...props
 }) {
 	// Handle both numeric and string values;
 	let progressValue;
-	let isNumeric = typeof value === 'number';
+	let isNumeric = typeof props.value === 'number';
+
+	// Return null if value is no a number or string
+	if (!isNumeric && typeof props.value !== 'string') {
+		return null;
+	}
 
 	if (isNumeric) {
 		// Ensure value is a number
-		progressValue = Number(value);
+		progressValue = Number(props.value);
 		if (!Number.isFinite(progressValue)) {
 			progressValue = 0;
 		}
 		// Clamp between 0-100 & round to nearest integer
 		progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100));
+	} else {
+		// For strings, show indeterminate progress
+		progressValue = 100;
 	}
+
+	console.log('ASABProgress', {
+		value: props.value,
+		progressValue,
+		isNumeric,
+	});
 
 	return (
 		<div className='d-flex align-items-center'>
 			<Progress
-				className={`w-100 ${showLabel ? 'me-2' : ''} ${className}`}
+				className={`w-100 ${showLabel ? 'me-2' : ''} ${props.className}`}
 				{...props}
-				// animated={animated}
-				// color={color}
-				// value={progressValue}
+				value={progressValue}
 			>
 				{children}
 			</Progress>
 			{showLabel &&
-				<span className='progress-percentage text-end'>
-					{progressValue}%
+				<span className='asab-progress-percentage text-end'>
+					{isNumeric ? `${progressValue}%` : props.value}
 				</span>
 			}
 		</div>
