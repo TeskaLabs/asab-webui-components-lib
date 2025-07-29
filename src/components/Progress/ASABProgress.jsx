@@ -12,7 +12,7 @@ export function ASABProgress({
 	let progressValue;
 	let isNumeric = typeof props.value === 'number';
 
-	// Return null if value is no a number or string
+	// Return null if value is not a number or string
 	if (!isNumeric && typeof props.value !== 'string') {
 		return null;
 	}
@@ -30,17 +30,11 @@ export function ASABProgress({
 		progressValue = 100;
 	}
 
-	console.log('ASABProgress', {
-		value: props.value,
-		progressValue,
-		isNumeric,
-	});
-
 	return (
 		<div className='d-flex align-items-center'>
 			<Progress
-				className={`w-100 ${showLabel ? 'me-2' : ''} ${props.className}`}
 				{...props}
+				className={`w-100 ${showLabel ? 'me-2' : ''} ${props.className || ''}`}
 				value={progressValue}
 			>
 				{children}
