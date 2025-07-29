@@ -1,0 +1,45 @@
+.container {
+  overflow: hidden;
+}
+
+.status-card {
+  height: 80%;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.status-card-body {
+  display: flex;
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  text-align: center;
+}
+
+.status-row {
+  justify-content: center;
+}
+
+.status-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-img-wrapper {
+  max-width: 15rem;
+  height: auto;
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.status-card-title, .status-card-text {
+  padding-top: 1rem;
+}
+
