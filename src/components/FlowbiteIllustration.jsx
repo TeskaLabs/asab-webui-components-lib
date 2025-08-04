@@ -8,15 +8,26 @@ export const FlowbiteIllustration = ({
 	title = '',
 	basePath = '/media/illustrations',
 }) => {
+	// Sanitize the basePath to prevent path traversal
+	const sanitizedBasePath = basePath
+		?.replace(/\.\./g, '') // Remove path traversal attempts
+		?.replace(/\/+/g, '/') // Replace multiple slashes with single slash
+		?.replace(/\/$/, ''); // Remove trailing slash
+
 	// Sanitize the name to prevent path traversal and ensure valid filename
 	const sanitizedName = name
 		?.replace(/[^a-zA-Z0-9\-_]/g, '') // Only allow alphanumeric, hyphens, underscores
 		?.toLowerCase(); // Normalize to lowercase
 
-if (!sanitizedName) {
-	console.warn(`Invalid or empty illustration name: '${name}'`);
-	return null;
-}	
+	if (!sanitizedBasePath) {
+		console.warn(`Invalid base path: '${basePath}'`);
+		return null;
+	}
+
+	if (!sanitizedName) {
+		console.warn(`Invalid or empty illustration name: '${name}'`);
+		return null;
+	}	
 
 	const illustrationSrc = `${basePath}/${sanitizedName}.svg`;
 
