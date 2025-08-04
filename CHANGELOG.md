@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.6.3
+
+- Add `FlowbiteIllustration.jsx` component to handle rendering of illustrations on informational screens (#41)
+
 ## 25.6.2
 
 - Increase defensiveness in DataTable2 when rows are of unsupported type (#44)
