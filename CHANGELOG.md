@@ -2,7 +2,7 @@
 
 ## 25.6.3
 
-- Add `FlowbiteIllustration.jsx` component to handle rendering of illustrations on informational screens (#41)
+- Add `FlowbiteIllustration.jsx` component to handle rendering of illustrations on informational screens (#45)
 
 ## 25.6.2
 
