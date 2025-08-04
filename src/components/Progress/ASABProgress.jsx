@@ -8,27 +8,22 @@ export function ASABProgress({
 	children,
 	...props
 }) {
-	// Handle both numeric and string values;
-	let progressValue;
-	let isNumeric = typeof props.value === 'number';
+	// Value has to be present and numeric
+	let progressValue = props?.value;
 
-	// Return null if value is not a number or string
-	if (!isNumeric && typeof props.value !== 'string') {
+	// Early return if not a number
+	if (!(typeof progressValue === 'number')) {
 		return null;
-	}
+	}  
 
-	if (isNumeric) {
-		// Ensure value is a number
-		progressValue = Number(props.value);
-		if (!Number.isFinite(progressValue)) {
-			progressValue = 0;
-		}
-		// Clamp between 0-100 & round to nearest integer
-		progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100));
-	} else {
-		// For strings, show indeterminate progress
-		progressValue = 100;
+	// Handle non-finite numbers (Infinity, -Infinity, NaN)
+	if (!Number.isFinite(progressValue)) {
+		progressValue = 0;
 	}
+	
+	// Clamp between 0-100 & round to nearest integer
+	progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100));
+	
 
 	return (
 		<div className='d-flex align-items-center'>
@@ -41,7 +36,7 @@ export function ASABProgress({
 			</Progress>
 			{showLabel &&
 				<span className='asab-progress-percentage text-end'>
-					{isNumeric ? `${progressValue}%` : props.value}
+					{`${progressValue}%`}
 				</span>
 			}
 		</div>
