@@ -14,13 +14,13 @@ export function ASABProgress({
 	// Early return if not a number
 	if (!(typeof progressValue === 'number')) {
 		return null;
-	}  
+	}
 
 	// Handle non-finite numbers (Infinity, -Infinity, NaN)
 	if (!Number.isFinite(progressValue)) {
 		progressValue = 0;
 	}
-	
+
 	// Clamp between 0-100 & round to nearest integer
 	progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100));
 	
