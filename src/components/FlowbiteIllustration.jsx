@@ -13,11 +13,12 @@ export const FlowbiteIllustration = ({
     const illustrationSrc = `${basePath}/${name}.svg`;
 
     return (
-        <div className={className}>
+        <div className='text-center'>
             <img 
                 src={illustrationSrc}
                 alt={title || `${name} illustration`}
                 title={title}
+				className={className}
                 style={{ 
                     width, 
                     height,
