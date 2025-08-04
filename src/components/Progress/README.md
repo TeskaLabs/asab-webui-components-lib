@@ -16,4 +16,4 @@ return <ASABProgress value={progressValue}/>
 
 - Invalid values handled, clamping and rounding happens in the component
 
-- Uses Reactstrap's Progress, accepts same props
+- Uses Reactstrap's Progress, accepts same props ([documentation here](https://reactstrap.github.io/?path=/docs/components-progress--progress))
