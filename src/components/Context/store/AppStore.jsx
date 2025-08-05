@@ -32,12 +32,22 @@ export function AppStoreProvider({ children, app }) {
 	);
 }
 
+// App store hook
 export function useAppStore() {
+	/*
+		Returns provider context i.e. dispatch
+		const { dispatch } = useAppStore();
+	*/
 	return useContext(AppStoreContext);
 }
 
 // App store selector
 export function useAppSelector(selector) {
+	/*
+		Returns provider context state
+
+		const myState = useAppSelector(state => state.myState);
+	*/
 	const { state } = useAppStore();
 	return selector(state);
 }

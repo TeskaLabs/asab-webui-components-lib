@@ -2,6 +2,7 @@
 const reducers = {};
 const initialStates = {};
 
+// Register reducer
 export function registerReducer(key, reducer) {
 	/*
 		The initial state is retrieved by calling the reducer with an undefined state
@@ -12,10 +13,12 @@ export function registerReducer(key, reducer) {
 	initialStates[key] = initialState;
 }
 
+// Get reducers
 export function getReducers() {
 	return { ...reducers };
 }
 
+// Get initial states in AppStore
 export function getInitialStates() {
 	return { ...initialStates };
 }
