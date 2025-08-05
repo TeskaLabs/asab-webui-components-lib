@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const FlowbiteIllustration = ({
 	name,
 	className = '', 
-	width = '300px',
-	height = 'auto',
 	title = '',
 	basePath = '/media/illustrations',
+	height,
 }) => {
+	const [hasError, setHasError] = useState(false);
+
 	// Sanitize the basePath to prevent path traversal
 	const sanitizedBasePath = basePath
 		?.replace(/\.\./g, '') // Remove path traversal attempts
@@ -31,20 +32,22 @@ export const FlowbiteIllustration = ({
 
 	const illustrationSrc = `${basePath}/${sanitizedName}.svg`;
 
+	const containerStyle = hasError ? { height : 0 } : ( height ? { height } : {});
+
 	return (
-		<div className='text-center'>
+		<div className='text-center' style={containerStyle}>
 			<img 
 				src={illustrationSrc}
 				alt={title || `${name} illustration`}
 				title={title}
 				className={className}
 				style={{ 
-					width, 
-					height,
-					maxWidth: '100%',
+					width: '100%',
+					height: '100%',
 				}}
 				onError={(e) => {
 					console.warn(`Illustration '${name}' failed to load from ${illustrationSrc}`);
+					setHasError(true);
 					e.target.style.display = 'none';
 				}}
 			/>
