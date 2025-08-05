@@ -54,11 +54,9 @@
 		"react-dom": "^19.0.0",
 		"react-i18next": "^11.8.12",
 		"@microlink/react-json-view": "^1.26.2",
-		"react-redux": "^7.2.0",
 		"react-router": "^6.16.0",
 		"react-router-dom": "^6.16.0",
 		"react-simple-tree-menu": "^1.1.18",
-		"reactstrap": "^9.2.0",
-		"redux": "^4.0.5"
+		"reactstrap": "^9.2.0"
 	}
 }
