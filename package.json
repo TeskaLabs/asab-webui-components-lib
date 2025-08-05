@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "25.4.3",
+	"version": "25.6.2",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -56,7 +56,6 @@
 		"@microlink/react-json-view": "^1.26.2",
 		"react-router": "^6.16.0",
 		"react-router-dom": "^6.16.0",
-		"react-simple-tree-menu": "^1.1.18",
 		"reactstrap": "^9.2.0"
 	}
 }
