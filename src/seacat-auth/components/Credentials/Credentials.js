@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '../../../components/Context/store/AppStore.jsx'; // TODO: change import when separated from asab-webui-components-lib
 import { LinkWithAuthz } from '../LinkWithAuthz';
 import { matchCredentialId } from '../../utils/fetchAndStoreCredentials';
 
@@ -21,7 +20,7 @@ export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 
 		return '';
 	}
 
-	const resources = useAppSelector(state => state?.auth?.resources);
+	const resources = app.AppStore?.state?.auth?.resources || [];
 	const resource = 'seacat:credentials:access'; // Resource required to access the Credentials List Screen
 
 	// Validation on props.app
