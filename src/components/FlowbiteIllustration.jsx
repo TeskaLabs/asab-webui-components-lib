@@ -48,7 +48,6 @@ export const FlowbiteIllustration = ({
 	const illustrationSrc = `${basePath}/${sanitizedName}.svg`;
 
 	return (
-		<div className='text-center' style={containerStyle}>
 			<img 
 				src={illustrationSrc}
 				alt={title || `${name} illustration`}
@@ -59,6 +58,5 @@ export const FlowbiteIllustration = ({
 					e.target.style.display = 'none';
 				}}
 			/>
-		</div>
 	);
 };
