@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.6.3
+
+- Add `ASABProgress` reusable component / progress bar (#43)
+
 ## 25.6.2
 
 - Increase defensiveness in DataTable2 when rows are of unsupported type (#44)
