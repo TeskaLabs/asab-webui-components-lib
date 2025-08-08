@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 /**
  * FlowbiteIllustration - Secure SVG illustration component
@@ -10,42 +10,47 @@ import React, { useState } from 'react';
  * 
  * Props:
  * @param {string} name - SVG filename (required, alphanumeric/hyphens/underscores only)
- * currently, we have: [ access, error, invite, unauthorized ]
+ * Available options:
+ * - 'access'
+ * - 'error'
+ * - 'invite'
+ * - 'unauthorized'
  * @param {string} className - CSS classes for img element
  * @param {string} title - Accessibility title
  * @param {string} basePath - Base directory (default: '/media/illustrations')
  * 
  * Usage:
- * <FlowbiteIllustration name="welcome" height="300px" />
+ * <FlowbiteIllustration name="unauthorized" className="pb-4" title={t("UnauthorizedAccessScreen|Unauthorized access")}/>
  */
 export const FlowbiteIllustration = ({
-    name,
-    className = '', 
-    title = '',
-    basePath = '/media/illustrations',
+	name,
+	className = '', 
+	title = '',
+	basePath,
 }) => {
-	// Sanitize the basePath to prevent path traversal
-	const sanitizedBasePath = basePath
-		?.replace(/\.\./g, '') // Remove path traversal attempts
-		?.replace(/\/+/g, '/') // Replace multiple slashes with single slash
-		?.replace(/\/$/, ''); // Remove trailing slash
 
-	if (!sanitizedBasePath) {
-		console.warn(`Invalid base path: '${basePath}'`);
+	if(!name || typeof name !== 'string') {
+		console.warn(`Invalid illustration name: '${name}'`);
 		return null;
 	}
 
-	// Sanitize the name to prevent path traversal and ensure valid filename
-	const sanitizedName = name
-		?.replace(/[^a-zA-Z0-9\-_]/g, '') // Only allow alphanumeric, hyphens, underscores
-		?.toLowerCase();
+	let path = '/media/illustrations';
 
-	if (!sanitizedName) {
-		console.warn(`Invalid or empty illustration name: '${name}'`);
-		return null;
-	}	
+	if (basePath) {
+		// Sanitize the basePath to prevent path traversal
+		path = basePath
+			?.replace(/\.\./g, '') // Remove path traversal attempts
+			?.replace(/\/+/g, '/') // Replace multiple slashes with single slash
+			?.replace(/\/$/, ''); // Remove trailing slash
 
-	const illustrationSrc = `${basePath}/${sanitizedName}.svg`;
+			if (!path) {
+				console.warn(`Invalid base path: '${path}'`);
+				return null;
+			}
+	}
+
+
+	const illustrationSrc = `${path}/${name}.svg`;
 
 	return (
 			<img 
