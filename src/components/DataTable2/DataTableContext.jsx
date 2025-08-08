@@ -12,6 +12,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
+	const customPillRef = useRef({})
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -289,11 +290,21 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	// Method to set filter fields in filterFieldsRef
 	const setFilterField = (obj) => {
 		const fields = Object.entries(obj)[0];
-		// Check and only add field if it doesnt exist
+		// Check and only add field if it doesn't exist
 		if (!filterFieldsRef.current[fields[0]]) {
 			filterFieldsRef.current[fields[0]] = fields[1];
 		}
 	};
+
+	const getCustomPill = (key) => {
+		const field = getFilterField(key)
+		return customPillRef.current[field];
+	}
+
+	const setCustomPill = (pill, field) => {
+		// todo: проверить, что я не добавлю это 100 раз. Только 1 раз. pill должен иметь уникльный id/ это будет обьект сформировать обьект с field
+		customPillRef.current.push(pill);
+	}
 
 	// Inner method to update search params
 	const _updateSearchParams = (searchParams, params) => {
@@ -323,6 +334,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		serializeParams,
 		getFilterField,
 		setFilterField,
+		setCustomPill,
+		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params
 	}), [searchParams, stateParams]);
 
