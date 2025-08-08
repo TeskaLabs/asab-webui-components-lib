@@ -13,6 +13,7 @@ export function ASABProgress({
 
 	// Early return if not a number
 	if (!(typeof progressValue === 'number')) {
+		console.warn('ASABProgress not rendered due to an invalid value');
 		return null;
 	}
 
@@ -23,7 +24,6 @@ export function ASABProgress({
 
 	// Clamp between 0-100 & round to nearest integer
 	progressValue = Math.round(Math.min(Math.max(progressValue, 0), 100));
-	
 
 	return (
 		<div className='d-flex align-items-center'>
@@ -34,11 +34,11 @@ export function ASABProgress({
 			>
 				{children}
 			</Progress>
-			{showLabel &&
-				<span className='asab-progress-percentage text-end'>
+			{showLabel
+				&& <span className='asab-progress-percentage text-end'>
 					{`${progressValue}%`}
 				</span>
 			}
 		</div>
 	);
-};
+}

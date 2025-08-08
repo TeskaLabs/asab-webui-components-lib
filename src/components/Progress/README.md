@@ -10,7 +10,7 @@ import { ASABProgress } from 'asab_webui_components';
 return <ASABProgress value={progressValue}/>
 ```
 
-- for displaying without numeric value %, use `showPercentage={false}` prop
+- for displaying without numeric value %, use `showLabel={false}` prop
 
 - accepts {children} prop, will be displayed in the middle of "progressed" part of bar (`<ASABProgress>Child Here...</ASABProgress>`)
 
