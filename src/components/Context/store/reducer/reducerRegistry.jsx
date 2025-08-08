@@ -9,6 +9,13 @@ export function registerReducer(key, reducer) {
 		This can be handled because of default `state = initialState` pattern in the reducers
 	*/
 	const initialState = reducer(undefined, { type: '@@ASAB_APP_STORE/INIT_STATE' }); // @@ASAB_APP_STORE/INIT_STATE type used to avoid any potential reducer type collision
+
+	// Avoid overriding the reducer
+	if (reducers[key]) {
+		console.warn(`${key}: reducer already registered.`);
+		return;
+	}
+
 	reducers[key] = reducer;
 	initialStates[key] = initialState;
 }
