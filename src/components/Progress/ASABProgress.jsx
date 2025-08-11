@@ -34,7 +34,8 @@ export function ASABProgress({
 			>
 				{children}
 			</Progress>
-			{showLabel
+			{/* show label only when there is no children */}
+			{showLabel && !children
 				&& <span className='asab-progress-percentage text-end'>
 					{`${progressValue}%`}
 				</span>
