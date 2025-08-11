@@ -2,12 +2,12 @@ import React from 'react';
 
 /**
  * FlowbiteIllustration - Secure SVG illustration component
- * 
+ *
  * Features:
  * - Path traversal protection (sanitizes basePath and name)
  * - Graceful error handling (collapses to 0 height on load failure) and displays nothing
  * - Maintains aspect ratio when height is specified
- * 
+ *
  * Props:
  * @param {string} name - SVG filename (required, alphanumeric/hyphens/underscores only)
  * Available options:
@@ -18,13 +18,13 @@ import React from 'react';
  * @param {string} className - CSS classes for img element
  * @param {string} title - Accessibility title
  * @param {string} basePath - Base directory (default: '/media/illustrations')
- * 
+ *
  * Usage:
  * <FlowbiteIllustration name="unauthorized" className="pb-4" title={t("UnauthorizedAccessScreen|Unauthorized access")}/>
  */
 export const FlowbiteIllustration = ({
 	name,
-	className = '', 
+	className = '',
 	title = '',
 	basePath,
 }) => {
@@ -34,26 +34,28 @@ export const FlowbiteIllustration = ({
 		return null;
 	}
 
-	let path = '/media/illustrations';
+	const sanitize = (basePath, defaultValue) => {
+		if (!basePath) return defaultValue;
 
-	if (basePath) {
-		// Sanitize the basePath to prevent path traversal
-		path = basePath
+		const p = basePath
 			?.replace(/\.\./g, '') // Remove path traversal attempts
 			?.replace(/\/+/g, '/') // Replace multiple slashes with single slash
 			?.replace(/\/$/, ''); // Remove trailing slash
 
-			if (!path) {
-				console.warn(`Invalid base path: '${path}'`);
-				return null;
+			if (!p) {
+				console.warn(`Invalid base path: '${p}', returning defaultValue`);
+				return defaultValue;				
 			}
-	}
 
+			return p;
+	};
+
+	const path = sanitize (basePath, '/media/illustrations');
 
 	const illustrationSrc = `${path}/${name}.svg`;
 
 	return (
-			<img 
+			<img
 				src={illustrationSrc}
 				alt={title || `${name} illustration`}
 				title={title}
