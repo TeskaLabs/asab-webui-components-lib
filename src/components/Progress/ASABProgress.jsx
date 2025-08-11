@@ -29,7 +29,7 @@ export function ASABProgress({
 		<div className='d-flex align-items-center'>
 			<Progress
 				{...props}
-				className={`w-100 ${showLabel ? 'me-2' : ''} ${props.className || ''}`}
+				className={`w-100 ${showLabel && !children ? 'me-2' : ''} ${props.className || ''}`}
 				value={progressValue}
 			>
 				{children}
