@@ -1,8 +1,5 @@
 .result-card {
 	width: 50%;
-	position: absolute;
-	top: 20%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	margin: 4rem auto 0;
 	border: 1px solid var(--bs-primary);
 }
