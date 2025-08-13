@@ -11,7 +11,7 @@ export function ResultCard({ body, status = 'success' }) {
 			case 'success':
 				return 'bi-check-circle-fill text-success';
 			case 'warning':
-				return 'bi-cone-striped text-warning';
+				return 'bi-exclamation-circle-fill text-warning';
 			case 'error':
 				return 'bi-exclamation-triangle-fill text-danger';
 			default:
