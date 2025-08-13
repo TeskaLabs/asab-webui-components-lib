@@ -2,8 +2,8 @@
 
 ## 25.6.3
 
-- Extend functionality for ResultCard to handle more states (success, error, warning). Fix for ResultCard floating out of the screen (#46)
-
+- Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'error'`). Fix for ResultCard floating out of the screen. (#46)
+S
 ## 25.6.2
 
 - Increase defensiveness in DataTable2 when rows are of unsupported type (#44)
