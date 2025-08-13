@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 25.6.3
+
+- Extend functionality for ResultCard to handle more states (success, error, warning). Fix for ResultCard floating out of the screen (#46)
+
 ## 25.6.2
 
 - Increase defensiveness in DataTable2 when rows are of unsupported type (#44)
