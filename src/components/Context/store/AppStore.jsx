@@ -1,5 +1,5 @@
 // App store context (redux like App store)
-import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import React, { createContext, useReducer, useContext, useCallback } from 'react';
 import { getReducers, getInitialStates } from './reducer/reducerRegistry.jsx';
 
 // Method to combine reducers
@@ -18,15 +18,18 @@ const AppStoreContext = createContext();
 
 // App store
 export function AppStoreProvider({ children, app }) {
-	const reducers = getReducers();
+	// Keep the initial state from the registry at mount
 	const initialState = getInitialStates();
-	const [state, dispatch] = useReducer(combineReducers(reducers), initialState);
+	// Pulls the current reducer set on every action:
+	const reducerFn = useCallback((state, action) => {
+		return combineReducers(getReducers())(state, action);
+	}, []);
+
+	const [state, dispatch] = useReducer(reducerFn, initialState);
 
 	// Set the global dispatch and state references
-	useEffect(() => {
-		app.AppStore.dispatch = dispatch;
-		app.AppStore.state = state;
-	}, [state, dispatch])
+	app.AppStore.dispatch = dispatch;
+	app.AppStore.state = state;
 
 	return (
 		<AppStoreContext.Provider value={{ state, dispatch }}>
