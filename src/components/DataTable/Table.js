@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ReactJson from 'react-json-view';
+import ReactJsonView from '@microlink/react-json-view'
 import { Table } from 'reactstrap';
+import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 import { DateTime } from '../DateTime/absolute/DateTime.jsx';
 
@@ -51,7 +51,7 @@ const TableCell = ({
 	}
 
 	else if (header.json) cell = (
-		<ReactJson
+		<ReactJsonView
 			className="data-table-reactjson"
 			src={obj[header.key]}
 			name={false}
@@ -153,7 +153,7 @@ const TableRow = ({
 }) => {
 	const [isAdvUnwrapped, setAdvUnwrapped] = useState(false);
 	const [isSubUnwrapped, setSubUnwrapped] = useState((collapseChildren == false) ? true : false);
-	const theme = useSelector(state => state?.theme);
+	const theme = useAppSelector(state => state?.theme);
 
 	const getStyle = (obj) => {
 		if (rowStyle?.condition && rowStyle?.condition(obj)) {
@@ -240,7 +240,7 @@ const TableRow = ({
 						colSpan={category?.sublistKey ? headers.length+2 : headers.length+1}
 						className="data-table-adv-td"
 					>
-						<ReactJson
+						<ReactJsonView
 							theme={theme === 'dark' ? "chalk" : "rjv-default"}
 							src={obj}
 							name={false}
@@ -268,8 +268,4 @@ const ASABTable = ({
 	</Table>
 );
 
-const mapStateToProps = (state) => ({
-	theme: state.theme
-});
-
-export default connect(mapStateToProps)(ASABTable);
+export default ASABTable;

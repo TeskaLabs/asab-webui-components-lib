@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "25.6.2",
+	"version": "26.1.1",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -50,14 +50,12 @@
 		"bootstrap-icons": "^1.10.5",
 		"date-fns": "^2.30.0",
 		"i18next": "^20.3.5",
-		"react": "^17.0.0",
-		"react-dom": "^17.0.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
 		"react-i18next": "^11.8.12",
-		"react-json-view": "^1.21.3",
-		"react-redux": "^7.2.0",
+		"@microlink/react-json-view": "^1.26.2",
 		"react-router": "^6.16.0",
 		"react-router-dom": "^6.16.0",
-		"reactstrap": "^9.2.0",
-		"redux": "^4.0.5"
+		"reactstrap": "^9.2.0"
 	}
 }
