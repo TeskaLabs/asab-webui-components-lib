@@ -351,26 +351,6 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 		}
 	}, [watchParams]);
 
-	// Get credentials id from localstorage
-	function getCredentialsIdFromLS () {
-		let ls;
-		if (localStorage) {
-			try {
-				ls = JSON.parse(localStorage.getItem('Credentials'));
-			} catch (e) {
-				/*Ignore*/
-			}
-		}
-		return ls ? ls?.credentials : [];
-	}
-
-	// Getting a username if the value matches the credentials id
-	function getUsernameOrValue(valueArray) {
-		const value = Array.isArray(valueArray) ? valueArray[0] : valueArray;
-		const found = getCredentialsIdFromLS().find(item => item.id === value);
-		return found?.username || value;
-	}
-
 	return(
 		displayPillArea &&
 		<div className="datatable-cardpill-area" style={{minHeight: rowHeight}}>
