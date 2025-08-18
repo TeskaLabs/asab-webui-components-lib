@@ -65,6 +65,13 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			const ret = await loader({ params, loaderParams, setRows, setCount });
 			if (ret != undefined) {
 				const { count, rows } = ret;
+				// Validation on rows type. If not an array, it will fallback to the defaults.
+				if (!Array.isArray(rows)) {
+					setRows([]);
+					setCount(0);
+					app.addAlert('danger', t('General|Failed to load rows to the data table. Rows are of unsupported type {{type}}.', { type: typeof rows }));
+					return;
+				}
 				setRows(rows);
 				setCount(count);
 			}
