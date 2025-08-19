@@ -9,7 +9,9 @@ export function DataTableAdvCustomFilter({ field, content, customPill }) {
 	// Update filterFields in DataTable context
 	useEffect(() => {
 		setFilterField(field);
-		setCustomPill(customPill, field)
+		const fieldKey = Object.keys(field)[0];
+		setCustomPill(customPill, fieldKey);
+
 	},[]);
 
 	// Transferring a function to the custom content for correct filter assignment
