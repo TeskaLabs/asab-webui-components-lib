@@ -12,7 +12,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
-	const customPillRef = useRef({})
+	const customPillRef = useRef({});
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -297,15 +297,36 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	};
 
 	const getCustomPill = (key) => {
-		const field = getFilterField(key)
-		return customPillRef.current[field];
+		// Получаем field по ключу (key.substring(1) если ключ начинается с 'a')
+		// const fieldKey = key.startsWith('a') ? key.substring(1) : key;
+		const field = getFilterField(key);
+
+		// Если field - это объект (как в вашем примере {'responder': 'Responder'})
+		// то берем первый ключ из объекта
+		// const actualField = typeof field === 'object' ? Object.keys(field)[0] : field;
+		//
+		// console.log(`Getting custom pill for field: ${actualField}`, customPillRef.current);
+
+		// Возвращаем компонент или null если не найден
+		return customPillRef.current?.[key] || null;
 	}
 
 	const setCustomPill = (pill, field) => {
-		// todo: проверить, что я не добавлю это 100 раз. Только 1 раз. pill должен иметь уникльный id/ это будет обьект сформировать обьект с field
-		customPillRef.current.push(pill);
-	}
+		// console.log(customPillRef.current, 'customPill ref before');
 
+		// Инициализируем current как объект, если он пустой
+		if (!customPillRef.current) {
+			customPillRef.current = {};
+		}
+
+		// Добавляем pill только если field еще не существует
+		if (!customPillRef.current[field]) {
+			customPillRef.current[field] = pill;
+			// console.log(customPillRef.current, 'customPill ref after');
+		} else {
+			// console.warn(`Pill for field ${field} already exists`);
+		}
+	}
 	// Inner method to update search params
 	const _updateSearchParams = (searchParams, params) => {
 		Object.entries(params).forEach(([key, value]) => {
