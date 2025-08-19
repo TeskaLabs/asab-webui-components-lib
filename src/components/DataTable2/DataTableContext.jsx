@@ -296,37 +296,23 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		}
 	};
 
+	//  Retrieves a custom pill component by key
 	const getCustomPill = (key) => {
-		// Получаем field по ключу (key.substring(1) если ключ начинается с 'a')
-		// const fieldKey = key.startsWith('a') ? key.substring(1) : key;
-		const field = getFilterField(key);
-
-		// Если field - это объект (как в вашем примере {'responder': 'Responder'})
-		// то берем первый ключ из объекта
-		// const actualField = typeof field === 'object' ? Object.keys(field)[0] : field;
-		//
-		// console.log(`Getting custom pill for field: ${actualField}`, customPillRef.current);
-
-		// Возвращаем компонент или null если не найден
+		// Return stored pill component or null if doesn't exist
 		return customPillRef.current?.[key] || null;
 	}
 
+	// Stores or updates a custom pill component in the reference
 	const setCustomPill = (pill, field) => {
-		// console.log(customPillRef.current, 'customPill ref before');
-
-		// Инициализируем current как объект, если он пустой
+		// Initialize ref object if empty
 		if (!customPillRef.current) {
 			customPillRef.current = {};
 		}
 
-		// Добавляем pill только если field еще не существует
-		if (!customPillRef.current[field]) {
-			customPillRef.current[field] = pill;
-			// console.log(customPillRef.current, 'customPill ref after');
-		} else {
-			// console.warn(`Pill for field ${field} already exists`);
-		}
+		// Store/update the pill component for the specified field
+		customPillRef.current[field] = pill;
 	}
+
 	// Inner method to update search params
 	const _updateSearchParams = (searchParams, params) => {
 		Object.entries(params).forEach(([key, value]) => {
