@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 26.1.2
+
+- Refactor Application store with state values updated dynamically, created createStore() method for initializing the application store. (#47)
+
 ## 26.1.1
 
 - Upgrade to react v19, remove redux dependency and replace it with custom redux-like context and AppStore, replace obsoleted `react-json-view` library with `@microlink/react-json-view` (#35)
