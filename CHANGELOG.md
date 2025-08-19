@@ -2,8 +2,7 @@
 
 ## 26.1.2
 
-- Implement new `DataTableAdvCustomFilter` for `DataTable2` (#38)
-
+- Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
 
 ## 26.1.1
 
