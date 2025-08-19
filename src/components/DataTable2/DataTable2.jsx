@@ -378,7 +378,7 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 												className="bi bi-x ps-1"
 												title={t('General|Remove')}
 											/>
-											:
+										:
 											<i
 												className="bi bi-x ps-1 datatable-cardpill-icon"
 												title={t('General|Remove')}
@@ -393,7 +393,7 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 								key={`${key}${value}`}
 								className="datatable-cardpill mx-1"
 							>
-								<BadgeRenderer item={key} isLoading={isLoading} value={value}/>
+								<BadgeRenderer item={key} isLoading={isLoading} value={value} />
 							</span>
 					)
 				} else {
@@ -404,10 +404,12 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 	)
 }
 
+// Renders a filter badge with custom or default content
 function BadgeRenderer({item, value, isLoading}) {
 	const { removeSinglePill, getFilterField, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
 
+	// Get custom pill
 	const CustomBadge = getCustomPill(item.substring(1));
 
 	return (
