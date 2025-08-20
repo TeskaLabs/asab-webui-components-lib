@@ -27,12 +27,11 @@ import { UncontrolledSwitch } from './utils/UncontrolledSwitch';
 
 	Example:
 
-	import { UncontrolledSwitchWithAuthz } from 'asab_webui_components';
-	import { useSelector } from 'react-redux';
+	import { UncontrolledSwitchWithAuthz, useAppSelector } from 'asab_webui_components';
 
 	...
 
-	const resources = useSelector(state => state.auth?.resources);
+	const resources = useAppSelector(state => state.auth?.resources);
 
 	...
 
