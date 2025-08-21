@@ -42,6 +42,7 @@ Possible imports:
 - removeFileExtension
 - deepMerge
 - problemMarkers
+- AppStoreProvider, useAppStore, useAppSelector, createAppStore, registerReducer
 
 ## Documentation
 

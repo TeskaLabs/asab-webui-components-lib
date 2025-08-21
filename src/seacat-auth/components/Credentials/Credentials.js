@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { LinkWithAuthz } from '../LinkWithAuthz';
 import { matchCredentialId } from '../../utils/fetchAndStoreCredentials';
 
@@ -21,7 +20,7 @@ export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 
 		return '';
 	}
 
-	const resources = useSelector(state => state?.auth?.resources);
+	const resources = app.AppStore?.getState()?.auth?.resources || [];
 	const resource = 'seacat:credentials:access'; // Resource required to access the Credentials List Screen
 
 	// Validation on props.app

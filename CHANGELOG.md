@@ -1,9 +1,23 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.6.3
+## 26.1.4
 
 - Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'error'`). Fix for ResultCard floating out of the screen. (#46)
 S
+
+## 26.1.3
+
+- Refactor Application store with state values updated dynamically, created createAppStore() method for initializing the application store. (#47)
+- Fix issue with adding 1 month to the splang datetime conversion, causing displaying incorrect datetime (#48)
+
+## 26.1.2
+
+- Add `FlowbiteIllustration` component - use for loading illustrations into informational screens (#45)
+
+## 26.1.1
+
+- Upgrade to react v19, remove redux dependency and replace it with custom redux-like context and AppStore, replace obsoleted `react-json-view` library with `@microlink/react-json-view` (#35)
+
 ## 25.6.2
 
 - Increase defensiveness in DataTable2 when rows are of unsupported type (#44)
