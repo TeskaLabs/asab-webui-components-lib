@@ -31,8 +31,9 @@ export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
+export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';
-export { AppStoreProvider, useAppStore, useAppSelector } from './components/Context/store/AppStore.jsx';
+export { AppStoreProvider, useAppStore, useAppSelector, createAppStore } from './components/Context/store/AppStore.jsx';
 export { registerReducer } from './components/Context/store/reducer/reducerRegistry.jsx';
 
 // OBSOLETED COMPONENTS (Aug 2023) - don't use this in a new designs
