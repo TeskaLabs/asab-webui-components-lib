@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 26.1.3
+
+- Fix issue with adding 1 month to the splang datetime conversion, causing displaying incorrect datetime (#48)
+
 ## 26.1.2
 
 - Add `FlowbiteIllustration` component - use for loading illustrations into informational screens (#45)
