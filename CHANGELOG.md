@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.3
+## 26.1.4
 
 - Add `ASABProgress` reusable component / progress bar (#43)
 
