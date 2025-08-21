@@ -71,9 +71,6 @@ function splDatetimeToIso(datetime) {
 	// Microsecond extraction (bits 0-20)
 	const microsecond = Number(datetime & BigInt(0b111111111111111111111)); // 20 bits
 
-	// Adjust for zero-based month
-	month += 1;
-
 	// Check if the values are correct
 	if (
 		year < 0 || month < 1 || month > 12 ||
