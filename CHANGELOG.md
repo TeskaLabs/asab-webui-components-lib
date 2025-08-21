@@ -1,8 +1,16 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 25.6.3
+## 26.1.3
 
 - Add `ASABProgress` reusable component / progress bar (#43)
+
+## 26.1.2
+
+- Add `FlowbiteIllustration` component - use for loading illustrations into informational screens (#45)
+
+## 26.1.1
+
+- Upgrade to react v19, remove redux dependency and replace it with custom redux-like context and AppStore, replace obsoleted `react-json-view` library with `@microlink/react-json-view` (#35)
 
 ## 25.6.2
 

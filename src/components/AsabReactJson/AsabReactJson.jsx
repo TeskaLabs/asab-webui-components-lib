@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ReactJson from 'react-json-view';
-import { useSelector } from 'react-redux';
+import ReactJsonView from '@microlink/react-json-view'
+import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 /*
 	Props to pass on for AsabReactJson:
@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 // Component wraps ReactJson to handle BigInt numbers and turn them into strings
 export const AsabReactJson = ({src, ...props}) => {
-	const theme = useSelector(state => state.theme);
+	const theme = useAppSelector(state => state.theme);
 
 	// The function looks through the received data and if there is a BigInt there, it transforms it into a string
 	const convertBigIntToString = (data) => {
@@ -28,7 +28,7 @@ export const AsabReactJson = ({src, ...props}) => {
 	};
 
 	return (
-		<ReactJson
+		<ReactJsonView
 			src={convertBigIntToString((src))}
 			theme={(theme === 'dark') ? 'chalk' : 'rjv-default'}
 			{...props}
