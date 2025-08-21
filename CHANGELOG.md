@@ -2,6 +2,7 @@
 
 ## 26.1.3
 
+- Refactor Application store with state values updated dynamically, created createAppStore() method for initializing the application store. (#47)
 - Fix issue with adding 1 month to the splang datetime conversion, causing displaying incorrect datetime (#48)
 
 ## 26.1.2

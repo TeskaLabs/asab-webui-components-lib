@@ -15,6 +15,6 @@ Usage:
 */
 
 export function isAuthorized(resourcesArray, app) {
-	const resources = app?.AppStore?.state?.auth?.resources || [];
+	const resources = app?.AppStore?.getState()?.auth?.resources || [];
 	return resources.includes('authz:superuser') || resourcesArray.some(resource => resources.includes(resource));
 }
