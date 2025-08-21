@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 26.1.4
+
+- Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
+
 ## 26.1.3
 
 - Refactor Application store with state values updated dynamically, created createAppStore() method for initializing the application store. (#47)
