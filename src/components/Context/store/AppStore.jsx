@@ -78,12 +78,10 @@ const AppStoreContext = createContext();
 
 // App store
 export function AppStoreProvider({ children, app }) {
-	// Keep the initial state from the registry at mount
-	const initialState = getInitialStates();
 	// Pulls the current reducer set on every action:
 	const reducerFn = useCallback((state, action) => combineReducers(getReducers())(state, action), []);
 
-	const [state, dispatch] = useReducer(reducerFn, initialState);
+	const [state, dispatch] = useReducer(reducerFn, app.AppStore.state);
 
 	// Wrapped dispatch to update both React state and global AppStore.state
 	const wrappedDispatch = (action) => {
