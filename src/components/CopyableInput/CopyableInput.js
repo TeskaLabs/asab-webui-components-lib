@@ -48,7 +48,7 @@ export const CopyableInput = ({ value, ...props }) => {
 			/>
 			<Button
 				outline
-				title={t('CopyableInput|Copy to clipboard')}
+				title={t('General|Copy to clipboard')}
 				color='primary'
 				className='text-nowrap'
 				onClick={copyValue}
@@ -57,8 +57,8 @@ export const CopyableInput = ({ value, ...props }) => {
 					className={valueCopied ? 'bi bi-clipboard-check pe-2' : 'bi bi-clipboard pe-2'}
 				/>
 				{valueCopied
-					? t('CopyableInput|Copied!')
-					: t('CopyableInput|Copy')
+					? t('General|Copied!')
+					: t('General|Copy')
 				}
 			</Button>
 		</InputGroup>
