@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 26.1.4
+
+- Bugfix on Application store when initialState was declared twice, causing the overriding dynamically aded content with initial values (#50)
+
 ## 26.1.3
 
 - Refactor Application store with state values updated dynamically, created createAppStore() method for initializing the application store. (#47)
