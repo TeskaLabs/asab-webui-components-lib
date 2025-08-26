@@ -1,8 +1,16 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.4
+## 26.1.6
 
 - Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
+
+## 26.1.5
+
+- Add `ASABProgress` reusable component / progress bar (#43)
+
+## 26.1.4
+
+- Bugfix on Application store when initialState was declared twice, causing the overriding dynamically aded content with initial values (#50)
 
 ## 26.1.3
 
