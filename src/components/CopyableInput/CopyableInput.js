@@ -13,6 +13,17 @@ import './CopyableInput.scss';
 	Props:
 		value: Component value to be displayed and copied
 		...props: Props to pass to the InputGroup child component
+
+	Usage:
+		import { CopyableInput } from 'asab_webui_components';
+
+		const generatedUrl = 'https://example.com/somesecret?token=c29tZXNlY3JldAo';
+		...
+
+		<CopyableInput
+			value={generatedUrl}
+			className='my-2'
+		/>
 */
 export const CopyableInput = ({ value, ...props }) => {
 	const { t } = useTranslation();
@@ -37,7 +48,7 @@ export const CopyableInput = ({ value, ...props }) => {
 				setValueCopied(true);
 				if (timeoutRef.current) clearTimeout(timeoutRef.current);
 					timeoutRef.current = setTimeout(() => setValueCopied(false), 3000);
-			})
+				})
 			.catch((error) => {
 				console.error('Failed to copy input value: ', error);
 			});
