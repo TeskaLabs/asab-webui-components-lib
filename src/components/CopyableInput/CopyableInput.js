@@ -60,7 +60,7 @@ export const CopyableInput = ({ value, ...props }) => {
 				readOnly
 				value={value}
 				type='textarea'
-				className='copyable-input'
+				className='asab-copyable-input'
 			/>
 			<Button
 				outline
