@@ -1,0 +1,19 @@
+# Progress component (ASABProgress)
+
+- display progress bar with value in percents on the right (default behavior)
+
+## Usage
+
+```jsx
+import { ASABProgress } from 'asab_webui_components';
+
+return <ASABProgress value={progressValue}/>
+```
+
+- for displaying without numeric value %, use `showLabel={false}` prop
+
+- accepts {children} prop, will be displayed in the middle of "progressed" part of bar (`<ASABProgress>Child Here...</ASABProgress>`)
+
+- Invalid values handled, clamping and rounding happens in the component
+
+- Uses Reactstrap's Progress, accepts same props ([documentation here](https://reactstrap.github.io/?path=/docs/components-progress--progress))
