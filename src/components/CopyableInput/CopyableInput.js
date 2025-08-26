@@ -66,7 +66,7 @@ export const CopyableInput = ({ value, ...props }) => {
 				outline
 				title={t('General|Copy to clipboard')}
 				color='primary'
-				className='text-nowrap'
+				className='text-nowrap border'
 				onClick={copyValue}
 			>
 				<i
