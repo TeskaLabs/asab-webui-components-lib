@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
 	Button, Input, InputGroup
@@ -16,7 +16,14 @@ import './CopyableInput.scss';
 */
 export const CopyableInput = ({ value, ...props }) => {
 	const { t } = useTranslation();
-	const [valueCopied, setValueCopied] = useState(undefined);
+	const [valueCopied, setValueCopied] = useState(false);
+	const timeoutRef = useRef(null);
+
+	useEffect(() => {
+		return () => {
+			if (timeoutRef.current) clearTimeout(timeoutRef.current);
+		};
+	}, []);
 
 	// Copy the value to clipboard and change the button label for a short time as a visual feedback
 	const copyValue = () => {
@@ -28,10 +35,8 @@ export const CopyableInput = ({ value, ...props }) => {
 		navigator.clipboard.writeText(value)
 			.then(() => {
 				setValueCopied(true);
-				let timeoutId = setTimeout(() => setValueCopied(false), 3000);
-				return () => {
-					clearTimeout(timeoutId);
-				};
+				if (timeoutRef.current) clearTimeout(timeoutRef.current);
+					timeoutRef.current = setTimeout(() => setValueCopied(false), 3000);
 			})
 			.catch((error) => {
 				console.error('Failed to copy input value: ', error);
