@@ -36,6 +36,7 @@ export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';
 export { AppStoreProvider, useAppStore, useAppSelector, createAppStore } from './components/Context/store/AppStore.jsx';
 export { registerReducer } from './components/Context/store/reducer/reducerRegistry.jsx';
+export { CopyableInput } from './components/CopyableInput/CopyableInput';
 
 // OBSOLETED COMPONENTS (Aug 2023) - don't use this in a new designs
 export { default as Pagination } from './components/DataTable/Pagination';

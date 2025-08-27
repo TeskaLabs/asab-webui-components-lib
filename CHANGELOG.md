@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.6
+## 26.1.7
 
 - Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
+
+## 26.1.6
+
+- Add `CopyableInput` component (#49)
 
 ## 26.1.5
 
