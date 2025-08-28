@@ -12,6 +12,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
+	const customPillRef = useRef({}); // Ref for store obj with custom pulls with individual key access
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -289,11 +290,28 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	// Method to set filter fields in filterFieldsRef
 	const setFilterField = (obj) => {
 		const fields = Object.entries(obj)[0];
-		// Check and only add field if it doesnt exist
+		// Check and only add field if it doesn't exist
 		if (!filterFieldsRef.current[fields[0]]) {
 			filterFieldsRef.current[fields[0]] = fields[1];
 		}
 	};
+
+	//  Retrieves a custom pill component by key
+	const getCustomPill = (key) => {
+		// Return stored pill component or null if doesn't exist
+		return customPillRef.current?.[key] || null;
+	}
+
+	// Stores or updates a custom pill component in the reference
+	const setCustomPill = (pill, field) => {
+		// Initialize ref object if empty
+		if (!customPillRef.current) {
+			customPillRef.current = {};
+		}
+
+		// Store/update the pill component for the specified field
+		customPillRef.current[field] = pill;
+	}
 
 	// Inner method to update search params
 	const _updateSearchParams = (searchParams, params) => {
@@ -323,6 +341,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		serializeParams,
 		getFilterField,
 		setFilterField,
+		setCustomPill,
+		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params
 	}), [searchParams, stateParams]);
 

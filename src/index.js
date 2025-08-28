@@ -5,7 +5,7 @@ export { Renderer } from './abc/Renderer';
 export { Humanize } from './components/Humanize/index.js';
 export { default as humanizeToString } from './components/Humanize/humanizeToString.js';
 export { DataTable2, DataTableCard2, DataTableCardFooter2 } from './components/DataTable2/DataTable2.jsx';
-export { DataTableFilter2, DataTableAdvFilterSingleValue2, DataTableAdvFilterMultiValue2 } from './components/DataTable2/components/filters/index.jsx';
+export { DataTableFilter2, DataTableAdvFilterSingleValue2, DataTableAdvFilterMultiValue2, DataTableAdvCustomFilter } from './components/DataTable2/components/filters/index.jsx';
 export { Spinner } from './components/Spinner';
 export { default as ControlledSwitch } from './components/ControlledSwitch';
 export { default as UncontrolledSwitch } from './components/UncontrolledSwitch';
