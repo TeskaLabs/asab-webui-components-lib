@@ -22,7 +22,7 @@ export function ResultCard({ body, status = 'success' }) {
 	return (
 		<Card className='result-card'>
 			<CardBody className='text-center d-flex align-items-center justify-content-center'>
-				<div className='justify-content-center pb-2'>
+				<div className='justify-content-center pb-2 w-75'>
 					<i className={`pe-2 mb-3 fs-1 bi ${getIconAndColor()}`}></i>
 					<div>
 						{body}
