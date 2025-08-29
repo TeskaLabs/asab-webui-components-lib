@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useCallback, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useRef, useCallback, useLayoutEffect, useMemo } from 'react';
 
 // Create a context
 const PubSubContext = createContext();
@@ -30,7 +30,7 @@ export function PubSubProvider({ children, app }) {
 	}, []);
 
 	// Assign a publish and subscribe methods to a app object (to obtain the publish/subscribe in non-react environments)
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (app) {
 			app.PubSub = { publish, subscribe };
 		}
