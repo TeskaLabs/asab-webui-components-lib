@@ -370,7 +370,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 									key={`${key}${val}`}
 									className='datatable-cardpill mx-1'
 								>
-									<BadgeRenderer
+									<RenderBadge
 										item={key}
 										value={val}
 										isLoading={isLoading}
@@ -383,7 +383,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 								key={`${key}${value}`}
 								className='datatable-cardpill mx-1'
 							>
-								<BadgeRenderer
+								<RenderBadge
 									item={key}
 									value={value}
 									isLoading={isLoading}
@@ -399,17 +399,21 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 	)
 }
 
-// Renders a filter badge with custom or default content
-function BadgeRenderer({ item, value, isLoading, onRemove }) {
+// Render a filter badge with custom or default content
+function RenderBadge({ item, value, isLoading, onRemove }) {
 	const { getFilterField, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
 
 	// Get custom pill
 	const CustomBadge = getCustomPill(item.substring(1));
 
+	if (CustomBadge) {
+		return React.cloneElement(CustomBadge, { isLoading });
+	}
+
 	return (
 		<Badge color='primary' pill>
-			{CustomBadge ? CustomBadge : `${getFilterField(item.substring(1))}: ${value}`}
+			{`${getFilterField(item.substring(1))}: ${value}`}
 			{(isLoading == true) ?
 				<i
 					className='bi bi-x ps-1'
