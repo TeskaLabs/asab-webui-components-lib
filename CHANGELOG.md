@@ -2,8 +2,7 @@
 
 ## 26.1.7
 
-- Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'error'`). Fix for ResultCard floating out of the screen. (#46)
-S
+- Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'danger'`). Fix for ResultCard floating out of the screen. Expanded CopyableInput functionality. (#46)
 
 ## 26.1.6
 
