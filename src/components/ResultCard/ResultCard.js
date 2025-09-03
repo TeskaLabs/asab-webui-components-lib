@@ -12,7 +12,7 @@ export function ResultCard({ body, status = 'success' }) {
 				return 'bi-check-circle-fill text-success';
 			case 'warning':
 				return 'bi-exclamation-circle-fill text-warning';
-			case 'error':
+			case 'danger':
 				return 'bi-exclamation-triangle-fill text-danger';
 			default:
 				return 'bi-check-circle-fill text-success';
