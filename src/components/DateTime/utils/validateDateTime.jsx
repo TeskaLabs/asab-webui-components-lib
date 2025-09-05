@@ -12,6 +12,14 @@ export function validateDateTime(value) {
 
 	// Handle string values
 	if (typeof value === 'string') {
+		// If the string consists of only digits and the length is greater than or equal to 17, interpret it as a BigInt
+		if (/^\d+$/.test(value) && (value.length >= 17)) {
+			try {
+				return splDatetimeToIso(BigInt(value));
+			} catch {
+				return 'Invalid Date';
+			}
+		}
 		return new Date(value);
 	}
 
