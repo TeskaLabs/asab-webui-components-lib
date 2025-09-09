@@ -370,7 +370,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 									key={`${key}${val}`}
 									className='datatable-cardpill mx-1'
 								>
-									<RenderBadge
+									<DataTableBadge
 										item={key}
 										value={val}
 										isLoading={isLoading}
@@ -383,7 +383,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 								key={`${key}${value}`}
 								className='datatable-cardpill mx-1'
 							>
-								<RenderBadge
+								<DataTableBadge
 									item={key}
 									value={value}
 									isLoading={isLoading}
@@ -400,7 +400,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 }
 
 // Render a filter badge with custom or default content
-function RenderBadge({ item, value, isLoading, onRemove }) {
+function DataTableBadge({ item, value, isLoading, onRemove }) {
 	const { getFilterField, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
 
