@@ -12,10 +12,11 @@ export function validateDateTime(value) {
 
 	// Handle string values
 	if (typeof value === 'string') {
-		// If the string consists of only digits and the length is greater than or equal to 17, interpret it as a BigInt
-		if (/^\d+$/.test(value) && (value.length >= 17)) {
+		// If the string consists of only digits with optional 'n' at the end string ends with `n`
+		if (/^\d+n?$/.test(value) && value.endsWith('n')) {
 			try {
-				return splDatetimeToIso(BigInt(value));
+				// Remove the 'n' suffix before converting to BigInt
+				return splDatetimeToIso(BigInt(value.slice(0, -1)));
 			} catch {
 				return 'Invalid Date';
 			}
