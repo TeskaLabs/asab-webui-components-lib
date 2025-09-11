@@ -12,8 +12,8 @@ export function validateDateTime(value) {
 
 	// Handle string values
 	if (typeof value === 'string') {
-		// If the string consists of only digits with optional 'n' at the end string ends with `n`
-		if (/^\d+n?$/.test(value) && value.endsWith('n')) {
+		// Check if string ends with 'n' AND verify the entire string consists only of digits followed by 'n'
+		if (value.endsWith('n') && /^\d+n$/.test(value)) {
 			try {
 				// Remove the 'n' suffix before converting to BigInt
 				return splDatetimeToIso(BigInt(value.slice(0, -1)));
