@@ -33,10 +33,17 @@ import './CopyableInput.scss';
 			className='my-2'
 		/>
 */
-export const CopyableInput = ({ value, type = 'textarea', ...props }) => {
+export const CopyableInput = ({ value, type = 'text', ...props }) => {
 	const { t } = useTranslation();
 	const [valueCopied, setValueCopied] = useState(false);
 	const timeoutRef = useRef(null);
+
+	// Validate type prop
+	const allowedTypes = ['text', 'email', 'number', 'url', 'tel', 'textarea'];
+	if (!allowedTypes.includes(type)) {
+		console.warn(`CopyableInput: Invalid type "${type}". Allowed types are: ${allowedTypes.join(', ')}`);
+		return null;
+	}
 
 	useEffect(() => {
 		return () => {
