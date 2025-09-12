@@ -1,3 +1,6 @@
+// For best performance, create a regular expression only once.
+const n_digits = /^\d+n$/;
+
 export function validateDateTime(value) {
 	// Return 'Invalid Date' if the input is null or undefined
 	if (value == null) {
@@ -13,7 +16,7 @@ export function validateDateTime(value) {
 	// Handle string values
 	if (typeof value === 'string') {
 		// Check if string ends with 'n' AND verify the entire string consists only of digits followed by 'n'
-		if (value.endsWith('n') && /^\d+n$/.test(value)) {
+		if (value.endsWith('n') && n_digits.test(value)) {
 			try {
 				// Remove the 'n' suffix before converting to BigInt
 				return splDatetimeToIso(BigInt(value.slice(0, -1)));
