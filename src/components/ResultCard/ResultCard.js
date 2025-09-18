@@ -4,7 +4,7 @@ import { Card, CardBody } from 'reactstrap';
 
 import './ResultCard.scss';
 
-export function ResultCard({ body, status = 'success' }) {
+export function ResultCard({ children, status = 'success' }) {
 
 	const getIconAndColor = () => {
 		switch (status) {
@@ -25,7 +25,7 @@ export function ResultCard({ body, status = 'success' }) {
 				<div className='justify-content-center pb-2 w-75'>
 					<i className={`pe-2 mb-3 fs-1 bi ${getIconAndColor()}`}></i>
 					<div>
-						{body}
+						{children}
 					</div>
 				</div>
 			</CardBody>
