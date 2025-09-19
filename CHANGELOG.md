@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.8
+## 26.1.9
 
 - Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'danger'`). Fix for ResultCard floating out of the screen. Expanded CopyableInput functionality. (#46)
+
+## 26.1.8
+
+- Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
 
 ## 26.1.7
 
