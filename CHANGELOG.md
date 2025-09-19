@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.7
+## 26.1.8
 
 - Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
+
+## 26.1.7
+
+- Extended the condition for DateTime in `validateDateTime`, whether the string is bigint. (#53)
 
 ## 26.1.6
 
