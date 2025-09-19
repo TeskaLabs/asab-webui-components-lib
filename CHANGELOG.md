@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.7
+## 26.1.8
 
 - Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'danger'`). Fix for ResultCard floating out of the screen. Expanded CopyableInput functionality. (#46)
+
+## 26.1.7
+
+- Extended the condition for DateTime in `validateDateTime`, whether the string is bigint. (#53)
 
 ## 26.1.6
 
