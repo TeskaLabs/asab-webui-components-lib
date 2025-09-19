@@ -4,6 +4,33 @@ import { Card, CardBody } from 'reactstrap';
 
 import './ResultCard.scss';
 
+
+/*
+	Status card component that displays content with an appropriate status icon
+
+	Props:
+		children: Content to be displayed inside the card
+		status: Status type that determines the icon and color (default: 'success')
+			- 'success': Green check circle icon
+			- 'warning': Orange exclamation circle icon
+			- 'dager': Red exclamation triangle icon
+
+	Usage:
+		import { ResultCard } from 'asab_webui_components';
+
+		<ResultCard status='success'>
+			Operation completed successfully!
+		</ResultCard>
+		
+		<ResultCard status='warning'>
+			Warning: Please review the results
+		</ResultCard>
+		
+		<ResultCard status='danger'>
+			An error occurred during processing
+		</ResultCard>
+*/
+
 export function ResultCard({ children, status = 'success' }) {
 
 	const getIconAndColor = () => {
