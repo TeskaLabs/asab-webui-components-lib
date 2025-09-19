@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import { updateLimit, updateStateLimit } from './components/utils/updateTableLimit.jsx';
 

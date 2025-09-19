@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
 	Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
