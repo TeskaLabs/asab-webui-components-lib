@@ -347,9 +347,8 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 }
 
 // Renders filter pills based on data table filter params
-function DataTableCardPill2({isLoading, rowHeight}) {
-	const { getParam, watchParams, getAllParams, removeSinglePill, removeMultiPill, getFilterField } = useDataTableContext();
-	const { t } = useTranslation();
+function DataTableCardPill2({ isLoading, rowHeight }) {
+	const { getParam, watchParams, getAllParams, removeMultiPill, removeSinglePill } = useDataTableContext();
 	const displayPillArea = useMemo(() => {
 		if (getAllParams() && Object.keys(getAllParams()).some(key => key.startsWith('a'))) {
 			return true;
@@ -360,54 +359,36 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 
 	return(
 		displayPillArea &&
-		<div className="datatable-cardpill-area" style={{minHeight: rowHeight}}>
+		<div className='datatable-cardpill-area' style={{minHeight: rowHeight}}>
 			{Object.keys(getAllParams()).map((key) => {
-				if (key.startsWith("a")) {
+				if (key.startsWith('a')) {
 					const value = getParam(key, {splitBy: ','});
 					return (
 						(value.length > 1) ?
 							value.map(val => (
 								<span
 									key={`${key}${val}`}
-									className="datatable-cardpill mx-1"
+									className='datatable-cardpill mx-1'
 								>
-									<Badge color="primary" pill>
-										{`${getFilterField(key.substring(1))}: ${val}`}
-										{(isLoading == true) ?
-											<i
-												className="bi bi-x ps-1"
-												title={t('General|Remove')}
-											/>
-										:
-											<i
-												className="bi bi-x ps-1 datatable-cardpill-icon"
-												title={t('General|Remove')}
-												onClick={() => removeMultiPill(key, val)}
-											/>
-										}
-									</Badge>
+									<DataTableBadge
+										item={key}
+										value={val}
+										isLoading={isLoading}
+										onRemove={() => removeMultiPill(key, val)}
+									/>
 								</span>
 							))
 						:
 							<span
 								key={`${key}${value}`}
-								className="datatable-cardpill mx-1"
+								className='datatable-cardpill mx-1'
 							>
-								<Badge color="primary" pill>
-									{`${getFilterField(key.substring(1))}: ${value}`}
-									{(isLoading == true) ?
-										<i
-											className="bi bi-x ps-1"
-											title={t('General|Remove')}
-										/>
-									:
-										<i
-											className="bi bi-x ps-1 datatable-cardpill-icon"
-											title={t('General|Remove')}
-											onClick={() => removeSinglePill(key)}
-										/>
-									}
-								</Badge>
+								<DataTableBadge
+									item={key}
+									value={value}
+									isLoading={isLoading}
+									onRemove={() => removeSinglePill(key)}
+								/>
 							</span>
 					)
 				} else {
@@ -415,6 +396,37 @@ function DataTableCardPill2({isLoading, rowHeight}) {
 				}
 			})}
 		</div>
+	)
+}
+
+// Render a filter badge with custom or default content
+function DataTableBadge({ item, value, isLoading, onRemove }) {
+	const { getFilterField, getCustomPill } = useDataTableContext();
+	const { t } = useTranslation();
+
+	// Get custom pill
+	const CustomBadge = getCustomPill(item.substring(1));
+
+	if (CustomBadge) {
+		return React.cloneElement(CustomBadge, { isLoading });
+	}
+
+	return (
+		<Badge color='primary' pill>
+			{`${getFilterField(item.substring(1))}: ${value}`}
+			{(isLoading == true) ?
+				<i
+					className='bi bi-x ps-1'
+					title={t('General|Remove')}
+				/>
+			:
+				<i
+					className='bi bi-x ps-1 datatable-cardpill-icon'
+					title={t('General|Remove')}
+					onClick={onRemove}
+				/>
+			}
+		</Badge>
 	)
 }
 
