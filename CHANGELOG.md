@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 26.1.9
+## 26.2.1
 
 - Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'danger'`). Fix for ResultCard floating out of the screen. Expanded CopyableInput functionality. (#46)
 
