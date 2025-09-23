@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 26.2.1
+
+- Extended the seacat-auth `Credentials` component to support disabling it's inner navigation logic (#54)
+
 ## 26.1.8
 
 - Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
