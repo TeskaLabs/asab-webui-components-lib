@@ -11,9 +11,10 @@ import './Credentials.scss';
 	- app (object, required): The app configuration object containing credential module data.
 	- credentials_id (string or array, required): One or more credential IDs to display or resolve to user information.
 	- cleanupTime (number, optional): Time in milliseconds after which cached credentials can be cleared; defaults to 24 hours (1000 * 60 * 60 * 24).
+	- disableNavigation (boolean, optional): If true, renders as plain text without navigation links; defaults to false.
 */
 
-export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 * 24 }) {
+export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 * 24, disableNavigation = false }) {
 
 	// Validation on undefined credentials_id
 	if (credentials_id == undefined) {
@@ -52,26 +53,34 @@ export function Credentials({ app, credentials_id, cleanupTime = 1000 * 60 * 60 
 			{credential ? (
 				<div className='authz-credentials-link' title={credential.username || credential.id}>
 					<i className='bi bi-person pe-1' />
-					<LinkWithAuthz
-						resource={resource}
-						resources={resources}
-						to={`/auth/credentials/${credential.id}`}
-						disabled={hasSeaCatAdminModule}
-					>
-						{credential.username || credential.id}
-					</LinkWithAuthz>
+					{disableNavigation ? (
+						<span>{credential.username || credential.id}</span>
+					) : (
+						<LinkWithAuthz
+							resource={resource}
+							resources={resources}
+							to={`/auth/credentials/${credential.id}`}
+							disabled={hasSeaCatAdminModule}
+						>
+							{credential.username || credential.id}
+						</LinkWithAuthz>
+					)}
 				</div>
 			) : (
 				<div className='authz-credentials-link' title={credentials_id}>
 					<i className='bi bi-person pe-1'/>
-					<LinkWithAuthz
-						resource={resource}
-						resources={resources}
-						to={`/auth/credentials/${credentials_id}`}
-						disabled={hasSeaCatAdminModule}
-					>
-						{credentials_id}
-					</LinkWithAuthz>
+					{disableNavigation ? (
+						<span>{credentials_id}</span>
+					) : (
+						<LinkWithAuthz
+							resource={resource}
+							resources={resources}
+							to={`/auth/credentials/${credentials_id}`}
+							disabled={hasSeaCatAdminModule}
+						>
+							{credentials_id}
+						</LinkWithAuthz>
+					)}
 				</div>
 			)}
 		</>
