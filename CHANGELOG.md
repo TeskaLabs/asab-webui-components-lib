@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.1.1
+
+- Upgrade to react router v7, upgrade other "out of date" dependencies (#52)
+
 ## 26.1.8
 
 - Implement new `DataTableAdvCustomFilter` with `CustomPill` feature for `DataTable2` (#38)
