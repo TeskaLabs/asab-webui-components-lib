@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.2.1
+
+- Assign publish and subscribe methods of PubSub to a object, that it can be used in non-react environments (#51)
+
 ## 27.1.1
 
 - Upgrade to react router v7, upgrade other "out of date" dependencies (#52)
