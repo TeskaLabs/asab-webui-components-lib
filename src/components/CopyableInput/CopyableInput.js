@@ -12,6 +12,7 @@ import './CopyableInput.scss';
 
 	Props:
 		value: Component value to be displayed and copied
+		type: Input type (default: 'textarea', can be overridden with 'text', etc.)
 		...props: Props to pass to the InputGroup child component
 
 	Usage:
@@ -24,11 +25,25 @@ import './CopyableInput.scss';
 			value={generatedUrl}
 			className='my-2'
 		/>
+		
+		// Or with custom type
+		<CopyableInput
+			value={generatedUrl}
+			type='text'
+			className='my-2'
+		/>
 */
-export const CopyableInput = ({ value, ...props }) => {
+export const CopyableInput = ({ value, type = 'textarea', ...props }) => {
 	const { t } = useTranslation();
 	const [valueCopied, setValueCopied] = useState(false);
 	const timeoutRef = useRef(null);
+
+	// Validate type prop
+	const allowedTypes = ['text', 'textarea'];
+	if (!allowedTypes.includes(type)) {
+		console.warn(`CopyableInput: Invalid type "${type}". Allowed types are: ${allowedTypes.join(', ')}`);
+		return null;
+	}
 
 	useEffect(() => {
 		return () => {
@@ -59,7 +74,7 @@ export const CopyableInput = ({ value, ...props }) => {
 			<Input 
 				readOnly
 				value={value}
-				type='textarea'
+				type={type}
 				className='asab-copyable-input'
 			/>
 			<Button
