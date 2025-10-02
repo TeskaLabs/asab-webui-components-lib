@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import ReactJsonView from '@microlink/react-json-view'
 import { Table } from 'reactstrap';
