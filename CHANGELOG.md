@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.2.2
+
+- Visual fix for ASABProfress, percentage no longer breaking to new line (#55)
+
 ## 27.2.1
 
 - Extend functionality for ResultCard to handle more states. Prop `isSuccessful` has been replaced by `status` (`'success' | 'warning' | 'danger'`). Fix for ResultCard floating out of the screen. Expanded CopyableInput functionality. (#46)
