@@ -2,7 +2,14 @@ import React from 'react';
 import { Row } from 'reactstrap';
 import './Spinner.scss';
 
-export function Spinner({ color = 'primary', size = 50 }) {
+export function Spinner({ color = 'primary', size = 50, strokeWidth = 5 }) {
+	// Validate color prop
+	const allowedColors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+	if (!allowedColors.includes(color)) {
+		console.warn(`Spinner: Invalid color "${color}". Allowed colors are: ${allowedColors.join(', ')}`);
+		return null;
+	};
+
 	const colorClass = `spinner-${color}`;
 	const sizeStyle = { width: `${size}px`, height: `${size}px` };
 	
@@ -16,7 +23,7 @@ export function Spinner({ color = 'primary', size = 50 }) {
 						cy='50'
 						r='20'
 						fill='none'
-						strokeWidth='5'
+						strokeWidth={strokeWidth}
 						strokeMiterlimit='10'
 					/>
 				</svg>
