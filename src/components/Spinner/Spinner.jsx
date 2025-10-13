@@ -26,12 +26,13 @@ import './Spinner.scss';
 export function Spinner({ color = 'primary', size = 50, strokeWidth = 5 }) {
 	// Validate color prop
 	const allowedColors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+	let validatedColor = color;
 	if (!allowedColors.includes(color)) {
 		console.warn(`Spinner: Invalid color "${color}". Allowed colors are: ${allowedColors.join(', ')}`);
-		return null;
+		validatedColor = 'primary';
 	};
 
-	const colorClass = `spinner-${color}`;
+	const colorClass = `spinner-${validatedColor}`;
 	const sizeStyle = { width: `${size}px`, height: `${size}px` };
 	
 	return (
