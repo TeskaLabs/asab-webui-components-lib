@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row } from 'reactstrap';
-import './Spinner2.scss';
+import './Spinner.scss';
 
-export function Spinner2({ color = 'primary', size = 50 }) {
+export function Spinner({ color = 'primary', size = 50 }) {
 	const colorClass = `spinner-${color}`;
 	const sizeStyle = { width: `${size}px`, height: `${size}px` };
 	
