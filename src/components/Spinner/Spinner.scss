@@ -1,10 +1,5 @@
 .spinner {
 	position: relative;
-	margin: 0 auto;
-	width: 50px;
-	max-width: 50px;
-	flex-shrink: 0;
-	height: 50px;
 
 	.circular {
 		animation: rotate 2s linear infinite;
