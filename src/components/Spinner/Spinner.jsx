@@ -37,7 +37,7 @@ export function Spinner({ color = 'primary', size = 50, strokeWidth = 5 }) {
 	
 	return (
 		<Row className='loading-spinner-div justify-content-center'>
-			<div className={`spinner ${colorClass}`} style={sizeStyle}>
+			<div className={`spinner ${colorClass}`} style={sizeStyle} role='status' aria-label='Loading'>
 				<svg className='circular' viewBox='25 25 50 50'>
 					<circle
 						className='path'
