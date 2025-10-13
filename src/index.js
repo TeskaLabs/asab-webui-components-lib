@@ -7,6 +7,7 @@ export { default as humanizeToString } from './components/Humanize/humanizeToStr
 export { DataTable2, DataTableCard2, DataTableCardFooter2 } from './components/DataTable2/DataTable2.jsx';
 export { DataTableFilter2, DataTableAdvFilterSingleValue2, DataTableAdvFilterMultiValue2, DataTableAdvCustomFilter } from './components/DataTable2/components/filters/index.jsx';
 export { Spinner } from './components/Spinner';
+export { Spinner2 } from './components/Spinner2/Spinner2.jsx';
 export { default as ControlledSwitch } from './components/ControlledSwitch';
 export { default as UncontrolledSwitch } from './components/UncontrolledSwitch';
 export { CellContentLoader, ChartLoader } from './components/ContentLoader';
