@@ -1,15 +1,10 @@
-$spinner-size: 50px;
-$spinner-rotation-duration: 2s;
-$spinner-dash-duration: 1.5s;
-$spinner-stroke-width: 5;
-
 .spinner {
 	position: relative;
-	width: $spinner-size;
-	height: $spinner-size;
+	width: 50px;
+	height: 50px;
 
 	.circular {
-		@include animation(rotate $spinner-rotation-duration linear infinite);
+		@include animation(rotate 2s linear infinite);
 		@include transform-origin(center center);
 		height: 100%;
 		width: 100%;
@@ -24,7 +19,7 @@ $spinner-stroke-width: 5;
 			stroke: var(--bs-primary);
 			stroke-dasharray: 1, 200;
 			stroke-dashoffset: 0;
-			@include animation(dash $spinner-dash-duration ease-in-out infinite);
+			@include animation(dash 1.5s ease-in-out infinite);
 			stroke-linecap: round;
 		}
 	}
