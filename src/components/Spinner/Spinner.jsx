@@ -14,7 +14,7 @@ export function Spinner() {
 	
 	return (
 		<div className='d-flex justify-content-center overflow-hidden'>
-			<div className='spinner' role='status' aria-label='Loading'>
+			<div className='asab-spinner' role='status' aria-label='Loading'>
 				<svg className='circular h-100 w-100' viewBox='25 25 50 50'>
 					<circle
 						className='path'
