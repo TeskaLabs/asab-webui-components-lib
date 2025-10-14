@@ -1,10 +1,17 @@
+$spinner-size: 50px;
+$spinner-rotation-duration: 2s;
+$spinner-dash-duration: 1.5s;
+$spinner-stroke-width: 5;
+
 .spinner {
 	position: relative;
+	width: $spinner-size;
+	height: $spinner-size;
 
 	.circular {
-		animation: rotate 2s linear infinite;
+		@include animation(rotate $spinner-rotation-duration linear infinite);
+		@include transform-origin(center center);
 		height: 100%;
-		transform-origin: center center;
 		width: 100%;
 		position: absolute;
 		top: 0;
@@ -12,57 +19,63 @@
 		left: 0;
 		right: 0;
 		margin: auto;
-
+		
 		.path {
+			stroke: var(--bs-primary);
 			stroke-dasharray: 1, 200;
 			stroke-dashoffset: 0;
-			animation: dash 1.5s ease-in-out infinite;
+			@include animation(dash $spinner-dash-duration ease-in-out infinite);
 			stroke-linecap: round;
 		}
 	}
+}
 
-	// Color variants
-	&.spinner-primary .path {
-		stroke: var(--bs-primary);
+
+// SCSS Mixins for cross-browser compatibility
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content;
 	}
-
-	&.spinner-secondary .path {
-		stroke: var(--bs-secondary);
+	@-moz-keyframes #{$name} {
+		@content;
 	}
-
-	&.spinner-success .path {
-		stroke: var(--bs-success);
+	@-o-keyframes #{$name} {
+		@content;
 	}
-
-	&.spinner-danger .path {
-		stroke: var(--bs-danger);
-	}
-
-	&.spinner-warning .path {
-		stroke: var(--bs-warning);
-	}
-
-	&.spinner-info .path {
-		stroke: var(--bs-info);
-	}
-
-	&.spinner-light .path {
-		stroke: var(--bs-light);
-	}
-
-	&.spinner-dark .path {
-		stroke: var(--bs-dark);
+	@keyframes #{$name} {
+		@content;
 	}
 }
 
-// Animations
-@keyframes rotate {
+@mixin animation($value) {
+	-webkit-animation: $value;
+	-moz-animation: $value;
+	-o-animation: $value;
+	animation: $value;
+}
+
+@mixin transform($value) {
+	-webkit-transform: $value;
+	-moz-transform: $value;
+	-o-transform: $value;
+	transform: $value;
+}
+
+@mixin transform-origin($value) {
+	-webkit-transform-origin: $value;
+	-moz-transform-origin: $value;
+	-o-transform-origin: $value;
+	transform-origin: $value;
+}
+
+// Animations using mixins
+@include keyframes(rotate) {
 	100% {
-		transform: rotate(360deg);
+		@include transform(rotate(360deg));
 	}
 }
 
-@keyframes dash {
+@include keyframes(dash) {
 	0% {
 		stroke-dasharray: 1, 200;
 		stroke-dashoffset: 0;
