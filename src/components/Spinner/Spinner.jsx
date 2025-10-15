@@ -15,9 +15,8 @@ import './Spinner.scss';
 export function Spinner() {
 	
 	return (
-		<Row className='overflow-hidden'>
-			<div className='asab-spinner' role='status' aria-label='Loading'>
-				<svg className='asab-spinner circular h-100 w-100' viewBox='25 25 50 50'>
+			<div className='asab-spinner d-flex justify-content-center w-100 overflow-hidden' role='status' aria-label='Loading'>
+				<svg className='asab-spinner-circular h-100' viewBox='25 25 50 50'>
 					<circle
 						className='path'
 						cx='50'
@@ -29,6 +28,5 @@ export function Spinner() {
 					/>
 				</svg>
 			</div>
-		</Row>
 	);
 }
