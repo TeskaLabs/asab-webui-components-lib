@@ -1,4 +1,6 @@
 import React from 'react';
+import { Row } from "reactstrap";
+
 import './Spinner.scss';
 
 /*
@@ -13,9 +15,9 @@ import './Spinner.scss';
 export function Spinner() {
 	
 	return (
-		<div className='d-flex justify-content-center overflow-hidden'>
+		<Row className='overflow-hidden'>
 			<div className='asab-spinner' role='status' aria-label='Loading'>
-				<svg className='circular h-100 w-100' viewBox='25 25 50 50'>
+				<svg className='asab-spinner circular h-100 w-100' viewBox='25 25 50 50'>
 					<circle
 						className='path'
 						cx='50'
@@ -27,6 +29,6 @@ export function Spinner() {
 					/>
 				</svg>
 			</div>
-		</div>
+		</Row>
 	);
 }
