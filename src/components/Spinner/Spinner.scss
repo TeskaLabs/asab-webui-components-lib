@@ -37,7 +37,7 @@
 
 .asab-spinner {
 	position: relative;
-	// height: 4rem;
+	height: 4rem;
 
 	.asab-spinner-circular {
 		@include animation(rotate 2s linear infinite);
