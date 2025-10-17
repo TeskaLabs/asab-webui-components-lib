@@ -1,0 +1,82 @@
+// SCSS Mixins for cross-browser compatibility
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@-o-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+@mixin animation($value) {
+	-webkit-animation: $value;
+	-moz-animation: $value;
+	-o-animation: $value;
+	animation: $value;
+}
+
+@mixin transform($value) {
+	-webkit-transform: $value;
+	-moz-transform: $value;
+	-o-transform: $value;
+	transform: $value;
+}
+
+@mixin transform-origin($value) {
+	-webkit-transform-origin: $value;
+	-moz-transform-origin: $value;
+	-o-transform-origin: $value;
+	transform-origin: $value;
+}
+
+.asab-spinner {
+	position: relative;
+	height: 4rem;
+
+	.asab-spinner-circular {
+		@include animation(rotate 2s linear infinite);
+		@include transform-origin(center center);
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+		
+		.path {
+			stroke: var(--bs-primary);
+			stroke-dasharray: 1, 200;
+			stroke-dashoffset: 0;
+			@include animation(dash 1.5s ease-in-out infinite);
+			stroke-linecap: round;
+		}
+	}
+}
+
+// Animations using mixins
+@include keyframes(rotate) {
+	100% {
+		@include transform(rotate(360deg));
+	}
+}
+
+@include keyframes(dash) {
+	0% {
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 89, 200;
+		stroke-dashoffset: -35px;
+	}
+	100% {
+		stroke-dasharray: 89, 200;
+		stroke-dashoffset: -124px;
+	}
+}

@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.2.3
+
+- Visual update for the `Spinner` component (#56)
+
 ## 27.2.2
 
 - Visual fix for ASABProfress, percentage no longer breaking to new line (#55)
