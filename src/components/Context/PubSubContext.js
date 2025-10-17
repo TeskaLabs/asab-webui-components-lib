@@ -11,6 +11,11 @@ export function PubSubProvider({ children, app }) {
 	const eventsRef = useRef({});
 	// Subscribe to an event
 	const subscribe = useCallback((event, callback) => {
+		if (!event || typeof callback !== 'function') {
+			console.error('PubSub subscribe requires a valid event name and callback function');
+			return () => {}; // Return no-op unsubscribe
+		}
+
 		if (!eventsRef.current[event]) {
 			eventsRef.current[event] = [];
 		}
@@ -18,14 +23,22 @@ export function PubSubProvider({ children, app }) {
 
 		// Return unsubscribe function
 		return () => {
-			eventsRef.current[event] = eventsRef.current[event].filter(cb => cb !== callback);
+			if (eventsRef.current[event]) {
+				eventsRef.current[event] = eventsRef.current[event].filter(cb => cb !== callback);
+			}
 		};
 	}, []);
 
 	// Publish an event
 	const publish = useCallback((event, data) => {
 		if (eventsRef.current[event]) {
-			eventsRef.current[event].forEach(callback => callback(data));
+			eventsRef.current[event].forEach(callback => {
+				try {
+					callback(data);
+				} catch (error) {
+					console.error(`Error in PubSub callback for event "${event}":`, error);
+				}
+			});
 		}
 	}, []);
 
@@ -38,6 +51,8 @@ export function PubSubProvider({ children, app }) {
 			if (app) {
 				app.PubSub = undefined;
 			}
+			// Clear all subscriptions on unmount to prevent memory leaks
+			eventsRef.current = {};
 		};
 	}, [app, publish, subscribe]);
 
