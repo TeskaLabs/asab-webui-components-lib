@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.2.4
+## 27.3.1
 
 - Assign publish and subscribe methods of PubSub to a object, that it can be used in non-react environments (#51)
 
