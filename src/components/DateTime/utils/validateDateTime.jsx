@@ -2,6 +2,7 @@
 const n_digits = /^\d+n$/;
 
 export function validateDateTime(value) {
+	console.log(value);
 	// Return 'Invalid Date' if the input is null or undefined
 	if (value == null) {
 		return 'Invalid Date';
@@ -65,29 +66,29 @@ function splDatetimeToIso(datetime) {
 		year -= 0b10_0000_0000_0000; // Adjust for sign bit if necessary
 	}
 
-	// Month extraction (bits 42-46)
-	let month = Number((datetime >> BigInt(42)) & BigInt(0b1111)); // 4 bits
+	// Month extraction (bits 42-45)
+	const month = Number((datetime >> BigInt(42)) & BigInt(0b1111)); // 4 bits
 
-	// Day extraction (bits 37-42)
+	// Day extraction (bits 37-41)
 	const day = Number((datetime >> BigInt(37)) & BigInt(0b11111)); // 5 bits
 
-	// Hour extraction (bits 32-37)
+	// Hour extraction (bits 32-36)
 	const hour = Number((datetime >> BigInt(32)) & BigInt(0b11111)); // 5 bits
 
-	// Minute extraction (bits 26-32)
+	// Minute extraction (bits 26-31)
 	const minute = Number((datetime >> BigInt(26)) & BigInt(0b111111)); // 6 bits
 
-	// Second extraction (bits 20-26)
+	// Second extraction (bits 20-25)
 	const second = Number((datetime >> BigInt(20)) & BigInt(0b111111)); // 6 bits
 
-	// Microsecond extraction (bits 0-20)
-	const microsecond = Number(datetime & BigInt(0b111111111111111111111)); // 20 bits
+	// Microsecond extraction (bits 0-19)
+	const microsecond = Number(datetime & BigInt(0b11111111111111111111)); // 20 bits
 
 	// Check if the values are correct
 	if (
 		year < 0 || month < 1 || month > 12 ||
 		day < 1 || day > 31 || hour > 23 ||
-		minute > 59 || second > 59
+		minute > 59 || second > 59 || microsecond > 999999
 	) {
 		return 'Invalid Date';
 	}
