@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.2.5
+
+- Fix microseconds when calculating the bigint in the DateTime (#58)
+
 ## 27.2.4
 
 - Reduce size of the `Spinner` component (#57)
