@@ -2,7 +2,6 @@
 const n_digits = /^\d+n$/;
 
 export function validateDateTime(value) {
-	console.log(value);
 	// Return 'Invalid Date' if the input is null or undefined
 	if (value == null) {
 		return 'Invalid Date';
