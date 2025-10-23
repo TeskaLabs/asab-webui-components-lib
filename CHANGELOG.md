@@ -4,6 +4,10 @@
 
 - Assign publish and subscribe methods of PubSub to a object, that it can be used in non-react environments (#51)
 
+## 27.2.4
+
+- Reduce size of the `Spinner` component (#57)
+
 ## 27.2.3
 
 - Visual update for the `Spinner` component (#56)
