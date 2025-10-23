@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.2.5
+## 27.3.2
 
 - Fix microseconds when calculating the bigint in the DateTime (#58)
+
+## 27.3.1
+
+- Assign publish and subscribe methods of PubSub to a object, that it can be used in non-react environments (#51)
 
 ## 27.2.4
 
