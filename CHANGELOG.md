@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.3
+
+- Use trusted publishing to NPM repo using OIDC (#59)
+
 ## 27.3.2
 
 - Fix microseconds when calculating the bigint in the DateTime (#58)
