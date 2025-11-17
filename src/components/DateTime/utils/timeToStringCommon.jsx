@@ -2,7 +2,9 @@ import { format, parseISO, formatISO, formatDistanceToNow, isValid } from 'date-
 import { enUS } from 'date-fns/locale';
 import { validateDateTime } from './validateDateTime.jsx';
 
-// Общая функция
+const SHORTENED_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
+
 export const timeToStringCommon = (value, dateTimeFormat, locale = enUS, addSuffix = true) => {
 	const invalidDate = { date: 'Invalid Date' };
 	if (value == null) return invalidDate;
@@ -10,12 +12,12 @@ export const timeToStringCommon = (value, dateTimeFormat, locale = enUS, addSuff
 	const datetime = validateDateTime(value);
 	if (datetime === 'Invalid Date' || !isValid(datetime)) return invalidDate;
 
-	// Древние даты обрабатываем отдельно
+	// Ancient dates are processed separately
 	if (datetime.getFullYear() < 1000) {
 		return formatAncientDate(datetime, dateTimeFormat, addSuffix, locale);
 	}
 
-	// Обычные даты через date-fns
+	// Regular dates via date-fns
 	let distanceToNow;
 	try {
 		distanceToNow = formatDistanceToNow(datetime, { addSuffix, locale });
@@ -38,7 +40,7 @@ export const timeToStringCommon = (value, dateTimeFormat, locale = enUS, addSuff
 	return { date, distanceToNow };
 };
 
-// Форматирование древних дат с учётом локали
+// Formatting ancient dates based on locale
 const formatAncientDate = (datetime, dateTimeFormat, addSuffix, locale = enUS) => {
 	const pad = (num, size = 2) => String(num).padStart(size, '0');
 	const year = String(datetime.getUTCFullYear()).padStart(4, '0');
@@ -58,10 +60,10 @@ const formatAncientDate = (datetime, dateTimeFormat, addSuffix, locale = enUS) =
 	// Используем locale для названий месяцев
 	const monthNames = locale.localize?.month
 		? Array.from({ length: 12 }, (_, i) => locale.localize.month(i, { width: 'abbreviated' }))
-		: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		: SHORTENED_MONTHS;
 	const fullMonthNames = locale.localize?.month
 		? Array.from({ length: 12 }, (_, i) => locale.localize.month(i, { width: 'wide' }))
-		: ['January','February','March','April','May','June','July','August','September','October','November','December'];
+		: FULL_MONTHS;
 
 	let formattedDate;
 	switch (dateTimeFormat) {
