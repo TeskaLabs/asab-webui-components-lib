@@ -30,22 +30,23 @@ export function validateDateTime(value) {
 	// Handle number values
 	if (typeof value === 'number') {
 		// Reject infinite, NaN, or negative numbers
-		if (!Number.isFinite(value) || value < 0) {
+		if (!Number.isFinite(value)) {
 			return 'Invalid Date';
 		}
+		console.log(value, '0')
 
-		// Handle Unix timestamp in seconds (less than 1e10)
-		if (value < 1e10) {
+		// Handle Unix timestamp in seconds (less than 1e11)
+		if (Math.abs(value) < 1e11) {
 			return new Date(value * 1000); // Convert seconds to milliseconds
 		}
 
-		// Handle timestamps in milliseconds (less than 1e13)
-		if (value < 1e13) {
+		// Handle timestamps in milliseconds (less than 1e14)
+		if (Math.abs(value) < 1e14) {
 			return new Date(value); // Already in milliseconds
 		}
 
-		// Handle timestamps in microseconds (less than 1e16)
-		if (value < 1e16) {
+		// Handle timestamps in microseconds (less than 1e17)
+		if (Math.abs(value) < 1e17) {
 			return new Date(value / 1000); // Convert microseconds to milliseconds
 		}
 	}
