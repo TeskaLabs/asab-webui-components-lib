@@ -1,9 +1,6 @@
-import { format, parseISO, formatISO, formatDistanceToNow, isValid } from 'date-fns';
+import { format, formatISO, formatDistanceToNow, isValid } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { validateDateTime } from './validateDateTime.jsx';
-
-const SHORTENED_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
 export const timeToStringCommon = (value, dateTimeFormat, locale = enUS, addSuffix = true) => {
 	const invalidDate = { date: 'Invalid Date' };
@@ -54,16 +51,13 @@ const formatAncientDate = (datetime, dateTimeFormat, addSuffix, locale = enUS) =
 	try {
 		distanceToNow = formatDistanceToNow(datetime, { addSuffix, locale });
 	} catch {
+		// Safe fallback
 		distanceToNow = addSuffix ? 'a long time ago' : 'a long time';
 	}
 
-	// Используем locale для названий месяцев
-	const monthNames = locale.localize?.month
-		? Array.from({ length: 12 }, (_, i) => locale.localize.month(i, { width: 'abbreviated' }))
-		: SHORTENED_MONTHS;
-	const fullMonthNames = locale.localize?.month
-		? Array.from({ length: 12 }, (_, i) => locale.localize.month(i, { width: 'wide' }))
-		: FULL_MONTHS;
+	// Using locale for month names. if locale.localize = undefined, use the standard English fallback
+	const monthNames = Array.from({ length: 12 }, (_, i) => locale.localize.month(i, { width: 'abbreviated' }));
+	const fullMonthNames = Array.from({ length: 12 }, (_, i) => locale.localize.month(i, { width: 'wide' }));
 
 	let formattedDate;
 	switch (dateTimeFormat) {
