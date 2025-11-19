@@ -33,7 +33,6 @@ export function validateDateTime(value) {
 		if (!Number.isFinite(value)) {
 			return 'Invalid Date';
 		}
-		console.log(value, '0')
 
 		// Handle Unix timestamp in seconds (less than 1e11)
 		if (Math.abs(value) < 1e11) {
