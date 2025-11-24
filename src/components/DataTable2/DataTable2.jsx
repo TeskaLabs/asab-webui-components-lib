@@ -182,7 +182,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	};
 
 	return (
-		<div className="card" ref={cardRef}>
+		<div className={`card ${className || ''}`} ref={cardRef}>
 			<CardHeader className="card-header-flex">
 				{header}
 			</CardHeader>
