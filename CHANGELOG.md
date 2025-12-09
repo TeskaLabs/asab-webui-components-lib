@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.4
+
+- Add optional `className` prop to `DataTable2` to support Card Fullscreen functionality (#61)
+
 ## 27.3.3
 
 - Use trusted publishing to NPM repo using OIDC (#59)
