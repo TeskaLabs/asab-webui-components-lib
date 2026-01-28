@@ -46,7 +46,7 @@ export function LinkWithAuthz(props) {
 	return (
 		disabled ?
 			<span title={title} {...childProps}>{childProps.children}</span>
-			:
+		:
 			<Link {...childProps}>{childProps.children}</Link>
 	)
 }
