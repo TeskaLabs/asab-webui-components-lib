@@ -53,11 +53,7 @@ import { ControlledSwitch } from './utils/ControlledSwitch/ControlledSwitch';
 
 export function ControlledSwitchWithAuthz(props) {
 	let childProps = {...props}; // Create a new child component to have option to remove props
-	let authzObj = authz(childProps);
-
-	const disabled = authzObj.disabled;
-	const hide = authzObj.hide;
-	const title = authzObj.title;
+	const { disabled, title, hide } = authz(childProps);
 
 	return (
 		hide && disabled ? null :

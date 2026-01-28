@@ -1,27 +1,40 @@
 import { useTranslation } from 'react-i18next';
-// Used for Button and Switches with authz
-export const authz = (childProps) => {
-	const { t, i18n } = useTranslation();
 
-	let disabled = childProps.resources && childProps.resource ? childProps.resources.indexOf(childProps.resource) === -1 : true;
-	// If user is superuser, then button is enabled
-	if (childProps.resources && childProps.resources.indexOf('authz:superuser') !== -1) {
-		disabled = false;
+// Used for Button, Link and Switches with authz
+export const authz = (childProps) => {
+	const { t } = useTranslation();
+
+	const { resource, resources, hideOnUnauthorizedAccess, disabled: disabledProp, title: titleProp } = childProps;
+
+	let disabled = true;
+
+	// Normalize `resource` to array for uniform handling
+	const requiredResources = resource ? (Array.isArray(resource) ? resource : [resource]) : [];
+
+	// Check if the user has at least one of the required resources. Also, if user has 'authz:superuser', always allow
+	if (resources) {
+		const isSuperUser = resources?.includes('authz:superuser');
+		const hasRequiredResource = requiredResources.some(r => resources?.includes(r));
+		disabled = !(isSuperUser || hasRequiredResource);
 	}
-	// If defined, hide the disabled button
-	let hide = childProps.hideOnUnauthorizedAccess ? true : false;
-	// Remove hideOnUnauthorized element from props to avoid react warnings
-	if (childProps.hideOnUnauthorizedAccess) {
-		delete childProps["hideOnUnauthorizedAccess"];
+
+	// Respect explicit disabled prop passed by developer
+	if (disabledProp === true) {
+		disabled = true;
 	}
-	let title = childProps.title;
-	// Check on title eventually passed in the props
+
+	// Determine if the element should be hidden when unauthorized
+	const hide = Boolean(hideOnUnauthorizedAccess);
+	// Remove prop to avoid React warnings about unknown attributes
+	if (hideOnUnauthorizedAccess) {
+		delete childProps.hideOnUnauthorizedAccess;
+	}
+
+	// Set the title for unauthorized state
+	let title = titleProp;
 	if (disabled) {
-		 title = t("General|You do not have access rights to perform this action");
+		title = t('General|You do not have access rights to perform this action');
 	}
-	// Check on disabled eventually passed in the props
-	if (childProps.disabled && disabled == false) {
-		disabled = childProps.disabled;
-	}
-	return {disabled: disabled, hide: hide, title: title};
+
+	return { disabled, hide, title };
 }
