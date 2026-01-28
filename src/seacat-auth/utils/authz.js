@@ -20,6 +20,11 @@ export const authz = (childProps) => {
 		}
 	}
 
+	// Respect explicit disabled prop passed by developer
+	if (disabledProp === true) {
+		disabled = true;
+	}
+
 	// Determine if the element should be hidden when unauthorized
 	const hide = Boolean(hideOnUnauthorizedAccess);
 	// Remove prop to avoid React warnings about unknown attributes
@@ -31,11 +36,6 @@ export const authz = (childProps) => {
 	let title = titleProp;
 	if (disabled) {
 		title = t('General|You do not have access rights to perform this action');
-	}
-
-	// Respect explicit disabled prop passed by developer
-	if (disabledProp === true) {
-		disabled = true;
 	}
 
 	return { disabled, hide, title };
