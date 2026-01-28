@@ -13,11 +13,9 @@ export const authz = (childProps) => {
 
 	// Check if the user has at least one of the required resources. Also, if user has 'authz:superuser', always allow
 	if (resources) {
-		if (resources.includes('authz:superuser')) {
-			disabled = false;
-		} else {
-			disabled = !requiredResources.some(r => resources.includes(r));
-		}
+		const isSuperUser = resources?.includes('authz:superuser');
+		const hasRequiredResource = requiredResources.some(r => resources?.includes(r));
+		disabled = !(isSuperUser || hasRequiredResource);
 	}
 
 	// Respect explicit disabled prop passed by developer
