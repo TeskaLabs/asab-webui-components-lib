@@ -40,15 +40,16 @@ import { authz } from '../utils/authz';
 */
 
 export function LinkWithAuthz(props) {
-	let childProps = {...props};
-	let authzObj = authz(childProps);
-	const disabled = authzObj.disabled;
-	const title = authzObj.title;
+	const childProps = { ...props };
+	const { disabled, title } = authz(childProps);
 
-	return (
-		disabled ? 
-			<span title={title} {...childProps}>{childProps.children}</span>
-		:
-			<Link {...childProps}>{childProps.children}</Link>
-	)
+	return disabled ? (
+		<span title={title} {...childProps}>
+			{childProps.children}
+		</span>
+	) : (
+		<Link {...childProps}>
+			{childProps.children}
+		</Link>
+	);
 }
