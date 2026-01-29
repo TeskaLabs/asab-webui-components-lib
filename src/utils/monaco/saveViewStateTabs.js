@@ -1,11 +1,16 @@
-// Save editor view state (scroll, cursor, etc.) into libraryTabs for a given node
-export const saveViewStateTabs = (node, editorRef, setLibraryTabs) => {
+/*
+    Utility for multi-tab Monaco editor setup.
+    - Saves the Monaco editor's view state into a tab's content state.
+    - Ensures that when switching tabs, the cursor(s) position, selection, and scroll state are preserved for each tab.
+*/
+
+export const saveViewStateTabs = (node, editorRef, setTabs) => {
     if (!node || !editorRef.current) {
         return;
     }
 
     const viewState = editorRef.current.saveViewState();
-    setLibraryTabs(prevTabs => {
+    setTabs(prevTabs => {
         if (!prevTabs[node]?.content) {
             return prevTabs;
         }
