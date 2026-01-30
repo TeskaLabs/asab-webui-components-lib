@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.5
+
+- Introduce `saveViewStateTabs` util for monaco editor multi-tab setup and view state preservation (#62)
+
 ## 27.3.4
 
 - Add optional `className` prop to `DataTable2` to support Card Fullscreen functionality (#61)
