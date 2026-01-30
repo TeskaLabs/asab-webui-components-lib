@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.3.4
+## 27.3.5
 
 - Introduce `saveViewStateTabs` util for monaco editor multi-tab setup and view state preservation (#62)
 
