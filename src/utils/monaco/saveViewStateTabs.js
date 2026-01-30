@@ -5,7 +5,7 @@
 */
 
 export const saveViewStateTabs = (node, editorRef, setTabs) => {
-    if (!node || !editorRef.current) {
+    if (node === undefined || node === null || !editorRef.current) {
         return;
     }
 
