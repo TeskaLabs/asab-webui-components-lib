@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
-
-// Used for Button, Link and Switches with authz
+// Used for Button and Switches with authz
 export const authz = (childProps) => {
 	const { t } = useTranslation();
 
@@ -15,16 +14,14 @@ export const authz = (childProps) => {
 	let disabled = true;
 
 	// Check if the user has at least one of the required resources. Also, if user has 'authz:superuser', always allow
-	if (Array.isArray(resources) && resource) {
-		const requiredResources = Array.isArray(resource) ? resource : [resource];
+	const requiredResources = Array.isArray(resource) ? resource : [resource];
 
-		// superuser always allow
-		if (resources.includes('authz:superuser')) {
-			disabled = false;
-		} else {
-			// if at least one match is found — access is granted
-			disabled = !requiredResources.some((r) => resources.includes(r));
-		}
+	// superuser always allow
+	if (resources?.includes('authz:superuser')) {
+		disabled = false;
+	} else {
+		// if at least one match is found — access is granted
+		disabled = !requiredResources.some((r) => resources?.includes(r));
 	}
 
 	// If defined, hide the disabled button
