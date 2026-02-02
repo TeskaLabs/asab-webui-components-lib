@@ -4,28 +4,33 @@ import { useTranslation } from 'react-i18next';
 export const authz = (childProps) => {
 	const { t } = useTranslation();
 
-	const { resource, resources, hideOnUnauthorizedAccess, disabled: disabledProp, title: titleProp } = childProps;
+	const {
+		resources,
+		resource,
+		hideOnUnauthorizedAccess,
+		disabled: disabledProp,
+		title: titleProp,
+	} = childProps;
 
 	let disabled = true;
 
-	// Normalize `resource` to array for uniform handling
-	const requiredResources = resource ? (Array.isArray(resource) ? resource : [resource]) : [];
-
 	// Check if the user has at least one of the required resources. Also, if user has 'authz:superuser', always allow
-	if (resources) {
-		const isSuperUser = resources?.includes('authz:superuser');
-		const hasRequiredResource = requiredResources.some(r => resources?.includes(r));
-		disabled = !(isSuperUser || hasRequiredResource);
+	if (Array.isArray(resources) && resource) {
+		const requiredResources = Array.isArray(resource) ? resource : [resource];
+
+		// superuser always allow
+		if (resources.includes('authz:superuser')) {
+			disabled = false;
+		} else {
+			// if at least one match is found — access is granted
+			disabled = !requiredResources.some((r) => resources.includes(r));
+		}
 	}
 
-	// Respect explicit disabled prop passed by developer
-	if (disabledProp === true) {
-		disabled = true;
-	}
-
-	// Determine if the element should be hidden when unauthorized
+	// If defined, hide the disabled button
 	const hide = Boolean(hideOnUnauthorizedAccess);
-	// Remove prop to avoid React warnings about unknown attributes
+
+	// Remove hideOnUnauthorized element from props to avoid react warnings
 	if (hideOnUnauthorizedAccess) {
 		delete childProps.hideOnUnauthorizedAccess;
 	}
@@ -36,5 +41,10 @@ export const authz = (childProps) => {
 		title = t('General|You do not have access rights to perform this action');
 	}
 
+	// Check on disabled eventually passed in the props
+	if (disabledProp && (disabled === false)) {
+		disabled = disabledProp;
+	}
+
 	return { disabled, hide, title };
-}
+};
