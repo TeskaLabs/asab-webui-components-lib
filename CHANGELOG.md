@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.5
+
+- Allowed to pass `resource` prop as an array or as a string for LinkWithAuthz, ButtonWithAuthz, UncontrolledSwitchWithAuthz and ControlledSwitchWithAuthz. (#63)
+
 ## 27.3.4
 
 - Add optional `className` prop to `DataTable2` to support Card Fullscreen functionality (#61)
