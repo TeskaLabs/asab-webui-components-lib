@@ -21,7 +21,8 @@ export const authz = (childProps) => {
 		disabled = false;
 	} else {
 		// if at least one match is found — access is granted
-		disabled = !requiredResources.some((r) => resources?.includes(r));
+		const resourcesSet = new Set(resources);
+		disabled = !requiredResources.some(r => resourcesSet.has(r));
 	}
 
 	// If defined, hide the disabled button
