@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 
 import { useDataTableContext } from '../../DataTableContext.jsx';
+import { getFilterValue, getFilterLabel } from './filterItemUtils.js';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
@@ -18,7 +19,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 
 	// Update filterFields in DataTable context
 	useEffect(() => {
-		setFilterField(field);
+		setFilterField(field, fieldItems);
 	},[]);
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -43,21 +44,24 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 					{t('General|Clear')}
 				</DropdownItem>
 				<DropdownItem divider />
-				{fieldItems.map((item, idx) => (
-					<DropdownItem
-						key={idx}
-						onClick={() => updateMultiValueFilter(primaryFieldEntry[0], item)} // Use key of field object to update the filter
-					>
-						<Input
-							className="me-2"
-							type="checkbox"
-							checked={valuesToUpdate && valuesToUpdate?.includes(item) ? true : false}
-							readOnly
-							name={`${idx}${item}`}
-						/>
-						{item}
-					</DropdownItem>
-				))}
+				{fieldItems.map((item, idx) => {
+					const itemValue = getFilterValue(item);
+					return (
+						<DropdownItem
+							key={idx}
+							onClick={() => updateMultiValueFilter(primaryFieldEntry[0], itemValue)} // Use key of field object to update the filter
+						>
+							<Input
+								className="me-2"
+								type="checkbox"
+								checked={valuesToUpdate && valuesToUpdate?.includes(itemValue) ? true : false}
+								readOnly
+								name={`${idx}${itemValue}`}
+							/>
+							{getFilterLabel(item, t)}
+						</DropdownItem>
+					);
+				})}
 			</DropdownMenu>
 		</Dropdown>
 	)

@@ -17,7 +17,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 
 	// Update filterFields in DataTable context
 	useEffect(() => {
-		setFilterField(field);
+		setFilterField(field, fieldItems);
 	},[]);
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -41,7 +41,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 						key={idx}
 						onClick={() => updateSingleValueFilter(primaryFieldEntry[0], getFilterValue(item))} // Use key of field object to update the filter
 					>
-						{getFilterLabel(item)}
+						{getFilterLabel(item, t)}
 					</DropdownItem>
 				))}
 			</DropdownMenu>

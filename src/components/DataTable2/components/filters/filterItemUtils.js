@@ -4,9 +4,9 @@ export const getFilterValue = (item) => (
 );
 
 // Display label: translationKey (i18n), or pre-translated label, or raw value
-export const getFilterLabel = (item) => {
+export const getFilterLabel = (item, t) => {
 	if (typeof item === 'object' && item !== null) {
-		if (item.translationKey) return t(item.translationKey);
+		if (item.translationKey && t) return t(item.translationKey);
 		if (item.label != null) return item.label;
 	}
 	return item;

@@ -12,6 +12,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
+	const filterItemsRef = useRef({}); // Ref to store filter items (fieldItems arrays) for label translation
 	const customPillRef = useRef({}); // Ref for store obj with custom pulls with individual key access
 
 	// Method to get param with option to set up splitting method used for searchParams
@@ -287,12 +288,21 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		return filterFieldsRef.current[key];
 	};
 
+	// Method to get the filter items array for a given field key
+	const getFilterItems = (key) => {
+		return filterItemsRef.current[key] || null;
+	};
+
 	// Method to set filter fields in filterFieldsRef
-	const setFilterField = (obj) => {
+	const setFilterField = (obj, fieldItems = null) => {
 		const fields = Object.entries(obj)[0];
 		// Check and only add field if it doesn't exist
 		if (!filterFieldsRef.current[fields[0]]) {
 			filterFieldsRef.current[fields[0]] = fields[1];
+		}
+		// Store fieldItems if provided
+		if (fieldItems && !filterItemsRef.current[fields[0]]) {
+			filterItemsRef.current[fields[0]] = fieldItems;
 		}
 	};
 
@@ -340,6 +350,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		onTriggerSort,
 		serializeParams,
 		getFilterField,
+		getFilterItems,
 		setFilterField,
 		setCustomPill,
 		getCustomPill,

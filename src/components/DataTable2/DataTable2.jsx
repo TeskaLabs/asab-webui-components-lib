@@ -14,6 +14,8 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 import './DataTable2.scss';
 
 // Wrapper for datatable context
+import { getFilterValue, getFilterLabel } from './components/filters/filterItemUtils.js';
+
 export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
@@ -385,7 +387,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 							>
 								<DataTableBadge
 									item={key}
-									value={value}
+									value={value[0]} // Extract first element for single-value filter
 									isLoading={isLoading}
 									onRemove={() => removeSinglePill(key)}
 								/>
@@ -401,7 +403,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 
 // Render a filter badge with custom or default content
 function DataTableBadge({ item, value, isLoading, onRemove }) {
-	const { getFilterField, getCustomPill } = useDataTableContext();
+	const { getFilterField, getFilterItems, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
 
 	// Get custom pill
@@ -411,9 +413,21 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 		return React.cloneElement(CustomBadge, { isLoading });
 	}
 
+	// Get the fieldItems array for this filter
+	const fieldItems = getFilterItems(item.substring(1));
+	
+	// Try to find the matching item in fieldItems and translate it
+	let displayValue = value;
+	if (fieldItems) {
+		const matchingItem = fieldItems.find(fi => getFilterValue(fi) === value);
+		if (matchingItem) {
+			displayValue = getFilterLabel(matchingItem, t);
+		}
+	}
+
 	return (
 		<Badge color='primary' pill>
-			{`${getFilterField(item.substring(1))}: ${value}`}
+			{`${getFilterField(item.substring(1))}: ${displayValue}`}
 			{(isLoading == true) ?
 				<i
 					className='bi bi-x ps-1'
