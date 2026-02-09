@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.3.5
+## 27.3.6
 
 - Introduce `saveViewStateTabs` util for monaco editor multi-tab setup and view state preservation (#62)
+
+## 27.3.5
+
+- Allowed to pass `resource` prop as an array or as a string for LinkWithAuthz, ButtonWithAuthz, UncontrolledSwitchWithAuthz and ControlledSwitchWithAuthz. (#63)
 
 ## 27.3.4
 
