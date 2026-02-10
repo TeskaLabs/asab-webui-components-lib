@@ -58,7 +58,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 								readOnly
 								name={`${idx}${itemValue}`}
 							/>
-							{getFilterLabel(item, t)}
+							{getFilterLabel(item)}
 						</DropdownItem>
 					);
 				})}
