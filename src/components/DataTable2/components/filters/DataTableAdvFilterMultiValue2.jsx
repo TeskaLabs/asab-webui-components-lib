@@ -10,11 +10,12 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
-	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField } = useDataTableContext();
+	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField, getFilterItems } = useDataTableContext();
 	const { t } = useTranslation();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
 	const valuesToUpdate = getParam(`a${primaryFieldEntry[0]}`, { splitBy: ','});
+	const normalizedItems = getFilterItems(primaryFieldEntry[0]);
 
 	// Update filterFields in DataTable context
 	useEffect(() => {
@@ -43,7 +44,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 					{t('General|Clear')}
 				</DropdownItem>
 				<DropdownItem divider />
-				{fieldItems.map((item, idx) => {
+				{normalizedItems?.map((item, idx) => {
 					const itemValue = item.value;
 					return (
 						<DropdownItem

@@ -8,7 +8,7 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
-	const { updateSingleValueFilter, setFilterField } = useDataTableContext();
+	const { updateSingleValueFilter, setFilterField, getFilterItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
 
@@ -16,6 +16,8 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	useEffect(() => {
 		setFilterField(field, fieldItems);
 	},[]);
+
+	const normalizedItems = getFilterItems(primaryFieldEntry[0]);
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
 
@@ -33,7 +35,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 				</span>
 			</DropdownToggle>
 			<DropdownMenu>
-				{fieldItems.map((item, idx) => (
+				{normalizedItems?.map((item, idx) => (
 					<DropdownItem
 						key={idx}
 						onClick={() => updateSingleValueFilter(primaryFieldEntry[0], item.value)} // Use key of field object to update the filter

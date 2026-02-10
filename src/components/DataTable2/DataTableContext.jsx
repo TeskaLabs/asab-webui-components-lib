@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
+
 import { updateLimit, updateStateLimit } from './components/utils/updateTableLimit.jsx';
+import { translateFromContent } from '../../utils/translateFromContent.js';
 
 // Create an empty context
 const CreateDataTableContext = createContext();
@@ -304,15 +306,23 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		if (fieldItems && !filterItemsRef.current[fields[0]]) {
 			// Normalize fields to always be in { value, label } format
 			const normalizedFieldItems = fieldItems.map(item => {
-				if (typeof item === 'object' && item !== null && 'value' in item == true) {
+				if (typeof item === 'object' && item !== null && 'value' in item) {
 					// Already in { value, label } format
 					return item;
-				} else {
-					// Convert primitive to { value, label } format
+				} 
+				if (typeof item === 'object' && item !== null && 'key' in item) {
 					return {
-						value: String(item),
-						label: item
+						value: String(item.key),
+						// Translate the label
+						label: typeof item.label === 'object'
+							? translateFromContent(item.label)
+							: String(item.label)
 					}
+				}
+				// Convert primitive to { value, label } format
+				return {
+					value: String(item),
+					label: item
 				}
 			});
 
