@@ -34,7 +34,7 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
-	const { watchParams, getParam, setParams, serializeParams, getFilterItemValue, getFilterItemLabel } = useDataTableContext();
+	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
 	const [ count, setCount ] = useState(0);
@@ -400,7 +400,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 
 // Render a filter badge with custom or default content
 function DataTableBadge({ item, value, isLoading, onRemove }) {
-	const { getFilterField, getFilterItems, getCustomPill, getFilterItemValue, getFilterItemLabel } = useDataTableContext();
+	const { getFilterField, getFilterItems, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
 
 	// Get custom pill
@@ -416,9 +416,9 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 	// Try to find the matching item in fieldItems and translate it
 	let displayValue = value;
 	if (fieldItems) {
-		const matchingItem = fieldItems.find(fi => getFilterItemValue(fi) === value);
+		const matchingItem = fieldItems.find(item => item.value === value);
 		if (matchingItem) {
-			displayValue = getFilterItemLabel(matchingItem);
+			displayValue = matchingItem.label;
 		}
 	}
 

@@ -290,18 +290,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 
 	// Method to get the filter items array for a given field key
 	const getFilterItems = (key) => {
-		return filterItemsRef.current[key] || null;
+		return filterItemsRef.current[key]?.items || null;
 	};
-
-	// Method to normalize item to the primitive value sent to the API (supports both string and { value, label} objects)
-	const getFilterItemValue = (item) => (
-		typeof item === 'object' && item !== null && 'value' in item ? String(item.value) : String(item)
-	);
-
-	// Method to get the display label for a filter item
-	const getFilterItemLabel = (item) => (
-		typeof item === 'object' && item !== null && 'label' in item ? item.label : item
-	);
 
 	// Method to set filter fields in filterFieldsRef
 	const setFilterField = (obj, fieldItems = null) => {
@@ -310,9 +300,23 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		if (!filterFieldsRef.current[fields[0]]) {
 			filterFieldsRef.current[fields[0]] = fields[1];
 		}
-		// Store fieldItems if provided
+
 		if (fieldItems && !filterItemsRef.current[fields[0]]) {
-			filterItemsRef.current[fields[0]] = fieldItems;
+			// Normalize fields to always be in { value, label } format
+			const normalizedFieldItems = fieldItems.map(item => {
+				if (typeof item === 'object' && item !== null && 'value' in item == true) {
+					// Already in { value, label } format
+					return item;
+				} else {
+					// Convert primitive to { value, label } format
+					return {
+						value: String(item),
+						label: item
+					}
+				}
+			});
+
+			filterItemsRef.current[fields[0]] = { items: normalizedFieldItems };
 		}
 	};
 
@@ -362,8 +366,6 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		getFilterField,
 		getFilterItems,
 		setFilterField,
-		getFilterItemValue,
-		getFilterItemLabel,
 		setCustomPill,
 		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params

@@ -10,7 +10,7 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
-	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField, getFilterItemValue, getFilterItemLabel } = useDataTableContext();
+	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField } = useDataTableContext();
 	const { t } = useTranslation();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
@@ -44,7 +44,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 				</DropdownItem>
 				<DropdownItem divider />
 				{fieldItems.map((item, idx) => {
-					const itemValue = getFilterItemValue(item);
+					const itemValue = item.value;
 					return (
 						<DropdownItem
 							key={idx}
@@ -57,7 +57,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 								readOnly
 								name={`${idx}${itemValue}`}
 							/>
-							{getFilterItemLabel(item)}
+							{item.label}
 						</DropdownItem>
 					);
 				})}
