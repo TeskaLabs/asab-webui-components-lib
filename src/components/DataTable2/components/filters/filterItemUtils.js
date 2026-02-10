@@ -1,6 +1,6 @@
 // Normalize item to the primitive value sent to the API (supports both string and { value, label/translationKey } shapes)
 export const getFilterValue = (item) => (
-	typeof item === 'object' && item !== null && 'value' in item ? item.value : item
+	typeof item === 'object' && item !== null && 'value' in item ? String(item.value) : String(item)
 );
 
 // Display label: translationKey (i18n), or pre-translated label, or raw value
