@@ -293,6 +293,16 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		return filterItemsRef.current[key] || null;
 	};
 
+	// Method to normalize item to the primitive value sent to the API (supports both string and { value, label} objects)
+	const getFilterItemValue = (item) => (
+		typeof item === 'object' && item !== null && 'value' in item ? String(item.value) : String(item)
+	);
+
+	// Method to get the display label for a filter item
+	const getFilterItemLabel = (item) => (
+		typeof item === 'object' && item !== null && 'label' in item ? item.label : item
+	);
+
 	// Method to set filter fields in filterFieldsRef
 	const setFilterField = (obj, fieldItems = null) => {
 		const fields = Object.entries(obj)[0];
@@ -352,6 +362,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		getFilterField,
 		getFilterItems,
 		setFilterField,
+		getFilterItemValue,
+		getFilterItemLabel,
 		setCustomPill,
 		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params
