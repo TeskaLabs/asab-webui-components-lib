@@ -304,7 +304,10 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		}
 
 		if (fieldItems && fieldItems.length > 0 && !filterItemsRef.current[fields[0]]) {
-			// Normalize fields to always be in { value, label } format
+			/*
+				Normalize fields to always be in { value, label } format 
+				This is for Filters with translation and backwards compatibility with old usage of Filters
+			*/
 			const normalizedFieldItems = fieldItems.map(item => {
 				// Handle objects (both { key, value, label } and { value, label })
 				if (typeof item === 'object' && item !== null) {
