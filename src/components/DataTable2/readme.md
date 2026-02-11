@@ -376,6 +376,15 @@ const Header = () => {
 			<>
 				<DataTableAdvFilterSingleValue2 field={{"severity": t("Severity")}} fieldItems={filterValues.severity}/>
 				<DataTableAdvFilterMultiValue2 field={{"service_id": t("Service")}} fieldItems={filterValues.status}/>
+				// Usage with translation for fieldItems:
+				<DataTableAdvFilterSingleValue2
+					field={{ 'assigned': t('TranslationPrefix|Assignment') }}
+					fieldItems={[
+						{ value: 'true', label: t('TranslationPrefix|Assigned') },
+						{ value: 'false', label: t('TranslationPrefix|Not assigned') },
+						{ value: 'any', label: t('TranslationPrefix|All') },
+					]}
+				/>
 			</>
 		}
 		<button type="button" className="btn btn-danger">Terminate all</button>
