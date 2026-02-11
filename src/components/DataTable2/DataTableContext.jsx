@@ -303,26 +303,22 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 			filterFieldsRef.current[fields[0]] = fields[1];
 		}
 
-		if (fieldItems && !filterItemsRef.current[fields[0]]) {
+		if (fieldItems && fieldItems.length > 0 && !filterItemsRef.current[fields[0]]) {
 			// Normalize fields to always be in { value, label } format
 			const normalizedFieldItems = fieldItems.map(item => {
-				if (typeof item === 'object' && item !== null && 'value' in item) {
-					// Already in { value, label } format
-					return item;
-				} 
-				if (typeof item === 'object' && item !== null && 'key' in item) {
+				// Handle objects (both { key, value, label } and { value, label })
+				if (typeof item === 'object' && item !== null) {
 					return {
-						value: String(item.key),
-						// Translate the label
+						value: String(item.key ?? item.value ?? item),
 						label: typeof item.label === 'object'
 							? translateFromContent(item.label)
-							: String(item.label)
+							: String(item.label ?? item)
 					}
 				}
 				// Convert primitive to { value, label } format
 				return {
 					value: String(item),
-					label: item
+					label: String(item)
 				}
 			});
 
