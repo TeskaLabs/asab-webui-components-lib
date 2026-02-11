@@ -312,10 +312,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 				// Handle objects (both { key, value, label } and { value, label })
 				if (typeof item === 'object' && item !== null) {
 					return {
-						value: String(item.key ?? item.value ?? item),
-						label: typeof item.label === 'object'
-							? translateFromContent(item.label)
-							: String(item.label ?? item)
+						value: String(item.key ?? item.value),
+						label: translateFromContent(item.label)
 					}
 				}
 				// Convert primitive to { value, label } format
