@@ -15,7 +15,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
 	const filterItemsRef = useRef({}); // Ref to store filter items (fieldItems arrays) for label translation
-	const customPillRef = useRef({}); // Ref for store obj with custom pulls with individual key access
+	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -316,6 +316,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 						label: translateFromContent(item.label)
 					}
 				}
+
 				// Convert primitive to { value, label } format
 				return {
 					value: String(item),
