@@ -10,16 +10,16 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
-	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField, getFilterItems } = useDataTableContext();
+	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField, getNormalizedFieldItems } = useDataTableContext();
 	const { t } = useTranslation();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
 	const valuesToUpdate = getParam(`a${primaryFieldEntry[0]}`, { splitBy: ','});
-	const normalizedItems = getFilterItems(primaryFieldEntry[0]); // Normalized items - for backwards compatibilty (after translation of fieldItems introduced)
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Normalized items - for backwards compatibilty (after translation of fieldItems introduced)
 
 	// Update filterFields in DataTable context
 	useEffect(() => {
-		setFilterField(field, fieldItems);
+		setFilterField(field);
 	},[]);
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -44,7 +44,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 					{t('General|Clear')}
 				</DropdownItem>
 				<DropdownItem divider />
-				{normalizedItems?.map((item, idx) => {
+				{normalizedFieldItems?.map((item, idx) => {
 					const itemValue = item.value;
 					return (
 						<DropdownItem

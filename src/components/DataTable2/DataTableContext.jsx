@@ -291,40 +291,41 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	};
 
 	// Method to get the filter items array for a given field key
-	const getFilterItems = (key) => {
-		return filterItemsRef.current[key]?.items || null;
-	};
-
-	// Method to set filter fields in filterFieldsRef
-	const setFilterField = (obj, fieldItems = null) => {
-		const fields = Object.entries(obj)[0];
-		// Check and only add field if it doesn't exist
-		if (!filterFieldsRef.current[fields[0]]) {
-			filterFieldsRef.current[fields[0]] = fields[1];
+	const getNormalizedFieldItems = (key, fieldItems) => {
+		// If items are already normalized and stored, return them
+		if (filterItemsRef.current[key]) {
+			return filterItemsRef.current[key].items;
 		}
-
-		if (fieldItems && fieldItems.length > 0 && !filterItemsRef.current[fields[0]]) {
-			/*
-				Normalize fields to always be in { value, label } format 
-				This is for Filters with translation and backwards compatibility with old usage of Filters
-			*/
+		
+		// Otherwise, normalize on-demand
+		if (fieldItems && fieldItems.length > 0) {
 			const normalizedFieldItems = fieldItems.map(item => {
-				// Handle objects (both { key, value, label } and { value, label })
 				if (typeof item === 'object' && item !== null) {
 					return {
 						value: String(item.key ?? item.value),
 						label: translateFromContent(item.label)
-					}
+					};
 				}
-
-				// Convert primitive to { value, label } format
 				return {
 					value: String(item),
 					label: String(item)
-				}
+				};
 			});
+			
+			// Cache it
+			filterItemsRef.current[key] = { items: normalizedFieldItems };
+			return normalizedFieldItems;
+		}
+		
+		return null;
+	};
 
-			filterItemsRef.current[fields[0]] = { items: normalizedFieldItems };
+	// Method to set filter fields in filterFieldsRef
+	const setFilterField = (obj) => {
+		const fields = Object.entries(obj)[0];
+		// Check and only add field if it doesn't exist
+		if (!filterFieldsRef.current[fields[0]]) {
+			filterFieldsRef.current[fields[0]] = fields[1];
 		}
 	};
 
@@ -372,7 +373,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		onTriggerSort,
 		serializeParams,
 		getFilterField,
-		getFilterItems,
+		getNormalizedFieldItems,
 		setFilterField,
 		setCustomPill,
 		getCustomPill,

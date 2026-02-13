@@ -8,14 +8,16 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
-	const { updateSingleValueFilter, setFilterField, getFilterItems } = useDataTableContext();
+	const { updateSingleValueFilter, setFilterField, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const normalizedItems = getFilterItems(primaryFieldEntry[0]); // Normalized items - for backwards compatibilty (after translation of fieldItems introduced)
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Normalized items - for backwards compatibilty (after translation of fieldItems introduced)
+	console.log('primaryFieldEntry', primaryFieldEntry);
+	console.log('normalizedFieldItems', normalizedFieldItems);
 
 	// Update filterFields in DataTable context
 	useEffect(() => {
-		setFilterField(field, fieldItems);
+		setFilterField(field);
 	},[]);
 
 
@@ -35,7 +37,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 				</span>
 			</DropdownToggle>
 			<DropdownMenu>
-				{normalizedItems?.map((item, idx) => (
+				{normalizedFieldItems?.map((item, idx) => (
 					<DropdownItem
 						key={idx}
 						onClick={() => updateSingleValueFilter(primaryFieldEntry[0], item.value)} // Use key of field object to update the filter

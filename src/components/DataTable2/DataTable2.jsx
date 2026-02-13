@@ -400,7 +400,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 
 // Render a filter badge with custom or default content
 function DataTableBadge({ item, value, isLoading, onRemove }) {
-	const { getFilterField, getFilterItems, getCustomPill } = useDataTableContext();
+	const { getFilterField, getNormalizedFieldItems, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
 
 	// Get custom pill
@@ -410,13 +410,13 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 		return React.cloneElement(CustomBadge, { isLoading });
 	}
 
-	// Get the fieldItems array for this filter
-	const fieldItems = getFilterItems(item.substring(1));
+	// Get the normalizedFieldItems array for this filter
+	const normalizedFieldItems = getNormalizedFieldItems(item.substring(1));
 	
-	// Try to find the matching item in fieldItems and translate it
+	// Try to find the matching item in normalizedItems and translate it
 	let displayValue = value;
-	if (fieldItems) {
-		const matchingItem = fieldItems.find(item => item.value === value);
+	if (normalizedFieldItems) {
+		const matchingItem = normalizedFieldItems.find(item => item.value === value);
 		if (matchingItem) {
 			displayValue = matchingItem.label;
 		}
