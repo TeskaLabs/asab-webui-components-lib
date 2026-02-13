@@ -11,7 +11,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	const { updateSingleValueFilter, setFilterField, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Normalized items - for backwards compatibilty (after translation of fieldItems introduced)
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Normalized items - for backwards compatibility (after translation of fieldItems introduced)
 
 	// Update filterFields in DataTable context
 	useEffect(() => {
