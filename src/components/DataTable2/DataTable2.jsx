@@ -13,6 +13,7 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 
 import './DataTable2.scss';
 
+// Wrapper for datatable context
 export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
