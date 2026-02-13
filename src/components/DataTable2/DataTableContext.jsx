@@ -14,8 +14,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
-	const filterItemsRef = useRef({}); // Ref to store filter items (fieldItems arrays) for label translation
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
+	const normalizedFilterItemsRef = useRef({}); // Ref to store normalized filter items (fieldItems arrays) for label translation
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -293,8 +293,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	// Method to get the filter items array for a given field key
 	const getNormalizedFieldItems = (key, fieldItems) => {
 		// If items are already normalized and stored, return them
-		if (filterItemsRef.current[key]) {
-			return filterItemsRef.current[key].items;
+		if (normalizedFilterItemsRef.current[key]) {
+			return normalizedFilterItemsRef.current[key].items;
 		}
 		
 		// Otherwise, normalize on-demand
@@ -313,7 +313,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 			});
 			
 			// Cache it
-			filterItemsRef.current[key] = { items: normalizedFieldItems };
+			normalizedFilterItemsRef.current[key] = { items: normalizedFieldItems };
 			return normalizedFieldItems;
 		}
 		
