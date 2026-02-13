@@ -385,7 +385,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 							>
 								<DataTableBadge
 									item={key}
-									value={value[0]} // Extract first element for single-value filter
+									value={value[0]} // badge needs single string for translated label lookup
 									isLoading={isLoading}
 									onRemove={() => removeSinglePill(key)}
 								/>
