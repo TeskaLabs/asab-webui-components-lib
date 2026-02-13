@@ -414,7 +414,7 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 	// Get the normalizedFieldItems array for this filter
 	const normalizedFieldItems = getNormalizedFieldItems(item.substring(1));
 	
-	// Try to find the matching item in normalizedItems and translate it
+	// Look up display label for this value in normalized items
 	let displayValue = value;
 	if (normalizedFieldItems) {
 		const matchingItem = normalizedFieldItems.find(item => item.value === value);
