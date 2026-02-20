@@ -14,7 +14,7 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 import './DataTable2.scss';
 
 // Wrapper for datatable context
-export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle }) {
+export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle, defaultDirection }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
 			<DataTableCardContent
@@ -26,13 +26,14 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 				rowHeight={rowHeight}
 				rowStyle={rowStyle}
 				hideFooter={hideFooter}
+				defaultDirection={defaultDirection}
 			/>
 		</DataTableContextProvider>
 	);
 }
 
 
-function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter }) {
+function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, defaultDirection }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
 	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
@@ -190,6 +191,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 				<DataTableCardPill2 isLoading={isLoading} rowHeight={rowHeight}/>
 				{isLoading
 					? <DataTable2
+						defaultDirection={defaultDirection}
 						columns={columns}
 						rows={Array(getParam('i') ? getParam('i') : 10).fill({})} // Simulate rows
 						limit={getParam('i')}
@@ -198,6 +200,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 						rowStyle={rowStyle}
 					/>
 					: <DataTable2
+						defaultDirection={defaultDirection}
 						columns={columns}
 						rows={rows}
 						limit={getParam('i')}
@@ -290,7 +293,7 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading}) {
 }
 
 
-export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle}) {
+export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle, defaultDirection}) {
 	return (
 		<Table className="datatable2 placeholder-glow">
 			<colgroup>
@@ -305,6 +308,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 						<th key={idx} style={column?.thStyle} className="pt-0" id={`datatable-column-${idx}`}>
 							{column?.sort ?
 								<DataTableSort2
+									defaultDirection={defaultDirection}
 									title={column?.title}
 									field={column.sort}
 								/>
@@ -431,35 +435,48 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 }
 
 // Inner sorting function
-function DataTableSort2({title, field}) {
+function DataTableSort2({ title, field, defaultDirection = 'a' }) {
 	const { onTriggerSort, getParam } = useDataTableContext();
 	const { t } = useTranslation();
 
+	const currentDirection = getParam(`s${field}`);
+
+	const getNextDirection = () => {
+		if (!currentDirection) {
+			return defaultDirection;
+		}
+		return currentDirection === 'd' ? 'a' : 'd';
+	};
+
+	const nextDirection = getNextDirection();
+
 	return (
-		getParam(`s${field}`) ?
-			(getParam(`s${field}`) == "d") ?
-				<span className="sort-span-wrapper" onClick={(e) => onTriggerSort(e, field, "a")}>
-					{title}
-					<i
-						title={`${t('General|Sort ascend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
-						className="bi bi-sort-up sort-icon-active ms-2"
-					></i>
-				</span>
-				:
-				<span className="sort-span-wrapper" onClick={(e) => onTriggerSort(e, field, "d")}>
-					{title}
-					<i
-						title={`${t('General|Sort descend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
-						className="bi bi-sort-down-alt sort-icon-active ms-2"
-					></i>
-				</span>
-			:
-				<span className="sort-span-wrapper" onClick={(e) => onTriggerSort(e, field, "a")}>
-					{title}
-					<i
-						title={t('General|Shift + left mouse click for advanced sorting')}
-						className="bi bi-arrow-down-up ms-2"
-					></i>
-				</span>
-	)
+		<span
+			className='sort-span-wrapper'
+			onClick={(e) => onTriggerSort(e, field, nextDirection)}
+		>
+      		{title}
+
+			{currentDirection === 'd' && (
+				<i
+					title={`${t('General|Sort ascend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
+					className='bi bi-sort-up sort-icon-active ms-2'
+				/>
+			)}
+
+			{currentDirection === 'a' && (
+				<i
+					title={`${t('General|Sort descend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
+					className='bi bi-sort-down-alt sort-icon-active ms-2'
+				/>
+			)}
+
+			{!currentDirection && (
+				<i
+					title={t('General|Shift + left mouse click for advanced sorting')}
+					className='bi bi-arrow-down-up ms-2'
+				/>
+			)}
+    </span>
+	);
 }
