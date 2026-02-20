@@ -439,15 +439,21 @@ function DataTableSort2({ title, field, defaultDirection = 'a' }) {
 	const { onTriggerSort, getParam } = useDataTableContext();
 	const { t } = useTranslation();
 
+	// Get the current sorting direction for this field from URL/search params (e.g. 'a' or 'd')
 	const currentDirection = getParam(`s${field}`);
 
+	// Determine what the next sorting direction should be after click
 	const getNextDirection = () => {
+		// If the column is not currently sorted, use the provided default direction (e.g. 'a' or 'd')
 		if (!currentDirection) {
 			return defaultDirection;
 		}
+
+		// If currently descending ('d'), switch to ascending ('a'), otherwise switch to descending
 		return currentDirection === 'd' ? 'a' : 'd';
 	};
 
+	// Calculate the next direction that will be applied on click
 	const nextDirection = getNextDirection();
 
 	return (
