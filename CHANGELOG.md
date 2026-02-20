@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.6
+
+- Add `defaultSortDirection` prop for DataTable2. Allows to start sorting with descend (#66)
+
 ## 27.3.5
 
 - Allowed to pass `resource` prop as an array or as a string for LinkWithAuthz, ButtonWithAuthz, UncontrolledSwitchWithAuthz and ControlledSwitchWithAuthz. (#63)
