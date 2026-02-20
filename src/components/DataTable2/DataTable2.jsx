@@ -14,7 +14,7 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 import './DataTable2.scss';
 
 // Wrapper for datatable context
-export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle, defaultDirection }) {
+export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle, defaultSortDirection }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
 			<DataTableCardContent
@@ -26,14 +26,14 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 				rowHeight={rowHeight}
 				rowStyle={rowStyle}
 				hideFooter={hideFooter}
-				defaultDirection={defaultDirection}
+				defaultSortDirection={defaultSortDirection}
 			/>
 		</DataTableContextProvider>
 	);
 }
 
 
-function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, defaultDirection }) {
+function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, defaultSortDirection }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
 	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
@@ -191,7 +191,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 				<DataTableCardPill2 isLoading={isLoading} rowHeight={rowHeight}/>
 				{isLoading
 					? <DataTable2
-						defaultDirection={defaultDirection}
+						defaultSortDirection={defaultSortDirection}
 						columns={columns}
 						rows={Array(getParam('i') ? getParam('i') : 10).fill({})} // Simulate rows
 						limit={getParam('i')}
@@ -200,7 +200,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 						rowStyle={rowStyle}
 					/>
 					: <DataTable2
-						defaultDirection={defaultDirection}
+						defaultSortDirection={defaultSortDirection}
 						columns={columns}
 						rows={rows}
 						limit={getParam('i')}
@@ -293,7 +293,7 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading}) {
 }
 
 
-export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle, defaultDirection}) {
+export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle, defaultSortDirection}) {
 	return (
 		<Table className="datatable2 placeholder-glow">
 			<colgroup>
@@ -308,7 +308,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle, 
 						<th key={idx} style={column?.thStyle} className="pt-0" id={`datatable-column-${idx}`}>
 							{column?.sort ?
 								<DataTableSort2
-									defaultDirection={defaultDirection}
+									defaultSortDirection={defaultSortDirection}
 									title={column?.title}
 									field={column.sort}
 								/>
@@ -435,7 +435,7 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 }
 
 // Inner sorting function
-function DataTableSort2({ title, field, defaultDirection = 'a' }) {
+function DataTableSort2({ title, field, defaultSortDirection = 'a' }) {
 	const { onTriggerSort, getParam } = useDataTableContext();
 	const { t } = useTranslation();
 
@@ -446,7 +446,7 @@ function DataTableSort2({ title, field, defaultDirection = 'a' }) {
 	const getNextDirection = () => {
 		// If the column is not currently sorted, use the provided default direction (e.g. 'a' or 'd')
 		if (!currentDirection) {
-			return defaultDirection;
+			return defaultSortDirection;
 		}
 
 		// If currently descending ('d'), switch to ascending ('a'), otherwise switch to descending
