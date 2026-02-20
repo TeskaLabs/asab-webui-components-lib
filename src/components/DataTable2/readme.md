@@ -70,6 +70,20 @@ To remove footer from the DataTable2, `hideFooter={true}` should be set.
 />
 ```
 
+Use with custom default sorting direction. If defaultSortDirection is set, the first click on a sortable column will use this direction ('a' for ascending or 'd' for descending`).
+If not provided, the default behavior remains unchanged (sorting starts with ascending).
+
+```
+<DataTableCard2
+	app={app}
+	columns={columns}
+	loader={loader}
+	header={<Header />}
+	defaultSortDirection='d'
+/>
+```
+**Note:** This property only affects the initial sorting direction when a column is sorted for the first time. Subsequent clicks will toggle between ascending ("a") and descending ("d") as usual.
+
 ## Columns
 
 Provides info about columns in the data table
