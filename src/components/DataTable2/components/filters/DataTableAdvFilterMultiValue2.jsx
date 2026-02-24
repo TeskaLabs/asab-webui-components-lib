@@ -19,7 +19,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 
 	useEffect(() => {
 		setFilterField(field);
-		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems);
+		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);

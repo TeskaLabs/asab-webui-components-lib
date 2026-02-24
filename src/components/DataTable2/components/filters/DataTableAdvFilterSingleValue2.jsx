@@ -15,7 +15,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 
 	useEffect(() => {
 		setFilterField(field);
-		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems);
+		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 
 
