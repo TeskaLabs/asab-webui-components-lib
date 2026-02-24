@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
+import React, { createContext, useContext, useCallback, useMemo, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
 
@@ -15,7 +15,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
-	const normalizedFilterItemsRef = useRef({}); // Ref to store normalized filter items (fieldItems arrays) for label translation
+	const [normalizedFieldItemsMap, setNormalizedFieldItemsMap] = useState({});
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -290,35 +290,28 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		return filterFieldsRef.current[key];
 	};
 
-	// Method to get the filter items array for a given field key
-	const getNormalizedFieldItems = (key, fieldItems) => {
-		// If items are already normalized and stored, return them
-		if (normalizedFilterItemsRef.current[key]) {
-			return normalizedFilterItemsRef.current[key].items;
-		}
-		
-		// Otherwise, normalize on-demand
-		if (fieldItems && fieldItems.length > 0) {
-			const normalizedFieldItems = fieldItems.map(item => {
-				if (typeof item === 'object' && item !== null) {
-					return {
-						value: String(item.key ?? item.value),
-						label: translateFromContent(item.label)
-					};
-				}
+	const setNormalizedFieldItems = useCallback((key, fieldItems) => {
+		if (!fieldItems || fieldItems.length === 0) return;
+
+		const normalized = fieldItems.map(item => {
+			if (typeof item === 'object' && item !== null) {
 				return {
-					value: String(item),
-					label: String(item)
+					value: String(item.key ?? item.value),
+					label: translateFromContent(item.label)
 				};
-			});
-			
-			// Cache it
-			normalizedFilterItemsRef.current[key] = { items: normalizedFieldItems };
-			return normalizedFieldItems;
-		}
-		
-		return null;
-	};
+			}
+			return { value: String(item), label: String(item) };
+		});
+
+		setNormalizedFieldItemsMap(prev => {
+			if (prev[key]) return prev;
+			return { ...prev, [key]: normalized };
+		});
+	}, []);
+
+	const getNormalizedFieldItems = useCallback((key) => {
+		return normalizedFieldItemsMap[key] || null;
+	}, [normalizedFieldItemsMap]);
 
 	// Method to set filter fields in filterFieldsRef
 	const setFilterField = (obj) => {
@@ -373,12 +366,13 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		onTriggerSort,
 		serializeParams,
 		getFilterField,
+		setNormalizedFieldItems,
 		getNormalizedFieldItems,
 		setFilterField,
 		setCustomPill,
 		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params
-	}), [searchParams, stateParams]);
+	}), [searchParams, stateParams, normalizedFieldItemsMap]);
 
 	return (
 		<CreateDataTableContext.Provider value={paramsContext}>

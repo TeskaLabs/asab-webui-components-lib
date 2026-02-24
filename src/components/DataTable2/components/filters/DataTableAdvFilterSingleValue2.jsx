@@ -8,14 +8,14 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
-	const { updateSingleValueFilter, setFilterField, getNormalizedFieldItems } = useDataTableContext();
+	const { updateSingleValueFilter, setFilterField, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Normalized items - for backwards compatibility (after translation of fieldItems introduced)
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0]);
 
-	// Update filterFields in DataTable context
 	useEffect(() => {
 		setFilterField(field);
+		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems);
 	},[]);
 
 

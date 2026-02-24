@@ -411,10 +411,9 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 		return React.cloneElement(CustomBadge, { isLoading });
 	}
 
-	// Get the normalizedFieldItems array for this filter
 	const normalizedFieldItems = getNormalizedFieldItems(item.substring(1));
-	
-	// Look up display label for this value in normalized items
+
+
 	let displayValue = value;
 	if (normalizedFieldItems) {
 		const matchingItem = normalizedFieldItems.find(item => item.value === value);
