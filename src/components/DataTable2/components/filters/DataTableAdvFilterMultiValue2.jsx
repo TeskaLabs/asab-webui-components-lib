@@ -17,6 +17,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 	const valuesToUpdate = getParam(`a${primaryFieldEntry[0]}`, { splitBy: ','});
 	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0]);
 
+	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
 		setFilterField(field);
 		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Store normalized items in context for DataTableBadge label lookup

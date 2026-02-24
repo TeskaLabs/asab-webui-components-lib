@@ -13,6 +13,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
 	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0]);
 
+	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
 		setFilterField(field);
 		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Store normalized items in context for DataTableBadge label lookup

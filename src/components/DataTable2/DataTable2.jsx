@@ -413,7 +413,6 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 
 	const normalizedFieldItems = getNormalizedFieldItems(item.substring(1));
 
-
 	let displayValue = value;
 	if (normalizedFieldItems) {
 		const matchingItem = normalizedFieldItems.find(item => item.value === value);
