@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useCallback, useMemo, useState, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
 
@@ -290,7 +290,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		return filterFieldsRef.current[key];
 	};
 
-	const setNormalizedFieldItems = useCallback((key, fieldItems) => {
+	const setNormalizedFieldItems = (key, fieldItems) => {
 		if (!fieldItems || fieldItems.length === 0) return;
 
 		const normalized = fieldItems.map(item => {
@@ -307,11 +307,11 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 			if (prev[key]) return prev;
 			return { ...prev, [key]: normalized };
 		});
-	}, []);
+	};
 
-	const getNormalizedFieldItems = useCallback((key) => {
+	const getNormalizedFieldItems = (key) => {
 		return normalizedFieldItemsMap[key] || null;
-	}, [normalizedFieldItemsMap]);
+	};
 
 	// Method to set filter fields in filterFieldsRef
 	const setFilterField = (obj) => {
