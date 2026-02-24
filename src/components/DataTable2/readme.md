@@ -82,7 +82,7 @@ If not provided, the default behavior remains unchanged (sorting starts with asc
 	defaultSortDirection='d'
 />
 ```
-**Note:** This property only affects the initial sorting direction when a column is sorted for the first time. Subsequent clicks will toggle between ascending ("a") and descending ("d") as usual.
+**Note:** This property only affects the initial sorting direction when a column is sorted for the first time. Subsequent clicks will toggle between ascending ('a') and descending ('d') as usual.
 
 ## Columns
 
