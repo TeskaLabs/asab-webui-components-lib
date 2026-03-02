@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.3-beta.1
+
+- Patch `escapeValues` to `true` in ErrorHandler translation util component to prevent potential XSS attacks.(#68)
+
 ## 27.3.3
 
 - Use trusted publishing to NPM repo using OIDC (#59)
