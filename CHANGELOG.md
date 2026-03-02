@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.6
+
+- Set `escapeValues` to `true` in ErrorHandler translation util component to prevent potential XSS attacks. (#67)
+
 ## 27.3.5
 
 - Allowed to pass `resource` prop as an array or as a string for LinkWithAuthz, ButtonWithAuthz, UncontrolledSwitchWithAuthz and ControlledSwitchWithAuthz. (#63)

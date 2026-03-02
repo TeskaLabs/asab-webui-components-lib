@@ -1,3 +1,5 @@
+// TODO: REMOVE/REWRITE THIS COMPONENT AFTER ALL DEPENDENCY ON ERRORHANDLER COMPONENT IS STRIPPED
+
 import { useTranslation } from 'react-i18next';
 
 /*
@@ -13,7 +15,8 @@ export function ErrorHandler ({ error = {} }) {
 	const { t } = useTranslation();
 
 	if (error.error_dict) {
-		error.error_dict['interpolation'] = { escapeValue: false };
+		// Always escape the values (safety precaution), do not change this!
+		error.error_dict['interpolation'] = { escapeValue: true };
 	}
 
 	return t(error.error, error.error_dict);
