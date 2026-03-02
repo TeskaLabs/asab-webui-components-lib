@@ -13,7 +13,7 @@ export function ErrorHandler ({ error = {} }) {
 	const { t } = useTranslation();
 
 	if (error.error_dict) {
-		error.error_dict['interpolation'] = { escapeValue: false };
+		error.error_dict['interpolation'] = { escapeValue: true };
 	}
 
 	return t(error.error, error.error_dict);
