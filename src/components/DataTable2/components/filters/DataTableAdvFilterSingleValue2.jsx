@@ -11,12 +11,14 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	const { updateSingleValueFilter, setFilterField, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0]);
+	const primaryFieldKey = primaryFieldEntry[0];
+	const primaryFieldValue = primaryFieldEntry[1];
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldKey);
 
 	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
 		setFilterField(field);
-		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Store normalized items in context for DataTableBadge label lookup
+		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 
 
@@ -28,18 +30,18 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 				color="primary"
 				outline
 				className="adv-filter-dropdown-toggle"
-				title={primaryFieldEntry[1]} // Use value of field object as title
+				title={primaryFieldValue} // Use value of field object as title
 				caret
 			>
 				<span className="adv-filter-title">
-					{primaryFieldEntry[1]} {/* Use value of field object as title */}
+					{primaryFieldValue} {/* Use value of field object as title */}
 				</span>
 			</DropdownToggle>
 			<DropdownMenu>
 				{normalizedFieldItems?.map((item, idx) => (
 					<DropdownItem
 						key={idx}
-						onClick={() => updateSingleValueFilter(primaryFieldEntry[0], item.value)} // Use key of field object to update the filter
+						onClick={() => updateSingleValueFilter(primaryFieldKey, item.value)} // Use key of field object to update the filter
 					>
 						{item.label}
 					</DropdownItem>

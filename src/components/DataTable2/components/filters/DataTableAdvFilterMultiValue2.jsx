@@ -14,13 +14,15 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 	const { t } = useTranslation();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const valuesToUpdate = getParam(`a${primaryFieldEntry[0]}`, { splitBy: ','});
-	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldEntry[0]);
+	const primaryFieldKey = primaryFieldEntry[0];
+	const primaryFieldValue = primaryFieldEntry[1];
+	const valuesToUpdate = getParam(`a${primaryFieldKey}`, { splitBy: ','});
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldKey);
 
 	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
 		setFilterField(field);
-		setNormalizedFieldItems(primaryFieldEntry[0], fieldItems); // Store normalized items in context for DataTableBadge label lookup
+		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -31,16 +33,16 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 				color="primary"
 				outline
 				className="adv-filter-dropdown-toggle"
-				title={primaryFieldEntry[1]} // Use value of field object as title
+				title={primaryFieldValue} // Use value of field object as title
 				caret
 			>
 				<span className="adv-filter-title">
-					{primaryFieldEntry[1]} {/* Use value of field object as title */}
+					{primaryFieldValue} {/* Use value of field object as title */}
 				</span>
 			</DropdownToggle>
 			<DropdownMenu className='adv-filter-dropdown-menu overflow-y-auto'>
 				<DropdownItem
-					onClick={() => clearMultiValueFilter(primaryFieldEntry[0])} // Use key of field object to clear filter
+					onClick={() => clearMultiValueFilter(primaryFieldKey)} // Use key of field object to clear filter
 				>
 					{t('General|Clear')}
 				</DropdownItem>
@@ -50,7 +52,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 					return (
 						<DropdownItem
 							key={idx}
-							onClick={() => updateMultiValueFilter(primaryFieldEntry[0], itemValue)} // Use key of field object to update the filter
+							onClick={() => updateMultiValueFilter(primaryFieldKey, itemValue)} // Use key of field object to update the filter
 						>
 							<Input
 								className="me-2"

@@ -385,7 +385,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 							>
 								<DataTableBadge
 									item={key}
-									value={value[0]} // badge needs single string for translated label lookup
+									value={value}
 									isLoading={isLoading}
 									onRemove={() => removeSinglePill(key)}
 								/>
@@ -413,9 +413,9 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 
 	const normalizedFieldItems = getNormalizedFieldItems(item.substring(1));
 
-	let displayValue = value;
+	let displayValue = Array.isArray(value) ? value[0] : value;
 	if (normalizedFieldItems) {
-		const matchingItem = normalizedFieldItems.find(item => item.value === value);
+		const matchingItem = normalizedFieldItems.find(item => item.value === displayValue);
 		if (matchingItem) {
 			displayValue = matchingItem.label;
 		}
