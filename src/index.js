@@ -18,6 +18,7 @@ export { default as useDateFNSLocale } from './components/DateTime/utils/useDate
 export { saveToLS, getFromLS, removeFromLS } from './utils/localStorage';
 export { validateAccess, validateTenantAccess, validateResourceAccess } from './utils/validateAccess';
 export { ErrorHandler } from './utils/ErrorHandler';
+export { useSafeTranslation } from './utils/useSafeTranslation';
 export { hexToString } from './utils/hexToString.js';
 export { classifyIPAddress } from './utils/classifyIPAddress.js';
 export { itemExtensionHandler } from './utils/itemExtensionHandler.js';

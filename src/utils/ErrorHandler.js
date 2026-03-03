@@ -14,10 +14,10 @@ export function ErrorHandler ({ error = {} }) {
 
 	const { t } = useTranslation();
 
-	if (error.error_dict) {
-		// Always escape the values (safety precaution), do not change this!
-		error.error_dict['interpolation'] = { escapeValue: true };
-	}
+	// if (error.error_dict) {
+	// 	// Always escape the values (safety precaution), do not change this!
+	// 	error.error_dict['interpolation'] = { escapeValue: true };
+	// }
 
 	return t(error.error, error.error_dict);
 }
