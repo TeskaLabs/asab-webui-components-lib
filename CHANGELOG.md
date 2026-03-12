@@ -2,7 +2,7 @@
 
 ## 27.3.6
 
-- Add `defaultSortDirection` prop for DataTable2. Allows to start sorting with descend (#66)
+- Set `escapeValues` to `true` in ErrorHandler translation util component to prevent potential XSS attacks. (#67)
 
 ## 27.3.5
 
