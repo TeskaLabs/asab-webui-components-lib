@@ -514,7 +514,6 @@ const stringifyIPv6 = (bigintIP6Address) => {
 	if (result.startsWith(':') && !result.startsWith('::')) {
 		result = ':' + result;
 	}
-
 	if (result.endsWith(':') && !result.endsWith('::')) {
 		result = result + ':';
 	}
