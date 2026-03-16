@@ -452,7 +452,7 @@ function DataTableSort2({title, field, sortDirection}) {
 
 	return (
 		currentSort ?
-			(currentSort == 'd') ?
+			(currentSort === 'd') ?
 				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'a')}>
 					{title}
 					<i
@@ -460,7 +460,7 @@ function DataTableSort2({title, field, sortDirection}) {
 						className='bi bi-sort-up sort-icon-active ms-2'
 					></i>
 				</span>
-				:
+			:
 				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'd')}>
 					{title}
 					<i
