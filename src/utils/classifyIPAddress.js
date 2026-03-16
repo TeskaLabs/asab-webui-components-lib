@@ -505,7 +505,9 @@ const stringifyIPv6 = (bigintIP6Address) => {
 	}
 
 	// Join the parts with colons to form the final compressed IPv6 address.
-	return parts.join(':');
+	const result = parts.join(':');
+	// All-zero address (e.g. "::") compresses to a single empty segment ""; canonical form is "::"
+	return result === '' ? '::' : result;
 };
 
 const stringifyIPv4 = (bigintIP4Address) => {
