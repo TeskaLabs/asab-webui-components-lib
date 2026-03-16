@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.7
+
+- Fix on normalization of IPV6 values (#70)
+
 ## 27.3.6
 
 - Set `escapeValues` to `true` in ErrorHandler translation util component to prevent potential XSS attacks. (#67)
