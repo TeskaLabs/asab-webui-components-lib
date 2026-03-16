@@ -432,55 +432,49 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 }
 
 // Inner sorting function
-function DataTableSort2({title, field, sortDirection = 'a'}) {
+function DataTableSort2({title, field, sortDirection}) {
 	const { onTriggerSort, getParam } = useDataTableContext();
 	const { t } = useTranslation();
 
 	// Get the current sorting direction for this field from URL/search params (e.g. 'a' or 'd')
-	const currentDirection = getParam(`s${field}`);
-	console.log(currentDirection);
+	const currentSort = getParam(`s${field}`);
 
-	// Determine what the next sorting direction should be after click
-	const getNextDirection = () => {
-		// If the column is not currently sorted, use the provided default direction (e.g. 'a' or 'd')
-		if (!currentDirection) {
+	// Determine what the start sorting direction should be after click
+	const getInitialSortDirection = () => {
+		if (sortDirection && !currentSort) {
+			// If there is a SortDirection and the field is not sorted yet, we use SortDirection
 			return sortDirection;
 		}
 
-		// If currently descending ('d'), switch to ascending ('a'), otherwise switch to descending
-		return currentDirection === 'd' ? 'a' : 'd';
+		// Otherwise standard behavior (sorted in ascending order)
+		return 'a';
 	};
 
-	// Calculate the next direction that will be applied on click
-	const nextDirection = getNextDirection();
-
 	return (
-		<span
-			className='sort-span-wrapper'
-			onClick={(e) => onTriggerSort(e, field, nextDirection)}
-		>
-      		{title}
-
-			{currentDirection === 'd' && (
-				<i
-					title={`${t('General|Sort ascend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
-					className='bi bi-sort-up sort-icon-active ms-2'
-				/>
-			)}
-
-			{currentDirection === 'a' && (
-				<i
-					title={`${t('General|Sort descend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
-					className='bi bi-sort-down-alt sort-icon-active ms-2'
-				/>
-			)}
-
-			{!currentDirection && (
+		currentSort ?
+			(currentSort == 'd') ?
+				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'a')}>
+					{title}
+					<i
+						title={`${t('General|Sort ascend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
+						className='bi bi-sort-up sort-icon-active ms-2'
+					></i>
+				</span>
+				:
+				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'd')}>
+					{title}
+					<i
+						title={`${t('General|Sort descend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
+						className='bi bi-sort-down-alt sort-icon-active ms-2'
+					></i>
+				</span>
+		:
+			<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, getInitialSortDirection())}>
+					{title}
 				<i
 					title={t('General|Shift + left mouse click for advanced sorting')}
 					className='bi bi-arrow-down-up ms-2'
-				/>
-			)}
-    </span>
+				></i>
+				</span>
 	);
 }
