@@ -505,9 +505,21 @@ const stringifyIPv6 = (bigintIP6Address) => {
 	}
 
 	// Join the parts with colons to form the final compressed IPv6 address.
-	const result = parts.join(':');
-	// All-zero address (e.g. "::") compresses to a single empty segment ""; canonical form is "::"
-	return result === '' ? '::' : result;
+	let result = parts.join(':');
+	// All-zero address compresses to a single empty segment ""; canonical form is "::"
+	if (result === '') {
+		return '::';
+	}
+	// Boundary compression: empty segment at start/end produces ":1" or "1:" instead of "::1" or "1::"
+	if (result.startsWith(':') && !result.startsWith('::')) {
+		result = ':' + result;
+	}
+
+	if (result.endsWith(':') && !result.endsWith('::')) {
+		result = result + ':';
+	}
+
+	return result;
 };
 
 const stringifyIPv4 = (bigintIP4Address) => {
