@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.7
+
+- Add `sortDirection` prop for DataTable2 for Columns sorting. Update docs for DataTable2 (#66)
+
 ## 27.3.6
 
 - Set `escapeValues` to `true` in ErrorHandler translation util component to prevent potential XSS attacks. (#67)
