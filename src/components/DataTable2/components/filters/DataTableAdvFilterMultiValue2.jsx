@@ -10,7 +10,9 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
-	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterField, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
+	console.log('DataTableAdvFilterMultiValue2 field: ', field);
+	console.log('DataTableAdvFilterMultiValue2 fieldItems: ', fieldItems);
+	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterFieldLabel, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const { t } = useTranslation();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
@@ -21,7 +23,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 
 	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
-		setFilterField(field);
+		setFilterFieldLabel(field);
 		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 

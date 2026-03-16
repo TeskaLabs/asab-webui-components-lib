@@ -13,9 +13,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const defaultParams = { p: 1, i: initialLimit };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
-	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
-	const [normalizedFieldItemsMap, setNormalizedFieldItemsMap] = useState({});
+	const [filterFieldsMap, setFilterFieldsMap] = useState({}); // { [fieldKey]: { fieldLabel, items } }
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -285,41 +284,46 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		}
 	};
 
-	// Method to get the current filter fields based on a given key
-	const getFilterField = (key) => {
-		return filterFieldsRef.current[key];
+	// Method to get filter field label to be displayed in the DataTableBadge
+	const getFilterFieldLabel = (key) => {
+		return filterFieldsMap[key]?.fieldLabel ?? null;
 	};
 
+	// Method to normalize field items
 	const setNormalizedFieldItems = (key, fieldItems) => {
 		if (!fieldItems || fieldItems.length === 0) return;
 
 		const normalized = fieldItems.map(item => {
 			if (typeof item === 'object' && item !== null) {
+				const label = item.label
+					? translateFromContent(item.label)
+					: String(item.key ?? item.value); // Fallback to key or value if label is not available
 				return {
 					value: String(item.key ?? item.value),
-					label: translateFromContent(item.label)
+					label
 				};
 			}
-			return { value: String(item), label: String(item) };
+			return { value: String(item), label: String(item) }; // Fallback to value if item is not an object
 		});
 
-		setNormalizedFieldItemsMap(prev => {
-			if (prev[key]) return prev;
-			return { ...prev, [key]: normalized };
+		setFilterFieldsMap(prev => {
+			if (prev[key]?.items) return prev;
+			return { ...prev, [key]: { ...prev[key], items: normalized } };
 		});
 	};
 
+	// Method to get normalized field items
 	const getNormalizedFieldItems = (key) => {
-		return normalizedFieldItemsMap[key] || null;
+		return filterFieldsMap[key]?.items ?? null;
 	};
 
-	// Method to set filter fields in filterFieldsRef
-	const setFilterField = (obj) => {
-		const fields = Object.entries(obj)[0];
-		// Check and only add field if it doesn't exist
-		if (!filterFieldsRef.current[fields[0]]) {
-			filterFieldsRef.current[fields[0]] = fields[1];
-		}
+	// Method to set filter field label
+	const setFilterFieldLabel = (obj) => {
+		const [fieldKey, fieldLabel] = Object.entries(obj)[0];
+		setFilterFieldsMap(prev => {
+			if (prev[fieldKey]?.fieldLabel) return prev;
+			return { ...prev, [fieldKey]: { ...prev[fieldKey], fieldLabel } };
+		});
 	};
 
 	//  Retrieves a custom pill component by key
@@ -365,14 +369,14 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		removeMultiPill,
 		onTriggerSort,
 		serializeParams,
-		getFilterField,
+		getFilterFieldLabel,
 		setNormalizedFieldItems,
 		getNormalizedFieldItems,
-		setFilterField,
+		setFilterFieldLabel,
 		setCustomPill,
 		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params
-	}), [searchParams, stateParams, normalizedFieldItemsMap]);
+	}), [searchParams, stateParams, filterFieldsMap]);
 
 	return (
 		<CreateDataTableContext.Provider value={paramsContext}>

@@ -8,7 +8,7 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
-	const { updateSingleValueFilter, setFilterField, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
+	const { updateSingleValueFilter, setFilterFieldLabel, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
 	const primaryFieldKey = primaryFieldEntry[0];
@@ -17,7 +17,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 
 	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
-		setFilterField(field);
+		setFilterFieldLabel(field);
 		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 

@@ -401,17 +401,18 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 
 // Render a filter badge with custom or default content
 function DataTableBadge({ item, value, isLoading, onRemove }) {
-	const { getFilterField, getNormalizedFieldItems, getCustomPill } = useDataTableContext();
+	const { getFilterFieldLabel, getNormalizedFieldItems, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
+	const fieldKey = item.substring(1);
 
 	// Get custom pill
-	const CustomBadge = getCustomPill(item.substring(1));
+	const CustomBadge = getCustomPill(fieldKey);
 
 	if (CustomBadge) {
 		return React.cloneElement(CustomBadge, { isLoading });
 	}
 
-	const normalizedFieldItems = getNormalizedFieldItems(item.substring(1));
+	const normalizedFieldItems = getNormalizedFieldItems(fieldKey);
 
 	let displayValue = Array.isArray(value) ? value[0] : value;
 	if (normalizedFieldItems) {
@@ -423,7 +424,7 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 
 	return (
 		<Badge color='primary' pill>
-			{`${getFilterField(item.substring(1))}: ${displayValue}`}
+			{`${getFilterFieldLabel(fieldKey)}: ${displayValue}`}
 			{(isLoading == true) ?
 				<i
 					className='bi bi-x ps-1'
