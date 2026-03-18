@@ -458,7 +458,7 @@ function DataTableSort2({title, field, sortDirection}) {
 					<i
 						title={`${t('General|Sort ascend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
 						className='bi bi-sort-up sort-icon-active ms-2'
-					></i>
+					/>
 				</span>
 			:
 				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'd')}>
@@ -466,15 +466,15 @@ function DataTableSort2({title, field, sortDirection}) {
 					<i
 						title={`${t('General|Sort descend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
 						className='bi bi-sort-down-alt sort-icon-active ms-2'
-					></i>
+					/>
 				</span>
 		:
 			<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, getInitialSortDirection())}>
-					{title}
+				{title}
 				<i
 					title={t('General|Shift + left mouse click for advanced sorting')}
 					className='bi bi-arrow-down-up ms-2'
-				></i>
-				</span>
+				/>
+			</span>
 	);
 }
