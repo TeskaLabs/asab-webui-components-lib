@@ -164,17 +164,13 @@ const columns = [
 
 Use with sort direction:
 
+`sortDirection` - optional prop
+
 Use with custom default sorting direction. If `sortDirection` is set, the first click on a sortable column will use this direction ('a' for ascending or 'd' for descending`).
-If not provided, the default behavior remains unchanged (sorting starts with ascending).
+If not provided, the default behavior remains unchanged (sorting starts with ascending - 'a').
 
 **Note:** This property only affects the initial sorting direction when a column is sorted for the first time. Subsequent clicks will toggle between ascending ('a') and descending ('d') as usual.
 ```
-import { DataTableCard2, DataTableSort2 } from "asab_webui_components";
-...
-
-const [sort, setSort] = useState([]);
-...
-
 const columns = [
 	{
 		title: "Session",
@@ -196,24 +192,7 @@ const columns = [
 				{row.credentials_id}
 			</Link>
 	},
-	{
-		title: "Created at",
-		thStyle: {minWidth: "4rem"},
-		render: ({ row }) => <DateTime value={row._c}/>
-	},
-	{
-		title: "Expected expiration",
-		thStyle: {minWidth: "4rem"},
-		render: ({ row }) => <DateTime value={row.expiration}/>
-	},
-	{
-		thStyle: {width: "0px"}, // This is how you do the column for buttons
-		tdStyle: {padding: "0px", whiteSpace: "nowrap"},
-		render: ({ row, column }) => (<>
-			<button className="btn btn-primary me-1" onClick={() => onYClick(row)}><i className="bi bi-check"></i></button>
-			<button className="btn btn-danger" onClick={() => onXClick(row)}><i className="bi bi-trash"></i></button>
-		</>)
-	}
+	...
 ];
 ```
 
