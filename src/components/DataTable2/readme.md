@@ -119,9 +119,6 @@ Use with sort:
 import { DataTableCard2, DataTableSort2 } from "asab_webui_components";
 ...
 
-const [sort, setSort] = useState([]);
-...
-
 const columns = [
 	{
 		title: "Session",
