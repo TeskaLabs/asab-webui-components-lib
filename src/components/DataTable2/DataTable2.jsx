@@ -307,6 +307,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 								<DataTableSort2
 									title={column?.title}
 									field={column.sort}
+									sortDirection={column?.sortDirection}
 								/>
 							: column?.title}
 						</th>
@@ -431,35 +432,49 @@ function DataTableBadge({ item, value, isLoading, onRemove }) {
 }
 
 // Inner sorting function
-function DataTableSort2({title, field}) {
+function DataTableSort2({title, field, sortDirection}) {
 	const { onTriggerSort, getParam } = useDataTableContext();
 	const { t } = useTranslation();
 
+	// Get the current sorting direction for this field from URL/search params (e.g. 'a' or 'd')
+	const currentSort = getParam(`s${field}`);
+
+	// Determine what the start sorting direction should be after click
+	const getInitialSortDirection = () => {
+		if (sortDirection && !currentSort) {
+			// If there is a SortDirection and the field is not sorted yet, we use SortDirection
+			return sortDirection;
+		}
+
+		// Otherwise standard behavior (sorted in ascending order)
+		return 'a';
+	};
+
 	return (
-		getParam(`s${field}`) ?
-			(getParam(`s${field}`) == "d") ?
-				<span className="sort-span-wrapper" onClick={(e) => onTriggerSort(e, field, "a")}>
+		currentSort ?
+			(currentSort === 'd') ?
+				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'a')}>
 					{title}
 					<i
 						title={`${t('General|Sort ascend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
-						className="bi bi-sort-up sort-icon-active ms-2"
-					></i>
+						className='bi bi-sort-up sort-icon-active ms-2'
+					/>
 				</span>
-				:
-				<span className="sort-span-wrapper" onClick={(e) => onTriggerSort(e, field, "d")}>
+			:
+				<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, 'd')}>
 					{title}
 					<i
 						title={`${t('General|Sort descend')}. ${t('General|Shift + left mouse click to remove from sorting')}`}
-						className="bi bi-sort-down-alt sort-icon-active ms-2"
-					></i>
+						className='bi bi-sort-down-alt sort-icon-active ms-2'
+					/>
 				</span>
-			:
-				<span className="sort-span-wrapper" onClick={(e) => onTriggerSort(e, field, "a")}>
-					{title}
-					<i
-						title={t('General|Shift + left mouse click for advanced sorting')}
-						className="bi bi-arrow-down-up ms-2"
-					></i>
-				</span>
-	)
+		:
+			<span className='sort-span-wrapper' onClick={(e) => onTriggerSort(e, field, getInitialSortDirection())}>
+				{title}
+				<i
+					title={t('General|Shift + left mouse click for advanced sorting')}
+					className='bi bi-arrow-down-up ms-2'
+				/>
+			</span>
+	);
 }
