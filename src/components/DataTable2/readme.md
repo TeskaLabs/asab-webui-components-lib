@@ -119,9 +119,6 @@ Use with sort:
 import { DataTableCard2, DataTableSort2 } from "asab_webui_components";
 ...
 
-const [sort, setSort] = useState([]);
-...
-
 const columns = [
 	{
 		title: "Session",
@@ -159,6 +156,40 @@ const columns = [
 			<button className="btn btn-danger" onClick={() => onXClick(row)}><i className="bi bi-trash"></i></button>
 		</>)
 	}
+];
+```
+
+Use with sort direction:
+
+`sortDirection` - optional prop
+
+Use with custom default sorting direction. If `sortDirection` is set, the first click on a sortable column will use this direction ('a' for ascending or 'd' for descending`).
+If not provided, the default behavior remains unchanged (sorting starts with ascending - 'a').
+
+**Note:** This property only affects the initial sorting direction when a column is sorted for the first time. Subsequent clicks will toggle between ascending ('a') and descending ('d') as usual.
+```
+const columns = [
+	{
+		title: "Session",
+		thStyle: {minWidth: "2rem"},
+		sort: "_id",
+		sortDirection: 'd',
+		render: ({ row }) =>
+			<Link to={`/auth/session/${row._id}`}>
+				{row._id}
+			</Link>
+	},
+	{
+		title: "Credentials",
+		thStyle: {minWidth: "2rem"},
+		sort: "credentials_id",
+		sortDirection: 'd',
+		render: ({ row }) =>
+			<Link to={`/auth/credentials/${row.credentials_id}`}>
+				{row.credentials_id}
+			</Link>
+	},
+	...
 ];
 ```
 

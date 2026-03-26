@@ -91,7 +91,14 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 					updatedSearchParams.append(key, value);
 				}
 			})
-			updateLimit("decrease", updatedSearchParams);
+			/*	Only decrease limit when adding the very first filtering.
+				Check original params (including the field being replaced) so that
+				replacing an existing filter does not decrease the limit a second time
+			*/
+			const isFirstFilter = ![...searchParams.entries()].some(([key]) => key.startsWith('a'));
+			if (isFirstFilter) {
+				updateLimit("decrease", updatedSearchParams);
+			}
 			updatedSearchParams.set("p", 1);
 			updatedSearchParams.append(`a${field}`, value);
 			setSearchParams(updatedSearchParams);
@@ -104,7 +111,11 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 						updatedState[key] = prevState[key];
 					}
 				});
-				updateStateLimit("decrease", updatedState);
+				// Same check against the original prevState (before stripping the field)
+				const isFirstFilter = !Object.keys(prevState).some(key => key.startsWith('a'));
+				if (isFirstFilter) {
+					updateStateLimit("decrease", updatedState);
+				}
 				updatedState['p'] = 1;
 				updatedState[`a${field}`] = [value];
 				return updatedState;

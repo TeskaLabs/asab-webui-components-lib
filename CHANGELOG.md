@@ -1,5 +1,17 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.9
+
+- Fix on datatable filtering issue, when the rows were decreasing everytime a new filter has been applied (#71)
+
+## 27.3.8
+
+- Add `sortDirection` prop for DataTable2 for Columns sorting. Update docs for DataTable2 (#66)
+
+## 27.3.7
+
+- Fix on normalization of IPV6 values (#70)
+
 ## 27.3.6
 
 - Set `escapeValues` to `true` in ErrorHandler translation util component to prevent potential XSS attacks. (#67)
