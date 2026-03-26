@@ -10,14 +10,12 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
-	console.log('DataTableAdvFilterMultiValue2 field: ', field);
-	console.log('DataTableAdvFilterMultiValue2 fieldItems: ', fieldItems);
 	const { getParam, updateMultiValueFilter, clearMultiValueFilter, setFilterFieldLabel, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const { t } = useTranslation();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const primaryFieldKey = primaryFieldEntry[0];
-	const primaryFieldValue = primaryFieldEntry[1];
+	const entries = field != null && typeof field === 'object' ? Object.entries(field) : [];
+	const primaryFieldEntry = entries[0]; // Extracts the first key-value pair from the field object
+	const [primaryFieldKey, primaryFieldValue] = primaryFieldEntry ?? []; 
 	const valuesToUpdate = getParam(`a${primaryFieldKey}`, { splitBy: ','});
 	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldKey);
 
@@ -26,6 +24,11 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 		setFilterFieldLabel(field);
 		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
+
+	if (!primaryFieldEntry) {
+		console.warn('DataTableAdvFilterMultiValue2:  "field" prop is missing or empty — cannot render filter.');
+		return null;
+	}
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
 

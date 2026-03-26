@@ -10,9 +10,9 @@ import './DataTableAdvFilter2.scss';
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	const { updateSingleValueFilter, setFilterFieldLabel, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
-	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
-	const primaryFieldKey = primaryFieldEntry[0];
-	const primaryFieldValue = primaryFieldEntry[1];
+	const entries = field != null && typeof field === 'object' ? Object.entries(field) : [];
+	const primaryFieldEntry = entries[0]; // Extracts the first key-value pair from the field object
+	const [primaryFieldKey, primaryFieldValue] = primaryFieldEntry ?? []; 
 	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldKey);
 
 	// Update filterFields and normalizedFieldItems in DataTable context
@@ -21,6 +21,10 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
 
+	if (!primaryFieldEntry) {
+		console.warn('DataTableAdvFilterSingleValue2: "field" prop is missing or empty — cannot render filter.');
+		return null;
+	}
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
 
