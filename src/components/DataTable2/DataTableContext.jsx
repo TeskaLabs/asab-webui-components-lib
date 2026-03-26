@@ -330,7 +330,14 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 
 	// Method to set filter field label
 	const setFilterFieldLabel = (obj) => {
-		const [fieldKey, fieldLabel] = Object.entries(obj)[0];
+		const entries = obj != null && typeof obj === 'object' ? Object.entries(obj) : [];
+		const fieldEntry = entries[0]; // Extracts the first key-value pair from the field object
+		if (!fieldEntry) {
+			console.warn('DataTableContext: "obj" prop is missing or empty — cannot set filter field label.');
+			return;
+		}
+
+		const [fieldKey, fieldLabel] = fieldEntry; // Extract the key and label from the field entry
 		setFilterFieldsMap(prev => {
 			if (prev[fieldKey]?.fieldLabel) return prev;
 			return { ...prev, [fieldKey]: { ...prev[fieldKey], fieldLabel } };
