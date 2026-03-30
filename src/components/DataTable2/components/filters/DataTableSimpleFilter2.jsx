@@ -7,7 +7,7 @@ import {
 
 import { useDataTableContext } from '../../DataTableContext.jsx';
 
-export function DataTableFilter2() {
+export function DataTableFilter2({ focus = true}) {
 	const { getParam, setParams } = useDataTableContext();
 	const { t } = useTranslation();
 
@@ -19,15 +19,15 @@ export function DataTableFilter2() {
 	return (
 		<div>
 			<InputGroup>
-				<InputGroupText><i className="bi bi-search"></i></InputGroupText>
+				<InputGroupText><i className='bi bi-search' /></InputGroupText>
 				<Input
-					autoFocus
-					value={getParam("f") ? getParam("f") : ""}
+					autoFocus={focus}
+					value={getParam('f') ? getParam('f') : ''}
 					onChange={(e) => {onFilterChange(e)}}
 					placeholder={t('General|Search')}
-					type="text"
-					bsSize="sm"
-					name="table-simple-filter"
+					type='text'
+					bsSize='sm'
+					name='table-simple-filter'
 				/>
 			</InputGroup>
 		</div>
