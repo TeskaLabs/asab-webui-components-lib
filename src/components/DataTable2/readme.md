@@ -368,6 +368,9 @@ const Header = () => {
 }
 ```
 
+**Note:** For the `DataTableFilter2`, it is possible to turn off autofocus using the optional prop `<DataTableFilter2 focus={false} />`. `focus`
+
+
 With advanced filter (multi and single value):
 
 ```
