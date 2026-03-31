@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.3.10
+
+- Temporaly pin the `axios` version within range of `1.8.4` to `1.14.0` included (#73)
+
 ## 27.3.9
 
 - Fix on datatable filtering issue, when the rows were decreasing everytime a new filter has been applied (#71)
