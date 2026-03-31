@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "27.3.9",
+	"version": "27.3.10",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -45,7 +45,7 @@
 	},
 	"peerDependencies": {
 		"@babel/runtime": "^7.22.11",
-		"axios": "^1.8.4",
+		"axios": ">=1.8.4 <1.14.1",
 		"bootstrap": "^5.3.1",
 		"bootstrap-icons": "^1.10.5",
 		"date-fns": "^4.1.0",
