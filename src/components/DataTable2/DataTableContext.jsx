@@ -13,7 +13,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
-	const [filterFieldsMap, setFilterFieldsMap] = useState({}); // { [fieldKey]: { fieldLabel, items } }
+	const filterFieldsRef = useRef({}); // { [fieldKey]: { fieldLabel, items } }
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -296,12 +296,13 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 
 	// Method to get filter field label to be displayed in the DataTableBadge
 	const getFilterFieldLabel = (key) => {
-		return filterFieldsMap[key]?.fieldLabel ?? null;
+		return filterFieldsRef.current[key]?.fieldLabel ?? null;
 	};
 
 	// Method to normalize field items
 	const setNormalizedFieldItems = (key, fieldItems) => {
 		if (!fieldItems || fieldItems.length === 0) return;
+		if (filterFieldsRef.current[key]?.items) return;
 
 		const normalized = fieldItems.map(item => {
 			if (typeof item === 'object' && item !== null) {
@@ -316,15 +317,12 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 			return { value: String(item), label: String(item) }; // Fallback to value if item is not an object
 		});
 
-		setFilterFieldsMap(prev => {
-			if (prev[key]?.items) return prev;
-			return { ...prev, [key]: { ...prev[key], items: normalized } };
-		});
+		filterFieldsRef.current[key] = { ...filterFieldsRef.current[key], items: normalized };
 	};
 
 	// Method to get normalized field items
 	const getNormalizedFieldItems = (key) => {
-		return filterFieldsMap[key]?.items ?? null;
+		return filterFieldsRef.current[key]?.items ?? null;
 	};
 
 	// Method to set filter field label
@@ -337,10 +335,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		}
 
 		const [fieldKey, fieldLabel] = fieldEntry; // Extract the key and label from the field entry
-		setFilterFieldsMap(prev => {
-			if (prev[fieldKey]?.fieldLabel) return prev;
-			return { ...prev, [fieldKey]: { ...prev[fieldKey], fieldLabel } };
-		});
+		if (filterFieldsRef.current[fieldKey]?.fieldLabel) return;
+		filterFieldsRef.current[fieldKey] = { ...filterFieldsRef.current[fieldKey], fieldLabel };
 	};
 
 	//  Retrieves a custom pill component by key
@@ -393,7 +389,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		setCustomPill,
 		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params
-	}), [searchParams, stateParams, filterFieldsMap]);
+	}), [searchParams, stateParams]);
 
 	return (
 		<CreateDataTableContext.Provider value={paramsContext}>
