@@ -12,8 +12,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const defaultParams = { p: 1, i: initialLimit };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
+	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
-	const filterFieldsRef = useRef({}); // { [fieldKey]: { fieldLabel, items } }
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
