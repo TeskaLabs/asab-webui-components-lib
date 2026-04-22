@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.4.1
+
+- Add support for translations in DataTable2 Filters (#65)
+
 ## 27.3.10
 
 - Temporaly pin the `axios` version within range of `1.8.4` to `1.14.0` included (#73)
