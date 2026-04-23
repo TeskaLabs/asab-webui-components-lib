@@ -22,7 +22,7 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 	},[]);
 
 	if (!primaryFieldEntry) {
-		console.warn('DataTableAdvFilterSingleValue2: "field" prop is missing or empty — cannot render filter.');
+		console.warn('DataTableAdvFilterSingleValue2: "field" prop is missing or empty - cannot render filter.');
 		return null;
 	}
 

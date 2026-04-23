@@ -26,7 +26,7 @@ export function DataTableAdvFilterMultiValue2({ field, fieldItems }) {
 	},[]);
 
 	if (!primaryFieldEntry) {
-		console.warn('DataTableAdvFilterMultiValue2:  "field" prop is missing or empty — cannot render filter.');
+		console.warn('DataTableAdvFilterMultiValue2:  "field" prop is missing or empty - cannot render filter.');
 		return null;
 	}
 

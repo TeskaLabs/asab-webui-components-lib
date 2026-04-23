@@ -330,7 +330,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		const entries = obj != null && typeof obj === 'object' ? Object.entries(obj) : [];
 		const fieldEntry = entries[0]; // Extracts the first key-value pair from the field object
 		if (!fieldEntry) {
-			console.warn('DataTableContext: "obj" prop is missing or empty — cannot set filter field label.');
+			console.warn('DataTableContext: "obj" prop is missing or empty - cannot set filter field label.');
 			return;
 		}
 
