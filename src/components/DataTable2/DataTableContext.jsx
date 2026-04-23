@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo, useState, useRef } from 'rea
 import { useSearchParams } from 'react-router';
 
 import { updateLimit, updateStateLimit } from './components/utils/updateTableLimit.jsx';
+import { translateFromContent } from '../../utils/translateFromContent.js';
 
 // Create an empty context
 const CreateDataTableContext = createContext();
@@ -11,8 +12,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 	const defaultParams = { p: 1, i: initialLimit };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
-	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders.
-	const customPillRef = useRef({}); // Ref for store obj with custom pulls with individual key access
+	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
+	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -293,18 +294,49 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		}
 	};
 
-	// Method to get the current filter fields based on a given key
-	const getFilterField = (key) => {
-		return filterFieldsRef.current[key];
+	// Method to get filter field label to be displayed in the DataTableBadge
+	const getFilterFieldLabel = (key) => {
+		return filterFieldsRef.current[key]?.fieldLabel ?? null;
 	};
 
-	// Method to set filter fields in filterFieldsRef
-	const setFilterField = (obj) => {
-		const fields = Object.entries(obj)[0];
-		// Check and only add field if it doesn't exist
-		if (!filterFieldsRef.current[fields[0]]) {
-			filterFieldsRef.current[fields[0]] = fields[1];
+	// Method to normalize field items
+	const setNormalizedFieldItems = (key, fieldItems) => {
+		if (!fieldItems || fieldItems.length === 0) return;
+		if (filterFieldsRef.current[key]?.items) return;
+
+		const normalized = fieldItems.map(item => {
+			if (typeof item === 'object' && item !== null) {
+				const label = item.label
+					? translateFromContent(item.label)
+					: String(item.key ?? item.value); // Fallback to key or value if label is not available
+				return {
+					value: String(item.key ?? item.value),
+					label
+				};
+			}
+			return { value: String(item), label: String(item) }; // Fallback to value if item is not an object
+		});
+
+		filterFieldsRef.current[key] = { ...filterFieldsRef.current[key], items: normalized };
+	};
+
+	// Method to get normalized field items
+	const getNormalizedFieldItems = (key) => {
+		return filterFieldsRef.current[key]?.items ?? null;
+	};
+
+	// Method to set filter field label
+	const setFilterFieldLabel = (obj) => {
+		const entries = obj != null && typeof obj === 'object' ? Object.entries(obj) : [];
+		const fieldEntry = entries[0]; // Extracts the first key-value pair from the field object
+		if (!fieldEntry) {
+			console.warn('DataTableContext: "obj" prop is missing or empty - cannot set filter field label.');
+			return;
 		}
+
+		const [fieldKey, fieldLabel] = fieldEntry; // Extract the key and label from the field entry
+		if (filterFieldsRef.current[fieldKey]?.fieldLabel) return;
+		filterFieldsRef.current[fieldKey] = { ...filterFieldsRef.current[fieldKey], fieldLabel };
 	};
 
 	//  Retrieves a custom pill component by key
@@ -350,8 +382,10 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		removeMultiPill,
 		onTriggerSort,
 		serializeParams,
-		getFilterField,
-		setFilterField,
+		getFilterFieldLabel,
+		setNormalizedFieldItems,
+		getNormalizedFieldItems,
+		setFilterFieldLabel,
 		setCustomPill,
 		getCustomPill,
 		watchParams: { searchParams, stateParams } // Context value for watching params

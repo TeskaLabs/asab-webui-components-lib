@@ -8,14 +8,23 @@ import { useDataTableContext } from '../../DataTableContext.jsx';
 import './DataTableAdvFilter2.scss';
 
 export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
-	const { updateSingleValueFilter, setFilterField } = useDataTableContext();
+	const { updateSingleValueFilter, setFilterFieldLabel, setNormalizedFieldItems, getNormalizedFieldItems } = useDataTableContext();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
-	const primaryFieldEntry = Object.entries(field)[0]; // Extracts the first key-value pair from the field object
+	const entries = field != null && typeof field === 'object' ? Object.entries(field) : [];
+	const primaryFieldEntry = entries[0]; // Extracts the first key-value pair from the field object
+	const [primaryFieldKey, primaryFieldValue] = primaryFieldEntry ?? []; 
+	const normalizedFieldItems = getNormalizedFieldItems(primaryFieldKey);
 
-	// Update filterFields in DataTable context
+	// Update filterFields and normalizedFieldItems in DataTable context
 	useEffect(() => {
-		setFilterField(field);
+		setFilterFieldLabel(field);
+		setNormalizedFieldItems(primaryFieldKey, fieldItems); // Store normalized items in context for DataTableBadge label lookup
 	},[]);
+
+	if (!primaryFieldEntry) {
+		console.warn('DataTableAdvFilterSingleValue2: "field" prop is missing or empty - cannot render filter.');
+		return null;
+	}
 
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
 
@@ -25,20 +34,20 @@ export function DataTableAdvFilterSingleValue2({ field, fieldItems }) {
 				color="primary"
 				outline
 				className="adv-filter-dropdown-toggle"
-				title={primaryFieldEntry[1]} // Use value of field object as title
+				title={primaryFieldValue} // Use value of field object as title
 				caret
 			>
 				<span className="adv-filter-title">
-					{primaryFieldEntry[1]} {/* Use value of field object as title */}
+					{primaryFieldValue} {/* Use value of field object as title */}
 				</span>
 			</DropdownToggle>
 			<DropdownMenu>
-				{fieldItems.map((item, idx) => (
+				{normalizedFieldItems?.map((item, idx) => (
 					<DropdownItem
 						key={idx}
-						onClick={() => updateSingleValueFilter(primaryFieldEntry[0], item)} // Use key of field object to update the filter
+						onClick={() => updateSingleValueFilter(primaryFieldKey, item.value)} // Use key of field object to update the filter
 					>
-						{item}
+						{item.label}
 					</DropdownItem>
 				))}
 			</DropdownMenu>
