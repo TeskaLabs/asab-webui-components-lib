@@ -13,9 +13,11 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 
 import './DataTable2.scss';
 
+const DEFAULT_LIMIT_VALUES = [10, 20, 50, 100];
+
 // Wrapper for datatable context
 export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38,
-								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = [10, 20, 50, 100] }) {
+								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = DEFAULT_LIMIT_VALUES }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
 			<DataTableCardContent
@@ -221,7 +223,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	);
 }
 
-export function DataTableCardFooter2({page, limit, count, rows, isLoading, limitValues}) {
+export function DataTableCardFooter2({page, limit, count, rows, isLoading, limitValues = DEFAULT_LIMIT_VALUES}) {
 	const { getParam, setParams } = useDataTableContext();
 	const { t } = useTranslation();
 	const [ isLimitDropDownOpen, setLimitDropDownOpen ] = useState(false);
