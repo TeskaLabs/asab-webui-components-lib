@@ -70,7 +70,7 @@ To remove footer from the DataTable2, `hideFooter={true}` should be set.
 />
 ```
 
-To set custom row limits per page, `limitValues={number[]}` should be set.
+To set custom row limits per page, `limitValues={number[]}` should be set. Default values are currently `[10, 20, 50, 100]`.
 
 ```
 <DataTableCard2
