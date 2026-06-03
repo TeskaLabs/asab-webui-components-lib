@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router';
 
-import ReactJsonView from '@microlink/react-json-view'
+import { AsabReactJson } from "../AsabReactJson/AsabReactJson.jsx";
 import { Table } from 'reactstrap';
 import { useAppSelector } from '../Context/store/AppStore.jsx';
 
@@ -51,11 +51,10 @@ const TableCell = ({
 	}
 
 	else if (header.json) cell = (
-		<ReactJsonView
+		<AsabReactJson
 			className="data-table-reactjson"
 			src={obj[header.key]}
-			name={false}
-			collapsed
+			collapse={false}
 			enableClipboard={false}
 			theme={jsonTheme}
 		/>

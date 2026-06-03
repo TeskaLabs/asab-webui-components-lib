@@ -1,13 +1,31 @@
 import React from 'react';
 
-import ReactJsonView from '@microlink/react-json-view'
+import { JsonEditor, githubDarkTheme, githubLightTheme } from 'json-edit-react';
 import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 /*
 	Props to pass on for AsabReactJson:
 		src - This property contains your input JSON
-		...props - all the props that can be passed to ReactJson (http://github.com/mac-s-g/react-json-view?tab=readme-ov-file#props)
+		...props - all the props that can be passed to JsonEditor (https://github.com/CarlosNZ/json-edit-react#props-reference)
 */
+
+// Displays data types for string, number and boolean values.
+const displayDataTypeDefinition = {
+	condition: ({ value }) => ['string', 'number', 'boolean'].includes(typeof value),
+	passOriginalNode: true,
+	showOnView: true,
+	showOnEdit: false,
+	element({ originalNode, nodeData, getStyles }) {
+		const dataType = typeof nodeData.value;
+		const { color } = getStyles(dataType, nodeData);
+		return (
+			<span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.35rem' }}>
+				<span style={{ fontSize: '0.7em', color }}>{dataType}</span>
+				{originalNode}
+			</span>
+		);
+	},
+};
 
 // Component wraps ReactJson to handle BigInt numbers and turn them into strings
 export const AsabReactJson = ({src, ...props}) => {
@@ -28,11 +46,18 @@ export const AsabReactJson = ({src, ...props}) => {
 	};
 
 	return (
-		<ReactJsonView
-			src={convertBigIntToString((src))}
-			theme={(theme === 'dark') ? 'chalk' : 'rjv-default'}
+		<JsonEditor
+			data={convertBigIntToString((src))}
+			customNodeDefinitions={[displayDataTypeDefinition]}
+			theme={[
+				theme === 'dark' ? githubDarkTheme : githubLightTheme,
+				{
+					container: {
+						backgroundColor: 'var(--bs-card-bg)'
+					}
+				}
+			]}
 			{...props}
 		/>
-
 	)
 };
