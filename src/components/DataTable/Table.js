@@ -55,6 +55,7 @@ const TableCell = ({
 			className="data-table-reactjson"
 			src={obj[header.key]}
 			collapse={false}
+			rootName=""
 			enableClipboard={false}
 		/>
 	);
@@ -222,6 +223,7 @@ const TableRow = ({
 					>
 						<AsabReactJson
 							src={obj}
+							rootName=""
 						/>
 					</td>
 				</tr>

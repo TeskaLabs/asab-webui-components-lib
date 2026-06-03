@@ -21,6 +21,7 @@ export function AdvancedCard ({ data, cardClassname='' }) {
 				<CardBody>
 					<AsabReactJson
 						src={data}
+						rootName=""
 						collapse={false}
 					/>
 				</CardBody>
