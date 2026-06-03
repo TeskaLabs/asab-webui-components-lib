@@ -47,7 +47,7 @@ export const AsabReactJson = ({src, ...props}) => {
 
 	return (
 		<JsonEditor
-			data={convertBigIntToString((src))}
+			data={convertBigIntToString(src)}
 			customNodeDefinitions={[displayDataTypeDefinition]}
 			theme={[
 				theme === 'dark' ? githubDarkTheme : githubLightTheme,

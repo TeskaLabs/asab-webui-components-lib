@@ -13,7 +13,7 @@ import './DataTable.scss';
 
 const TableCell = ({
 	obj, header, idx,
-	showJson, jsonTheme, isSublist
+	showJson, isSublist
 }) => {
 	if (!obj) return <td className="ps-3" style={{ whiteSpace: "nowrap" }}>-</td>
 
@@ -56,7 +56,6 @@ const TableCell = ({
 			src={obj[header.key]}
 			collapse={false}
 			enableClipboard={false}
-			theme={jsonTheme}
 		/>
 	);
 
@@ -168,24 +167,8 @@ const TableRow = ({
 		return "";
 	}
 
-	const getJsonTheme = (obj) => {
-		if (rowStyle?.jsonTheme && rowStyle?.condition(obj)) {
-			return rowStyle.jsonTheme;
-		}
-		else if (rowClassName?.jsonTheme && rowClassName?.condition(obj)) {
-			return rowClassName.jsonTheme;
-		}
-		else if (theme !== "light") {
-			return "chalk";
-		}
-		else {
-			return "rjv-default";
-		}
-	}
-
 	const style = useMemo(() => getStyle(obj), [obj]);
 	const className = useMemo(() => getClassName(obj), [obj]);
-	const jsonTheme = useMemo(() => getJsonTheme(obj, theme), [obj, theme]);
 
 	return (
 		<>
@@ -209,7 +192,6 @@ const TableRow = ({
 							header={header}
 							idx={idx}
 							key={idx}
-							jsonTheme={jsonTheme}
 						/>
 					)))
 				}
@@ -226,7 +208,6 @@ const TableRow = ({
 								header={header}
 								idx={idx}
 								key={idx}
-								jsonTheme={jsonTheme}
 							/>
 						))}
 					</tr>
