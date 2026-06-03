@@ -239,10 +239,8 @@ const TableRow = ({
 						colSpan={category?.sublistKey ? headers.length+2 : headers.length+1}
 						className="data-table-adv-td"
 					>
-						<ReactJsonView
-							theme={theme === 'dark' ? "chalk" : "rjv-default"}
+						<AsabReactJson
 							src={obj}
-							name={false}
 						/>
 					</td>
 				</tr>
