@@ -323,22 +323,23 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 			</thead>
 
 			<tbody>
-				{rows.map((row, ridx) => (
-					<tr key={ridx} style={{ ...rowStyle ? rowStyle(row) : {}, height: rowHeight }}>
-						{ loading
-						? <td colSpan={columns.length}>
-							<span className="placeholder w-100 bg-secondary"></span>
-						</td>
-						: columns.map((column, cidx) =>
-							<td key={cidx} style={column?.tdStyle}>
-								{ (column?.render != undefined)
-								? column.render({row, column, ridx})
-								: <span className="placeholder w-100 bg-secondary" title="Missing render method"></span>
-								}
+				{rows.map((row, ridx) => {
+					return (
+						<tr key={ridx} style={{ ...rowStyle ? rowStyle(row) : {}, height: rowHeight }}>
+							{ loading
+							? <td colSpan={columns.length}>
+								<span className="placeholder w-100 bg-secondary"></span>
 							</td>
-						)}
-					</tr>
-				))}
+							: columns.map((column, cidx) =>
+								<td key={cidx} style={column?.tdStyle}>
+									{ (column?.render != undefined)
+									? column.render({row, column, ridx})
+									: <span className="placeholder w-100 bg-secondary" title="Missing render method"></span>
+									}
+								</td>
+							)}
+						</tr>
+				)})}
 			</tbody>
 
 			{(limit - rows.length > 0) && <tfoot /* This is rendering of the empty rows to make height of table fixed */>
