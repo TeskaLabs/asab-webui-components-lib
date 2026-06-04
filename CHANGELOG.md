@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.4.3
+## 27.4.4
 
 - Replace react-json-view With json-edit-react in AsabReactJson. Replace react-json-view with AsabReactJson elsewhere (#76)
 
