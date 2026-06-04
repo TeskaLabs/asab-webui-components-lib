@@ -28,7 +28,7 @@ const displayDataTypeDefinition = {
 };
 
 // Component wraps JsonEditor to handle BigInt numbers and turn them into strings
-export const AsabReactJson = ({src, ...props}) => {
+export const AsabReactJson = ({src, displayDataTypes = true, ...props}) => {
 	const theme = useAppSelector(state => state.theme);
 
 	// The function looks through the received data and if there is a BigInt there, it transforms it into a string
@@ -48,7 +48,7 @@ export const AsabReactJson = ({src, ...props}) => {
 	return (
 		<JsonEditor
 			data={convertBigIntToString(src)}
-			customNodeDefinitions={[displayDataTypeDefinition]}
+			customNodeDefinitions={displayDataTypes ? [displayDataTypeDefinition] : undefined}
 			viewOnly={true}
 			theme={[
 				theme === 'dark' ? githubDarkTheme : githubLightTheme,
