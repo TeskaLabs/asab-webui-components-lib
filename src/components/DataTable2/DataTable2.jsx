@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -30,6 +30,14 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 		</DataTableContextProvider>
 	);
 }
+
+const DataTableCardContent = memo(function DataTableCardContent({ header }) {
+	return (
+		<CardHeader className="card-header-flex">
+			{header}
+		</CardHeader>
+	);
+})
 
 
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter }) {
@@ -183,9 +191,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 
 	return (
 		<div className={`card ${className || ''}`} ref={cardRef}>
-			<CardHeader className="card-header-flex">
-				{header}
-			</CardHeader>
+			<DataTableCardContent header={header} />
 			<CardBody className='datatable2-card-body'>
 				<DataTableCardPill2 isLoading={isLoading} rowHeight={rowHeight}/>
 				{isLoading
