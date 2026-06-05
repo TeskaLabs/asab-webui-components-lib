@@ -34,7 +34,7 @@ const rowStyle = (row) => {
 	}
 	return null;
 };
-	
+
 ...
 
 <DataTableCard2
@@ -58,7 +58,7 @@ To disable searchParams of the DataTable2, `disableParams={true}` is used to cha
 />
 ```
 
-To remove footer from the DataTable2, `hideFooter={true}` should be set.
+To remove footer from the DataTable2, `disableFooter={true}` should be set.
 
 ```
 <DataTableCard2
@@ -66,7 +66,7 @@ To remove footer from the DataTable2, `hideFooter={true}` should be set.
 	columns={columns}
 	loader={loader}
 	header={<Header />}
-	hideFooter={true}
+	disableFooter={true}
 />
 ```
 

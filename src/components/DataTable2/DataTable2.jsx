@@ -14,7 +14,7 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 import './DataTable2.scss';
 
 // Wrapper for datatable context
-export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle }) {
+export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, disableFooter = false, rowStyle }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
 			<DataTableCardContent
@@ -25,7 +25,7 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 				className={className}
 				rowHeight={rowHeight}
 				rowStyle={rowStyle}
-				hideFooter={hideFooter}
+				disableFooter={disableFooter}
 			/>
 		</DataTableContextProvider>
 	);
@@ -40,7 +40,7 @@ const DataTableCardHeader = memo(function DataTableCardHeader({ header }) {
 });
 
 
-function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter }) {
+function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, disableFooter }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
 	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
@@ -212,7 +212,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 					/>
 				}
 			</CardBody>
-			{!hideFooter &&
+			{!disableFooter &&
 			<DataTableCardFooter2
 				page={getParam('p')}
 				limit={getParam('i')}
