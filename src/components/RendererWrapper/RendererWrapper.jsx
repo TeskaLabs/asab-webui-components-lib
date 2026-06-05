@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { highlightUnicodeChildren } from '../../utils/highlightWhitespaces';
 
 // Renderer wraper
 export function RendererWrapper({
@@ -6,11 +7,13 @@ export function RendererWrapper({
 	component: Component = 'span', // Default tag, can be overloaded
 	...rest
 }) {
+	const HighlightedChildren = useMemo(() => highlightUnicodeChildren(children), [children]);
+
 	return (
 		<Component
 			{...rest}
 		>
-			{children}
+			{HighlightedChildren}
 		</Component>
 	);
 }

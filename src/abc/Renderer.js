@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
 import { RendererWrapper } from '../components/RendererWrapper/RendererWrapper.jsx';
 
+import './Renderer.scss';
+
 export class Renderer extends Component {
 	// Renderer defaults
 	constructor(app) {
@@ -10,33 +12,37 @@ export class Renderer extends Component {
 	}
 
 	render(key, value, schemaField, params = undefined) {
+
 		// Render ReactJson component if value is a object
 		if (typeof value === 'object') {
 			return (
 				<AsabReactJson
-					src={value}
-					name={false}
-					collapsed={false}
-					displayDataTypes={false}
-					displayArrayKey={false}
-					quotesOnKeys={false}
-					enableClipboard={false}
-					indentWidth={8}
+				src={value}
+				name={false}
+				collapsed={false}
+				displayDataTypes={false}
+				displayArrayKey={false}
+				quotesOnKeys={false}
+				enableClipboard={false}
+				indentWidth={8}
 				/>
 			)
 		}
-
 		// Convert bigint to string (to preserve precision and to display the value when no other renderer is applied)
 		if (typeof value === "bigint") {
 			value = value.toString();
 		}
 
 		// Render span with value inside as a default
-		return (<RendererWrapper
+		return (
+			<RendererWrapper
 				data-value={value} // Passing value (to eventually work with in the external wrapper)
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
-				>{value}</RendererWrapper>);
+				>
+				{value}
+			</RendererWrapper>
+		);
 	}
 
 	plain(key, value, schemaField)	{
@@ -55,6 +61,8 @@ export class Renderer extends Component {
 			value = value.toString();
 		}
 
-		return value;
+		const highlightedValue = highlightUnicodeChildren(value);
+
+		return highlightedValue;
 	}
 }
