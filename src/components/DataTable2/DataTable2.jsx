@@ -31,13 +31,13 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 	);
 }
 
-const DataTableCardContent = memo(function DataTableCardContent({ header }) {
+const DataTableCardHeader = memo(function DataTableCardHeader({ header }) {
 	return (
 		<CardHeader className="card-header-flex">
 			{header}
 		</CardHeader>
 	);
-})
+});
 
 
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter }) {
@@ -191,7 +191,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 
 	return (
 		<div className={`card ${className || ''}`} ref={cardRef}>
-			<DataTableCardContent header={header} />
+			<DataTableCardHeader header={header} />
 			<CardBody className='datatable2-card-body'>
 				<DataTableCardPill2 isLoading={isLoading} rowHeight={rowHeight}/>
 				{isLoading
