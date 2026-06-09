@@ -3,6 +3,7 @@ import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
 import { RendererWrapper } from '../components/RendererWrapper/RendererWrapper.jsx';
 
 import './Renderer.scss';
+import { highlightUnicodeChildren } from "../utils/highlightWhitespaces.js";
 
 export class Renderer extends Component {
 	// Renderer defaults
@@ -33,6 +34,8 @@ export class Renderer extends Component {
 			value = value.toString();
 		}
 
+		const highlightedValue = highlightUnicodeChildren(value);
+
 		// Render span with value inside as a default
 		return (
 			<RendererWrapper
@@ -40,7 +43,7 @@ export class Renderer extends Component {
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
 				>
-				{value}
+				{highlightedValue}
 			</RendererWrapper>
 		);
 	}
@@ -49,7 +52,8 @@ export class Renderer extends Component {
 		// Render stringified component if value is a object
 		if (typeof value === 'object') {
 			try {
-				return JSON.stringify(value);
+				const highlightedValue = highlightUnicodeChildren(JSON.stringify(value));
+				return highlightedValue;
 			} catch(e) {
 				console.warn('Failed to stringify the renderer value:', value, e);
 				return value;

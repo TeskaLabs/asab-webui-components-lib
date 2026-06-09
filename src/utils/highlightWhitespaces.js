@@ -99,6 +99,11 @@ export function isSpecialUnicodeCodePoint(codePoint) {
 
 const ASCII_SPACE = 0x20;
 
+function formatCodePointHex(codePoint) {
+	const hex = codePoint.toString(16).toUpperCase();
+	return hex.length < 4 ? hex.padStart(4, '0') : hex;
+}
+
 function getAsciiSpaceEdges(value) {
 	let leadingEnd = 0;
 	while (leadingEnd < value.length && value.codePointAt(leadingEnd) === ASCII_SPACE) {
@@ -130,7 +135,7 @@ export function highlightWhitespaces(value) {
 
 			if (isEdgeSpace) {
 				nodes.push(
-					<span key={`${i}-20`} className='renderer-whitespace renderer-edge-space'>
+					<span key={`${i}-20`} className='renderer-whitespace m-0'>
 						*
 					</span>,
 				);
@@ -138,7 +143,7 @@ export function highlightWhitespaces(value) {
 				nodes.push(' ');
 			}
 		} else if (isSpecialUnicodeCodePoint(codePoint)) {
-			const hexUnicode = codePoint.toString(16).toUpperCase();
+			const hexUnicode = formatCodePointHex(codePoint);
 
 			nodes.push(
 				<span key={`${i}-${hexUnicode}`} className={`unicode-${hexUnicode} renderer-whitespace`}>
