@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.4.3
+
+- More understandable messages have been added for `IPv4` and `IPv6` in the `classifyIpAddresses` (#79)
+
 ## 27.4.2
 
 - Unpin the `axios` version to `^1.15.0` (#74)
