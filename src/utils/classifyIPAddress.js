@@ -179,7 +179,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 documentation (TEST-NET)"
+			msg: "IPv4 Address from documentation range"
 		}
 	},
 	{
@@ -189,7 +189,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 6to4 relay"
+			msg: "IPv4 Address for 6to4 relay"
 		}
 	},
 	{
@@ -208,7 +208,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 documentation (TEST-NET)"
+			msg: "IPv4 Address from documentation range"
 		}
 	},
 	{
@@ -218,7 +218,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 documentation (TEST-NET)"
+			msg: "IPv4 Address from documentation range"
 		}
 	},
 	{
@@ -270,7 +270,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 NAT64 translation"
+			msg: "IPv6 Address from NAT64 translation"
 		}
 	},
 	{
@@ -299,7 +299,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 Teredo tunnel"
+			msg: "IPv6 Address from Teredo tunnel"
 		}
 	},
 	{
@@ -319,7 +319,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 documentation (TEST-NET)"
+			msg: "IPv6 Address from documentation range"
 		}
 	},
 	{
@@ -329,7 +329,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 ORCHID"
+			msg: "IPv6 Address used for ORCHID"
 		}
 	},
 	{
@@ -339,7 +339,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 6to4 transition"
+			msg: "IPv6 Address from 6to4 transition range"
 		}
 	},
 	{
@@ -349,7 +349,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv6",
-			msg: "IPv6 unique-local (ULA)"
+			msg: "unique-local IPv6 Address (ULA)"
 		}
 	},
 	{
