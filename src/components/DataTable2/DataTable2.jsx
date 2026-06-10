@@ -38,7 +38,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
-	const [ count, setCount ] = useState(0);
+	const [ count, setCount ] = useState(null);
 	const [ isLoading, setLoading ] = useState(true);
 
 	const cardRef = useRef(null);
@@ -72,8 +72,10 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 					app.addAlert('danger', t('General|Failed to load rows to the data table. Rows are of unsupported type {{type}}.', { type: typeof rows }));
 					return;
 				}
+				if (count !== undefined) {
+					setCount(count);
+				}
 				setRows(rows);
-				setCount(count);
 			}
 		}
 		catch (e) {
@@ -223,6 +225,8 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading}) {
 	const { t } = useTranslation();
 	const [ isLimitDropDownOpen, setLimitDropDownOpen ] = useState(false);
 	const limitValues = [10, 20, 50, 100];
+
+	console.log('count', count);
 
 	const nextPage = () => {
 		if ((count == undefined) && (limit === rows.length)) {
