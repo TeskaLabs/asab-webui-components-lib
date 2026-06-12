@@ -70,6 +70,18 @@ To remove footer from the DataTable2, `hideFooter={true}` should be set.
 />
 ```
 
+To set custom row limits per page, `limitValues={number[]}` should be set. Default values are currently `[10, 20, 50, 100]`.
+
+```
+<DataTableCard2
+	app={app}
+	columns={columns}
+	loader={loader}
+	header={<Header />}
+	limitValues={[5, 10, 20, 50]}
+/>
+```
+
 ## Columns
 
 Provides info about columns in the data table
