@@ -13,8 +13,11 @@ import { DataTableContextProvider, useDataTableContext } from './DataTableContex
 
 import './DataTable2.scss';
 
+const DEFAULT_LIMIT_VALUES = [10, 20, 50, 100];
+
 // Wrapper for datatable context
-export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38, disableParams = undefined, hideFooter = false, rowStyle }) {
+export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38,
+								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = DEFAULT_LIMIT_VALUES }) {
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
 			<DataTableCardContent
@@ -26,13 +29,14 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 				rowHeight={rowHeight}
 				rowStyle={rowStyle}
 				hideFooter={hideFooter}
+				limitValues={limitValues}
 			/>
 		</DataTableContextProvider>
 	);
 }
 
 
-function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter }) {
+function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, limitValues }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
 	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
@@ -213,16 +217,16 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 				count={count}
 				rows={rows}
 				isLoading={isLoading}
+				limitValues={limitValues}
 			/>}
 		</div>
 	);
 }
 
-export function DataTableCardFooter2({page, limit, count, rows, isLoading}) {
+export function DataTableCardFooter2({page, limit, count, rows, isLoading, limitValues = DEFAULT_LIMIT_VALUES}) {
 	const { getParam, setParams } = useDataTableContext();
 	const { t } = useTranslation();
 	const [ isLimitDropDownOpen, setLimitDropDownOpen ] = useState(false);
-	const limitValues = [10, 20, 50, 100];
 
 	const nextPage = () => {
 		if ((count == undefined) && (limit === rows.length)) {
