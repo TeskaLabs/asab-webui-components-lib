@@ -379,7 +379,7 @@ function classifyIPv4(ipAddress) {
 		cls: "public",
 		family: "IPv4",
 		normalizedValue: stringifyIPv4(ipAddress),
-		msg: "IPv4 public"
+		msg: "IPv4 Public Address"
 	}
 }
 
@@ -398,7 +398,7 @@ function classifyIPv6(ipAddress) {
 		cls: "public",
 		family: "IPv6",
 		normalizedValue: stringifyIPv6(ipAddress),
-		msg: "IPv6 public"
+		msg: "IPv6 Public Address"
 	}
 }
 
