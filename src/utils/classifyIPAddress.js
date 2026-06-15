@@ -349,7 +349,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv6",
-			msg: "unique-local IPv6 Address (ULA)"
+			msg: "Unique-local IPv6 Address (ULA)"
 		}
 	},
 	{
