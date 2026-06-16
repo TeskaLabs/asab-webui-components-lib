@@ -102,13 +102,26 @@ function formatCodePointHex(codePoint) {
 function getAsciiSpaceEdges(value) {
 	let leadingEnd = 0;
 
-	while (leadingEnd < value.length && (value.codePointAt(leadingEnd) === ASCII_SPACE || isSpecialUnicodeCodePoint(value.codePointAt(leadingEnd)))) {
-		leadingEnd += 1;
+	while (leadingEnd < value.length) {
+		const codePoint = value.codePointAt(leadingEnd);
+		if (codePoint !== ASCII_SPACE && !isSpecialUnicodeCodePoint(codePoint)) {
+			break;
+		}
+		leadingEnd += codePoint > 0xFFFF ? 2 : 1;
 	}
 
 	let trailingStart = value.length;
-	while (trailingStart > leadingEnd && (value.codePointAt(trailingStart - 1) === ASCII_SPACE || isSpecialUnicodeCodePoint(value.codePointAt(trailingStart - 1)))) {
-		trailingStart -= 1;
+	while (trailingStart > leadingEnd) {
+		// For trailing, we need to check the previous code point
+		// If trailingStart-1 is a low surrogate, the code point starts at trailingStart-2
+		const prevIndex = trailingStart - 1;
+		const prevChar = value.charCodeAt(prevIndex);
+		const isLowSurrogate = prevChar >= 0xDC00 && prevChar <= 0xDFFF;
+		const cpStart = isLowSurrogate ? prevIndex - 1 : prevIndex;
+		if (cpStart < leadingEnd) break;
+		const cp = value.codePointAt(cpStart);
+		if (cp !== ASCII_SPACE && !isSpecialUnicodeCodePoint(cp)) break;
+		trailingStart = cpStart;
 	}
 
 	return { leadingEnd, trailingStart };
