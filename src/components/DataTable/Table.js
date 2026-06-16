@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router';
 
-import ReactJsonView from '@microlink/react-json-view'
+import { AsabReactJson } from "../AsabReactJson/AsabReactJson.jsx";
 import { Table } from 'reactstrap';
 import { useAppSelector } from '../Context/store/AppStore.jsx';
 
@@ -13,7 +13,7 @@ import './DataTable.scss';
 
 const TableCell = ({
 	obj, header, idx,
-	showJson, jsonTheme, isSublist
+	showJson, isSublist
 }) => {
 	if (!obj) return <td className="ps-3" style={{ whiteSpace: "nowrap" }}>-</td>
 
@@ -51,13 +51,12 @@ const TableCell = ({
 	}
 
 	else if (header.json) cell = (
-		<ReactJsonView
+		<AsabReactJson
 			className="data-table-reactjson"
 			src={obj[header.key]}
-			name={false}
-			collapsed
+			collapse={false}
+			rootName=""
 			enableClipboard={false}
-			theme={jsonTheme}
 		/>
 	);
 
@@ -169,24 +168,8 @@ const TableRow = ({
 		return "";
 	}
 
-	const getJsonTheme = (obj) => {
-		if (rowStyle?.jsonTheme && rowStyle?.condition(obj)) {
-			return rowStyle.jsonTheme;
-		}
-		else if (rowClassName?.jsonTheme && rowClassName?.condition(obj)) {
-			return rowClassName.jsonTheme;
-		}
-		else if (theme !== "light") {
-			return "chalk";
-		}
-		else {
-			return "rjv-default";
-		}
-	}
-
 	const style = useMemo(() => getStyle(obj), [obj]);
 	const className = useMemo(() => getClassName(obj), [obj]);
-	const jsonTheme = useMemo(() => getJsonTheme(obj, theme), [obj, theme]);
 
 	return (
 		<>
@@ -210,7 +193,6 @@ const TableRow = ({
 							header={header}
 							idx={idx}
 							key={idx}
-							jsonTheme={jsonTheme}
 						/>
 					)))
 				}
@@ -227,7 +209,6 @@ const TableRow = ({
 								header={header}
 								idx={idx}
 								key={idx}
-								jsonTheme={jsonTheme}
 							/>
 						))}
 					</tr>
@@ -240,10 +221,9 @@ const TableRow = ({
 						colSpan={category?.sublistKey ? headers.length+2 : headers.length+1}
 						className="data-table-adv-td"
 					>
-						<ReactJsonView
-							theme={theme === 'dark' ? "chalk" : "rjv-default"}
+						<AsabReactJson
 							src={obj}
-							name={false}
+							rootName=""
 						/>
 					</td>
 				</tr>

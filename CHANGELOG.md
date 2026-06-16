@@ -1,5 +1,13 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.0
+
+- Replace react-json-view With json-edit-react in AsabReactJson. Replace react-json-view with AsabReactJson elsewhere (#76)
+
+## 27.4.3
+
+- Add optional prop to set `DataTableCard2` and `DataTableCardFooter2` custom row limits per page (#75)
+
 ## 27.4.2
 
 - Unpin the `axios` version to `^1.15.0` (#74)
