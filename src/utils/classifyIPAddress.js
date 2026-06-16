@@ -85,7 +85,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv4",
-			msg: "IPv4 private"
+			msg: "IPv4 Private Address"
 		}
 	},
 	{
@@ -95,7 +95,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv4",
-			msg: "IPv4 private"
+			msg: "IPv4 Private Address"
 		}
 	},
 	{
@@ -104,7 +104,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "private",
 			family: "IPv4",
-			msg: "IPv4 private"
+			msg: "IPv4 Private Address"
 		}
 	},
 	{
@@ -113,7 +113,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 reserved"
+			msg: "IPv4 Reserved Address"
 		}
 	},
 	{
@@ -122,7 +122,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 reserved"
+			msg: "IPv4 Reserved Address"
 		}
 	},
 	{
@@ -132,7 +132,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 link-local"
+			msg: "IPv4 Link-Local Address"
 		}
 	},
 	{
@@ -151,7 +151,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 loopback"
+			msg: "IPv4 Loopback Address"
 		}
 	},
 	{
@@ -160,7 +160,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 reserved"
+			msg: "IPv4 Reserved Address"
 		}
 	},
 	{
@@ -169,7 +169,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 ds-lite"
+			msg: "IPv4 DS-Lite Address"
 		}
 	},
 	{
@@ -198,7 +198,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 benchmarking"
+			msg: "IPv4 Benchmarking Address"
 		}
 	},
 	{
@@ -228,7 +228,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 reserved"
+			msg: "IPv4 Reserved Address"
 		}
 	},
 	{
@@ -237,7 +237,7 @@ const ipv4Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv4",
-			msg: "IPv4 limited-broadcast"
+			msg: "IPv4 Limited Broadcast Address"
 		}
 	}	
 ]
@@ -250,7 +250,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 loopback"
+			msg: "IPv6 Loopback Address"
 		}
 	},
 	{
@@ -260,7 +260,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 unspecified"
+			msg: "IPv6 Unspecified Address"
 		}
 	},
 	{
@@ -279,7 +279,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 IPv4-mapped"
+			msg: "IPv6 IPv4-Mapped Address"
 		}
 	},
 	{
@@ -289,7 +289,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 discard"
+			msg: "IPv6 Discard Address"
 		}
 	},
 	{
@@ -309,7 +309,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 benchmarking"
+			msg: "IPv6 Benchmarking Address"
 		}
 	},
 	{
@@ -358,7 +358,7 @@ const ipv6Ranges = [
 		attrs: {
 			cls: "special",
 			family: "IPv6",
-			msg: "IPv6 link-local"
+			msg: "IPv6 Link-Local Address"
 		}
 	}
 ]
