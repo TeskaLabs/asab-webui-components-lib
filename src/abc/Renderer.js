@@ -18,14 +18,14 @@ export class Renderer extends Component {
 		if (typeof value === 'object') {
 			return (
 				<AsabReactJson
-				src={value}
-				name={false}
-				collapsed={false}
-				displayDataTypes={false}
-				displayArrayKey={false}
-				quotesOnKeys={false}
-				enableClipboard={false}
-				indentWidth={8}
+					src={value}
+					name={false}
+					collapsed={false}
+					displayDataTypes={false}
+					displayArrayKey={false}
+					quotesOnKeys={false}
+					enableClipboard={false}
+					indentWidth={8}
 				/>
 			)
 		}
@@ -34,8 +34,6 @@ export class Renderer extends Component {
 			value = value.toString();
 		}
 
-		const highlightedValue = highlightUnicodeChildren(value);
-
 		// Render span with value inside as a default
 		return (
 			<RendererWrapper
@@ -43,7 +41,7 @@ export class Renderer extends Component {
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
 				>
-				{highlightedValue}
+				{value}
 			</RendererWrapper>
 		);
 	}

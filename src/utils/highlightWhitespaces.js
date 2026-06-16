@@ -5,7 +5,7 @@ import React from 'react';
 	control and other problematic characters (log smuggling / Trojan Source).
 */
 
-/** @type {number[]} */
+// Possible whitespace unicode code points
 export const SPECIAL_UNICODE_CODE_POINTS = new Set([
 	// Whitespace
 	0x0009, // Tab (HT)
@@ -55,10 +55,7 @@ export const SPECIAL_UNICODE_CODE_POINTS = new Set([
 	0xFFFF, // Noncharacter
 ]);
 
-/**
- * Inclusive [start, end] code point ranges.
- * @type {[number, number][]}
- */
+// Possible whitespace unicode code point ranges
 export const SPECIAL_UNICODE_RANGES = [
 	// Whitespace
 	[0x2000, 0x200A], // En/Em quad, En/Em space, thin/hair space, etc.
@@ -85,39 +82,39 @@ export const SPECIAL_UNICODE_RANGES = [
 	[0x2400, 0x2426], // Control Pictures (display glyphs)
 ];
 
-/**
- * @param {number} codePoint
- * @returns {boolean}
- */
+// Check if a unicode code point is a special unicode code point
 export function isSpecialUnicodeCodePoint(codePoint) {
 	if (SPECIAL_UNICODE_CODE_POINTS.has(codePoint)) {
 		return true;
 	}
-	// return SPECIAL_UNICODE_RANGES.some(([start, end]) => codePoint >= start && codePoint <= end);
-    return false;
+	return SPECIAL_UNICODE_RANGES.some(([start, end]) => codePoint >= start && codePoint <= end);
 }
 
 const ASCII_SPACE = 0x20;
 
+// Format a unicode code point to a hex string
 function formatCodePointHex(codePoint) {
 	const hex = codePoint.toString(16).toUpperCase();
 	return hex.length < 4 ? hex.padStart(4, '0') : hex;
 }
 
+// Get the leading and trailing edges of the ascii space in a string
 function getAsciiSpaceEdges(value) {
 	let leadingEnd = 0;
-	while (leadingEnd < value.length && value.codePointAt(leadingEnd) === ASCII_SPACE) {
+
+	while (leadingEnd < value.length && (value.codePointAt(leadingEnd) === ASCII_SPACE || isSpecialUnicodeCodePoint(value.codePointAt(leadingEnd)))) {
 		leadingEnd += 1;
 	}
 
 	let trailingStart = value.length;
-	while (trailingStart > leadingEnd && value.codePointAt(trailingStart - 1) === ASCII_SPACE) {
+	while (trailingStart > leadingEnd && (value.codePointAt(trailingStart - 1) === ASCII_SPACE || isSpecialUnicodeCodePoint(value.codePointAt(trailingStart - 1)))) {
 		trailingStart -= 1;
 	}
 
 	return { leadingEnd, trailingStart };
 }
 
+// Highlight whitespaces in a string
 export function highlightWhitespaces(value) {
 	if ((value == null) || (typeof value !== 'string') || (value.length === 0)) {
 		return value;
@@ -146,7 +143,7 @@ export function highlightWhitespaces(value) {
 			const hexUnicode = formatCodePointHex(codePoint);
 
 			nodes.push(
-				<span key={`${i}-${hexUnicode}`} className={`unicode-${hexUnicode} renderer-whitespace`}>
+				<span key={`${i}-${hexUnicode}`} className='renderer-whitespace'>
 					{`<${hexUnicode}>`}
 				</span>,
 			);
