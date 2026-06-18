@@ -74,6 +74,9 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 				}
 				if (count !== undefined) {
 					setCount(count);
+				} else {
+					// Keep footer in unknown-count (infinite) mode for this response
+					setCount(null);
 				}
 				setRows(rows);
 			}
@@ -225,8 +228,6 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading}) {
 	const { t } = useTranslation();
 	const [ isLimitDropDownOpen, setLimitDropDownOpen ] = useState(false);
 	const limitValues = [10, 20, 50, 100];
-
-	console.log('count', count);
 
 	const nextPage = () => {
 		if ((count == undefined) && (limit === rows.length)) {
