@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.2
+
+- `AsabReactJson` - Make `JsonEditor` expand to its whole container size (#81)
+
 ## 27.5.1
 
 - More understandable messages have been added for `IPv4` and `IPv6` in the `classifyIpAddresses` (#79)
