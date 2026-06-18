@@ -13,7 +13,6 @@ export class Renderer extends Component {
 	}
 
 	render(key, value, schemaField, params = undefined) {
-
 		// Render ReactJson component if value is a object
 		if (typeof value === 'object') {
 			return (
@@ -29,6 +28,7 @@ export class Renderer extends Component {
 				/>
 			)
 		}
+
 		// Convert bigint to string (to preserve precision and to display the value when no other renderer is applied)
 		if (typeof value === "bigint") {
 			value = value.toString();
@@ -50,8 +50,7 @@ export class Renderer extends Component {
 		// Render stringified component if value is a object
 		if (typeof value === 'object') {
 			try {
-				const highlightedValue = highlightUnicodeChildren(JSON.stringify(value));
-				return highlightedValue;
+				return JSON.stringify(value);
 			} catch(e) {
 				console.warn('Failed to stringify the renderer value:', value, e);
 				return value;
@@ -63,8 +62,6 @@ export class Renderer extends Component {
 			value = value.toString();
 		}
 
-		const highlightedValue = highlightUnicodeChildren(value);
-
-		return highlightedValue;
+		return value;
 	}
 }
