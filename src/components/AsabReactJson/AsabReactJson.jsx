@@ -55,8 +55,9 @@ export const AsabReactJson = ({src, displayDataTypes = false, ...props}) => {
 				theme === 'dark' ? githubDarkTheme : githubLightTheme,
 				{
 					container: {
-						backgroundColor: 'var(--bs-card-bg)'
-					}
+						backgroundColor: 'var(--bs-card-bg)',
+						padding: '0 1.5rem 0.5rem',
+					},
 				}
 			]}
 			{...props}

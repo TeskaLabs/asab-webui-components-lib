@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.3
+
+- `AsabReactJson` - Reduce padding around `JsonEditor` (#83)
+
 ## 27.5.2
 
 - `AsabReactJson` - Make `JsonEditor` expand to its whole container size (#81)
