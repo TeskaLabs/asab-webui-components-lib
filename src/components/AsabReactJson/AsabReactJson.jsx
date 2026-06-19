@@ -56,7 +56,7 @@ export const AsabReactJson = ({src, displayDataTypes = false, ...props}) => {
 				{
 					container: {
 						backgroundColor: 'var(--bs-card-bg)',
-						padding: '0 1.5rem 0',
+						padding: '0 1.5rem 0.5rem',
 					},
 				}
 			]}
