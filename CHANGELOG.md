@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.4
+
+- `AsabReactJson` - Define `14px` as a default fontsize (#84)
+
 ## 27.5.3
 
 - `AsabReactJson` - Reduce padding around `JsonEditor` (#83)
