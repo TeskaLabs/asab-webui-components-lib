@@ -51,6 +51,7 @@ export const AsabReactJson = ({src, displayDataTypes = false, ...props}) => {
 			customNodeDefinitions={displayDataTypes ? [displayDataTypeDefinition] : undefined}
 			viewOnly={true}
 			maxWidth="100%"
+			rootFontSize="14px"
 			theme={[
 				theme === 'dark' ? githubDarkTheme : githubLightTheme,
 				{
