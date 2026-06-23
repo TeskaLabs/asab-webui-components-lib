@@ -25,7 +25,20 @@ export const highlightRendererChildren = (children, fulltextHighlightTerms, data
 		return highlightFulltextInNodes(
 			children,
 			(text) => highlightText(text, fulltextHighlightTerms, highlightClassName),
-		);
+		).flatMap((node) => {
+			if (!React.isValidElement(node)) {
+				return [node];
+			}
+
+			const highlightedNode = highlightRendererChildren(
+				node,
+				fulltextHighlightTerms,
+				dataValue,
+				highlightClassName,
+			);
+
+			return Array.isArray(highlightedNode) ? highlightedNode : [highlightedNode];
+		});
 	}
 
 	if (React.isValidElement(children)) {
