@@ -3,7 +3,6 @@ import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
 import { RendererWrapper } from '../components/RendererWrapper/RendererWrapper.jsx';
 
 import './Renderer.scss';
-import { highlightUnicodeChildren } from "../utils/highlightWhitespaces.js";
 
 export class Renderer extends Component {
 	// Renderer defaults

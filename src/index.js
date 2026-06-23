@@ -31,6 +31,17 @@ export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
+export {
+	highlightWhitespaces,
+	highlightUnicodeChildren,
+	highlightFulltextInNodes,
+	createUnicodeHighlightWrapper,
+} from './utils/highlightWhitespaces.js';
+export { highlightSearchedFulltexts } from './utils/highlightSearchedFulltexts.js';
+export {
+	highlightRendererChildren,
+	createFulltextHighlightWrapper,
+} from './utils/highlightRendererChildren.js';
 export { ASABProgress } from './components/Progress/ASABProgress.jsx';
 export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';

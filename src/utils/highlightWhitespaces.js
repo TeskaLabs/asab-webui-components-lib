@@ -127,6 +127,20 @@ function getAsciiSpaceEdges(value) {
 	return { leadingEnd, trailingStart };
 }
 
+// Append text to the last node or push a new text run (keeps words together for downstream highlighters)
+function pushTextRun(nodes, text) {
+	if (!text) {
+		return;
+	}
+
+	const last = nodes[nodes.length - 1];
+	if (typeof last === 'string') {
+		nodes[nodes.length - 1] = last + text;
+	} else {
+		nodes.push(text);
+	}
+}
+
 // Highlight whitespaces in a string
 export function highlightWhitespaces(value) {
 	if ((value == null) || (typeof value !== 'string') || (value.length === 0)) {
@@ -146,11 +160,11 @@ export function highlightWhitespaces(value) {
 			if (isEdgeSpace) {
 				nodes.push(
 					<span key={`${i}-20`} className='renderer-whitespace m-0'>
-						*
+						.
 					</span>,
 				);
 			} else {
-				nodes.push(' ');
+				pushTextRun(nodes, ' ');
 			}
 		} else if (isSpecialUnicodeCodePoint(codePoint)) {
 			const hexUnicode = formatCodePointHex(codePoint);
@@ -161,13 +175,29 @@ export function highlightWhitespaces(value) {
 				</span>,
 			);
 		} else {
-			nodes.push(char);
+			pushTextRun(nodes, char);
 		}
 
 		i += codePoint > 0xFFFF ? 2 : 1;
 	}
 
 	return nodes;
+}
+
+// Apply a text highlighter (e.g. fulltext search) to string segments in a whitespace node array
+export function highlightFulltextInNodes(nodes, highlightText) {
+	if (!Array.isArray(nodes) || typeof highlightText !== 'function') {
+		return nodes;
+	}
+
+	return nodes.flatMap((node) => {
+		if (typeof node === 'string') {
+			const highlighted = highlightText(node);
+			return Array.isArray(highlighted) ? highlighted : [highlighted];
+		}
+
+		return [node];
+	});
 }
 
 export const highlightUnicodeChildren = (children) => {
