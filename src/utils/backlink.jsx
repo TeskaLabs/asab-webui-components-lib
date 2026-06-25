@@ -81,6 +81,12 @@ export function setBacklink(key, pathname, search = '', options = {}) {
 		return;
 	}
 
+	// If 3rd arg is a plain object (not string/null/undefined), treat it as options
+	if (search != undefined && typeof search === 'object') {
+		options = search;
+		search = '';
+	}
+
 	const storageKey = STORAGE_PREFIX + key;
 	const normalizedSearch = normalizeSearch(search);
 	const url = pathname + (normalizedSearch ? '?' + normalizedSearch : '');
@@ -104,8 +110,8 @@ export function setBacklink(key, pathname, search = '', options = {}) {
 /*
 	Convenience helper for React Router locations
 	@param {string} key - Unique identifier for this backlink context
-	@param {Object} location - React Router location object with pathname property
-	@param {URLSearchParams|string} searchParams - Query parameters as URLSearchParams or string
+	@param {Object} location - React Router location object with pathname and optional search property
+	@param {URLSearchParams|string} searchParams - Query parameters as URLSearchParams or string (optional, defaults to location.search)
 	@param {Object} options - Optional metadata to store with the backlink
  */
 export function setBacklinkFromLocation(key, location, searchParams, options = {}) {
@@ -113,7 +119,23 @@ export function setBacklinkFromLocation(key, location, searchParams, options = {
 		console.warn('backlink: setBacklinkFromLocation requires a location object with pathname');
 		return;
 	}
-	const search = searchParams?.toString ? searchParams.toString() : String(searchParams || '');
+
+	// Handle overload: if there are only 3 args and the 3rd is a plain object (not URLSearchParams/string/null), treat it as options
+	if (arguments.length === 3 && searchParams != undefined && typeof searchParams === 'object' && !(searchParams instanceof URLSearchParams)) {
+		options = searchParams;
+		searchParams = undefined;
+	}
+
+	const search = searchParams === undefined
+		? (location.search || '')
+		: searchParams === null
+			? ''
+			: typeof searchParams === 'string'
+				? searchParams
+				: searchParams instanceof URLSearchParams
+					? searchParams.toString()
+					: String(searchParams);
+
 	setBacklink(key, location.pathname, search, options);
 }
 
