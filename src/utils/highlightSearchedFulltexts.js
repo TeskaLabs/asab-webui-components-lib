@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './highlightSearchedFulltexts.scss';
+
 // Regex to escape special characters to prevent the app to crash in search value
 const ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g;
 
@@ -22,7 +24,7 @@ const normalizeSearchTerms = (searchValue) => {
 };
 
 // Highlight searched fulltexts in the text by replacing matched terms with a span
-export const highlightSearchedFulltexts = (text, searchValue, highlightClassName = 'bg-warning') => {
+export const highlightSearchedFulltexts = (text, searchValue) => {
 	const sourceText = String(text ?? '');
 	const terms = normalizeSearchTerms(searchValue);
 
@@ -38,7 +40,7 @@ export const highlightSearchedFulltexts = (text, searchValue, highlightClassName
 	return sourceText.split(matchRegex).map((part, index) => {
 		if (highlightedTerms.has(part.toLowerCase())) {
 			return (
-				<span key={`${part}-${index}`} className={highlightClassName}>
+				<span key={`${part}-${index}`} className='search-text-highlight'>
 					{part}
 				</span>
 			);
