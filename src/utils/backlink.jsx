@@ -81,8 +81,11 @@ export function setBacklink(key, pathname, search = '', options = {}) {
 		return;
 	}
 
-	// If 3rd arg is a plain object (not string/null/undefined), treat it as options
-	if (search != undefined && typeof search === 'object') {
+	// If 3rd arg is URLSearchParams, normalize it to a string
+	if (search instanceof URLSearchParams) {
+		search = search.toString();
+	} else if (search != undefined && typeof search === 'object') {
+		// 3rd arg is a plain object (not string/null/undefined/URLSearchParams), treat it as options
 		options = search;
 		search = '';
 	}
