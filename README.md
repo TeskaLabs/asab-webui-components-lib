@@ -42,6 +42,7 @@ Possible imports:
 - removeFileExtension
 - deepMerge
 - problemMarkers
+- setBacklink, setBacklinkFromLocation, getBacklink, getBacklinkData, clearBacklink, consumeBacklink, consumeBacklinkData, createBacklinkHandlers
 - AppStoreProvider, useAppStore, useAppSelector, createAppStore, registerReducer
 
 ## Documentation
