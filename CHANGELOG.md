@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.5
+
+- Implement a reusable `backlink` utility to "remember" navigation of a previous screen (#85)
+
 ## 27.5.4
 
 - `AsabReactJson` - Define `14px` as a default fontsize (#84)
