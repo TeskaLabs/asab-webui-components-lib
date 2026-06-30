@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { AsabReactJson } from "../components/AsabReactJson/AsabReactJson.jsx";
 import { RendererWrapper } from '../components/RendererWrapper/RendererWrapper.jsx';
 
+import './Renderer.scss';
+
 export class Renderer extends Component {
 	// Renderer defaults
 	constructor(app) {
@@ -32,11 +34,15 @@ export class Renderer extends Component {
 		}
 
 		// Render span with value inside as a default
-		return (<RendererWrapper
+		return (
+			<RendererWrapper
 				data-value={value} // Passing value (to eventually work with in the external wrapper)
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
-				>{value}</RendererWrapper>);
+				>
+				{value}
+			</RendererWrapper>
+		);
 	}
 
 	plain(key, value, schemaField)	{

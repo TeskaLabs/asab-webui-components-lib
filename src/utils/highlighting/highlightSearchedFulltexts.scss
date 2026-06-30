@@ -1,0 +1,11 @@
+.search-text-highlight {
+	[data-bs-theme=dark] & {
+		color: var(--black);
+		background-color: rgba(var(--light-honey-rgb), 0.9);
+	}
+
+	[data-bs-theme=light] & {
+		color: var(--fiery-sunset);
+		background-color: rgba(var(--bright-orange-rgb), 0.25);
+	}
+}
