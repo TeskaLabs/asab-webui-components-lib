@@ -1,5 +1,25 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.5
+
+- Implement a reusable `backlink` utility to "remember" navigation of a previous screen (#85)
+
+## 27.5.4
+
+- `AsabReactJson` - Define `14px` as a default fontsize (#84)
+
+## 27.5.3
+
+- `AsabReactJson` - Reduce padding around `JsonEditor` (#83)
+
+## 27.5.2
+
+- `AsabReactJson` - Make `JsonEditor` expand to its whole container size (#81)
+
+## 27.5.1
+
+- More understandable messages have been added for `IPv4` and `IPv6` in the `classifyIpAddresses` (#79)
+
 ## 27.5.0
 
 - Replace react-json-view With json-edit-react in AsabReactJson. Replace react-json-view with AsabReactJson elsewhere (#76)

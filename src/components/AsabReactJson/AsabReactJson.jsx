@@ -50,12 +50,15 @@ export const AsabReactJson = ({src, displayDataTypes = false, ...props}) => {
 			data={convertBigIntToString(src)}
 			customNodeDefinitions={displayDataTypes ? [displayDataTypeDefinition] : undefined}
 			viewOnly={true}
+			maxWidth="100%"
+			rootFontSize="14px"
 			theme={[
 				theme === 'dark' ? githubDarkTheme : githubLightTheme,
 				{
 					container: {
-						backgroundColor: 'var(--bs-card-bg)'
-					}
+						backgroundColor: 'var(--bs-card-bg)',
+						padding: '0 1.5rem 0.5rem',
+					},
 				}
 			]}
 			{...props}
