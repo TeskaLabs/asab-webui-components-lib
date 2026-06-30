@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { highlightUnicodeChildren } from '../../utils/highlightWhitespaces';
+import { highlightUnicodeChildren } from '../../utils/visualization/visualizeWhitespaces';
 
 // Renderer wraper
 export function RendererWrapper({

@@ -35,13 +35,13 @@ export {
 	highlightWhitespaces,
 	highlightUnicodeChildren,
 	highlightFulltextInNodes,
-	createUnicodeHighlightWrapper,
-} from './utils/highlightWhitespaces.js';
-export { highlightSearchedFulltexts } from './utils/highlightSearchedFulltexts.js';
+	createUnicodeVisualizeWrapper,
+} from './utils/visualization/visualizeWhitespaces.js';
+export { highlightSearchedFulltexts } from './utils/highlighting/highlightSearchedFulltexts.js';
 export {
-	highlightRendererChildren,
+	highlightChildren,
 	createFulltextHighlightWrapper,
-} from './utils/highlightRendererChildren.js';
+} from './utils/highlighting/highlightChildren.jsx';
 export { ASABProgress } from './components/Progress/ASABProgress.jsx';
 export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';

@@ -127,7 +127,7 @@ function getAsciiSpaceEdges(value) {
 	return { leadingEnd, trailingStart };
 }
 
-// Append text to the last node or push a new text run (keeps words together for downstream highlighters)
+// Append text to the last node or push a new text run (keeps words together for downstream visualizers)
 function pushTextRun(nodes, text) {
 	if (!text) {
 		return;
@@ -141,8 +141,8 @@ function pushTextRun(nodes, text) {
 	}
 }
 
-// Highlight whitespaces in a string
-export function highlightWhitespaces(value) {
+// Visualize whitespaces in a string (makes them visible)
+export function visualizeWhitespaces(value) {
 	if ((value == null) || (typeof value !== 'string') || (value.length === 0)) {
 		return value;
 	}
@@ -200,20 +200,20 @@ export function highlightFulltextInNodes(nodes, highlightText) {
 	});
 }
 
-export const highlightUnicodeChildren = (children) => {
+export const visualizeUnicodeChildren = (children) => {
 	if (typeof children === 'string' || typeof children === 'number') {
-		return highlightWhitespaces(String(children));
+		return visualizeWhitespaces(String(children));
 	}
 
 	return children;
 };
 
-export const createUnicodeHighlightWrapper = (BaseWrapper) => {
-    const UnicodeHighlightWrapper = (props) => {
+export const createUnicodeVisualizeWrapper = (BaseWrapper) => {
+    const UnicodeVisualizeWrapper = (props) => {
 		const { children, ...rest } = props;
-		const highlightedChildren = highlightUnicodeChildren(children);
-		return <BaseWrapper {...rest}>{highlightedChildren}</BaseWrapper>;
+		const visualizedChildren = visualizeUnicodeChildren(children);
+		return <BaseWrapper {...rest}>{visualizedChildren}</BaseWrapper>;
 	};
-	UnicodeHighlightWrapper.displayName = `UnicodeHighlightWrapper(${BaseWrapper.displayName || BaseWrapper.name || 'Component'})`;
-	return UnicodeHighlightWrapper;
+	UnicodeVisualizeWrapper.displayName = `UnicodeVisualizeWrapper(${BaseWrapper.displayName || BaseWrapper.name || 'Component'})`;
+	return UnicodeVisualizeWrapper;
 };

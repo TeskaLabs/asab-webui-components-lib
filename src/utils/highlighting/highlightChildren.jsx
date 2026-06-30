@@ -1,5 +1,4 @@
 import React from 'react';
-import { highlightFulltextInNodes } from './highlightWhitespaces.js';
 import { highlightSearchedFulltexts } from './highlightSearchedFulltexts.js';
 
 const isPrimitiveHighlightValue = (value) => (
@@ -10,8 +9,8 @@ const highlightText = (text, fulltextHighlightTerms) => (
 	highlightSearchedFulltexts(String(text), fulltextHighlightTerms)
 );
 
-// Apply fulltext highlight to renderer children (string, whitespace node array, or nested elements)
-export const highlightRendererChildren = (children, fulltextHighlightTerms, dataValue) => {
+// Apply fulltext highlight to children (string, whitespace node array, or nested elements)
+export const highlightChildren = (children, fulltextHighlightTerms, dataValue) => {
 	if (!fulltextHighlightTerms?.length) {
 		return children;
 	}
@@ -22,15 +21,17 @@ export const highlightRendererChildren = (children, fulltextHighlightTerms, data
 
 	// Whitespace renderer output: apply fulltext to string runs, keep unicode markers as-is
 	if (Array.isArray(children)) {
-		return highlightFulltextInNodes(
-			children,
-			(text) => highlightText(text, fulltextHighlightTerms),
-		).flatMap((node) => {
+		return children.flatMap((node) => {
+			if (typeof node === 'string' || typeof node === 'number') {
+				const highlighted = highlightText(node, fulltextHighlightTerms);
+				return Array.isArray(highlighted) ? highlighted : [highlighted];
+			}
+
 			if (!React.isValidElement(node)) {
 				return [node];
 			}
 
-			const highlightedNode = highlightRendererChildren(
+			const highlightedNode = highlightChildren(
 				node,
 				fulltextHighlightTerms,
 				dataValue,
@@ -47,7 +48,7 @@ export const highlightRendererChildren = (children, fulltextHighlightTerms, data
 			return React.cloneElement(
 				children,
 				children.props,
-				highlightRendererChildren(
+				highlightChildren(
 					children.props?.children,
 					fulltextHighlightTerms,
 					nestedDataValue,
@@ -73,7 +74,7 @@ export const highlightRendererChildren = (children, fulltextHighlightTerms, data
 export const createFulltextHighlightWrapper = (BaseWrapper, fulltextHighlightTerms) => {
 	const FulltextHighlightWrapper = (props) => {
 		const { children, ...rest } = props;
-		const highlightedChildren = highlightRendererChildren(
+		const highlightedChildren = highlightChildren(
 			children,
 			fulltextHighlightTerms,
 			rest['data-value'],
