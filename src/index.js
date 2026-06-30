@@ -32,8 +32,8 @@ export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
 export {
-	highlightWhitespaces,
-	highlightUnicodeChildren,
+	visualizeWhitespaces,
+	visualizeUnicodeChildren,
 	highlightFulltextInNodes,
 	createUnicodeVisualizeWrapper,
 } from './utils/visualization/visualizeWhitespaces.js';

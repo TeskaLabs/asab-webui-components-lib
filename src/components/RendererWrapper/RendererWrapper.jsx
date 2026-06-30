@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { highlightUnicodeChildren } from '../../utils/visualization/visualizeWhitespaces';
+import { visualizeUnicodeChildren } from '../../utils/visualization/visualizeWhitespaces';
 
 // Renderer wraper
 export function RendererWrapper({
@@ -7,7 +7,7 @@ export function RendererWrapper({
 	component: Component = 'span', // Default tag, can be overloaded
 	...rest
 }) {
-	const HighlightedChildren = useMemo(() => highlightUnicodeChildren(children), [children]);
+	const HighlightedChildren = useMemo(() => visualizeUnicodeChildren(children), [children]);
 
 	return (
 		<Component
