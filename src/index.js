@@ -40,7 +40,6 @@ export {
 export { highlightSearchedFulltexts } from './utils/highlighting/highlightSearchedFulltexts.js';
 export {
 	highlightChildren,
-	createFulltextHighlightWrapper,
 } from './utils/highlighting/highlightChildren.jsx';
 export { ASABProgress } from './components/Progress/ASABProgress.jsx';
 export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';

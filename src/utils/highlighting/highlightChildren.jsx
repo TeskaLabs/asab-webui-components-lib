@@ -69,18 +69,3 @@ export const highlightChildren = (children, fulltextHighlightTerms, dataValue) =
 
 	return children;
 };
-
-// Wrap a renderer wrapper component with fulltext search highlighting
-export const createFulltextHighlightWrapper = (BaseWrapper, fulltextHighlightTerms) => {
-	const FulltextHighlightWrapper = (props) => {
-		const { children, ...rest } = props;
-		const highlightedChildren = highlightChildren(
-			children,
-			fulltextHighlightTerms,
-			rest['data-value'],
-		);
-		return <BaseWrapper {...rest}>{highlightedChildren}</BaseWrapper>;
-	};
-	FulltextHighlightWrapper.displayName = `FulltextHighlightWrapper(${BaseWrapper.displayName || BaseWrapper.name || 'Component'})`;
-	return FulltextHighlightWrapper;
-};
