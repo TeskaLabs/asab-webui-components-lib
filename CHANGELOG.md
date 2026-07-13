@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.6
+
+- Update deprecated node version in github workflow (#86)
+
 ## 27.5.5
 
 - Implement a reusable `backlink` utility to "remember" navigation of a previous screen (#85)
