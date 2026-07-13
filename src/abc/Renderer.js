@@ -36,10 +36,10 @@ export class Renderer extends Component {
 		// Render span with value inside as a default
 		return (
 			<RendererWrapper
+				{...(params ?? {})} // Passing the wrapper params down to the wrapper component
 				data-value={value} // Passing value (to eventually work with in the external wrapper)
 				data-key={key} // Passing key (to eventually work with in the external wrapper)
 				component={params?.WrapperComponent || "span"}
-				fulltextHighlightTerms={params?.fulltextHighlightTerms}
 				>
 				{value}
 			</RendererWrapper>
