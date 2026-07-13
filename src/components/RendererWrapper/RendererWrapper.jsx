@@ -6,15 +6,16 @@ import { highlightChildren } from '../../utils/highlighting/highlightChildren.js
 export function RendererWrapper({
 	children,
 	component: Component = 'span', // Default tag, can be overloaded
-	fulltextHighlightTerms, // Fulltext highlight terms to highlight in the children
 	...rest
 }) {
 	const dataValue = rest?.['data-value'];
 	let processedChildren = visualizeUnicodeChildren(children);
 
-	// If fulltextHighlightTerms is provided, highlight searched terms in the children
-	if (fulltextHighlightTerms) {
-		processedChildren = highlightChildren(processedChildren, fulltextHighlightTerms, dataValue);
+	const fulltextTerms = rest?.fulltextHighlightTerms;
+
+	// If fulltextTerms is provided, highlight searched terms in the children
+	if (fulltextTerms) {
+		processedChildren = highlightChildren(processedChildren, fulltextTerms, dataValue);
 	}
 
 	return (
