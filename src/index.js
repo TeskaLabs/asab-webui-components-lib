@@ -33,14 +33,13 @@ export { AttentionBadge } from './components/AttentionRequired/AttentionRequired
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
 export {
 	visualizeWhitespaces,
-	visualizeUnicodeChildren,
-	highlightFulltextInNodes,
+	visualizeInvisibleCharacters,
 	createUnicodeVisualizeWrapper,
-} from './utils/visualization/visualizeWhitespaces.js';
-export { highlightSearchedFulltexts } from './utils/highlighting/highlightSearchedFulltexts.js';
+} from './utils/textFormatting/visualizeInvisibleCharacters.js';
+export { highlightSearchedFulltexts } from './utils/textFormatting/highlightSearchedFulltexts.js';
 export {
 	highlightChildren,
-} from './utils/highlighting/highlightChildren.jsx';
+} from './utils/textFormatting/highlightChildren.jsx';
 export { ASABProgress } from './components/Progress/ASABProgress.jsx';
 export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';

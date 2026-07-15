@@ -1,6 +1,6 @@
 import React from 'react';
-import { visualizeUnicodeChildren } from '../../utils/visualization/visualizeWhitespaces';
-import { highlightChildren } from '../../utils/highlighting/highlightChildren.jsx';
+import { visualizeInvisibleCharacters } from '../../utils/textFormatting/visualizeInvisibleCharacters.js';
+import { highlightChildren } from '../../utils/textFormatting/highlightChildren.js';
 
 // Renderer wraper
 export function RendererWrapper({
@@ -9,8 +9,7 @@ export function RendererWrapper({
 	...rest
 }) {
 	const dataValue = rest?.['data-value'];
-	let processedChildren = visualizeUnicodeChildren(children);
-
+	let processedChildren = visualizeInvisibleCharacters(children);
 	const fulltextTerms = rest?.fulltextHighlightTerms;
 
 	// If fulltextTerms is provided, highlight searched terms in the children

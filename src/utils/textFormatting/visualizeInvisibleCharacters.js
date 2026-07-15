@@ -82,6 +82,9 @@ export const SPECIAL_UNICODE_RANGES = [
 	[0x2400, 0x2426], // Control Pictures (display glyphs)
 ];
 
+// ASCII space code point
+const ASCII_SPACE = 0x20;
+
 // Check if a unicode code point is a special unicode code point
 export function isSpecialUnicodeCodePoint(codePoint) {
 	if (SPECIAL_UNICODE_CODE_POINTS.has(codePoint)) {
@@ -90,7 +93,6 @@ export function isSpecialUnicodeCodePoint(codePoint) {
 	return SPECIAL_UNICODE_RANGES.some(([start, end]) => codePoint >= start && codePoint <= end);
 }
 
-const ASCII_SPACE = 0x20;
 
 // Format a unicode code point to a hex string
 function formatCodePointHex(codePoint) {
@@ -184,23 +186,7 @@ export function visualizeWhitespaces(value) {
 	return nodes;
 }
 
-// Apply a text highlighter (e.g. fulltext search) to string segments in a whitespace node array
-export function highlightFulltextInNodes(nodes, highlightText) {
-	if (!Array.isArray(nodes) || typeof highlightText !== 'function') {
-		return nodes;
-	}
-
-	return nodes.flatMap((node) => {
-		if (typeof node === 'string') {
-			const highlighted = highlightText(node);
-			return Array.isArray(highlighted) ? highlighted : [highlighted];
-		}
-
-		return [node];
-	});
-}
-
-export const visualizeUnicodeChildren = (children) => {
+export const visualizeInvisibleCharacters = (children) => {
 	if (typeof children === 'string' || typeof children === 'number') {
 		return visualizeWhitespaces(String(children));
 	}
@@ -211,7 +197,7 @@ export const visualizeUnicodeChildren = (children) => {
 export const createUnicodeVisualizeWrapper = (BaseWrapper) => {
     const UnicodeVisualizeWrapper = (props) => {
 		const { children, ...rest } = props;
-		const visualizedChildren = visualizeUnicodeChildren(children);
+		const visualizedChildren = visualizeInvisibleCharacters(children);
 		return <BaseWrapper {...rest}>{visualizedChildren}</BaseWrapper>;
 	};
 	UnicodeVisualizeWrapper.displayName = `UnicodeVisualizeWrapper(${BaseWrapper.displayName || BaseWrapper.name || 'Component'})`;
