@@ -9,6 +9,7 @@ export function RendererWrapper({
 	...rest
 }) {
 	const dataValue = rest?.['data-value'];
+	// Visualize invisible characters in the children
 	let processedChildren = visualizeInvisibleCharacters(children);
 	const fulltextTerms = rest?.fulltextHighlightTerms;
 
