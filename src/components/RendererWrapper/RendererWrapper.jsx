@@ -1,6 +1,6 @@
 import React from 'react';
 import { visualizeInvisibleCharacters } from '../../utils/textFormatting/visualizeInvisibleCharacters.js';
-import { highlightChildren } from '../../utils/textFormatting/highlightChildren.js';
+import { highlightChildren } from '../../utils/textFormatting/highlightChildren.jsx';
 
 // Renderer wraper
 export function RendererWrapper({
