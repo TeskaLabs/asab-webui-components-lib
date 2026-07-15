@@ -161,7 +161,7 @@ export function visualizeWhitespaces(value) {
 
 			if (isEdgeSpace) {
 				nodes.push(
-					<span key={`${i}-20`} className='renderer-whitespace m-0'>
+					<span key={`${i}-20`} className='renderer-whitespace m-0' data-no-highlight={true}>
 						.
 					</span>,
 				);
@@ -172,7 +172,7 @@ export function visualizeWhitespaces(value) {
 			const hexUnicode = formatCodePointHex(codePoint);
 
 			nodes.push(
-				<span key={`${i}-${hexUnicode}`} className='renderer-whitespace'>
+				<span key={`${i}-${hexUnicode}`} className='renderer-whitespace' data-no-highlight={true}>
 					{`<${hexUnicode}>`}
 				</span>,
 			);

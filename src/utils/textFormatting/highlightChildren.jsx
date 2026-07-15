@@ -1,10 +1,6 @@
 import React from 'react';
 import { highlightSearchedFulltexts } from './highlightSearchedFulltexts.js';
 
-const isPrimitiveHighlightValue = (value) => (
-	value != null && (typeof value === 'string' || typeof value === 'number' || typeof value === 'bigint')
-);
-
 const highlightText = (text, fulltextHighlightTerms) => (
 	highlightSearchedFulltexts(String(text), fulltextHighlightTerms)
 );
@@ -44,6 +40,11 @@ export const highlightChildren = (children, fulltextHighlightTerms, dataValue) =
 	if (React.isValidElement(children)) {
 		const nestedDataValue = children.props?.['data-value'] ?? dataValue;
 
+		// Skip highlighting if this element has the no-highlight flag (e.g., visualization spans)
+		if (children.props?.['data-no-highlight']) {
+			return children;
+		}
+
 		if (typeof children.type === 'string' || children.type === React.Fragment) {
 			return React.cloneElement(
 				children,
@@ -56,15 +57,7 @@ export const highlightChildren = (children, fulltextHighlightTerms, dataValue) =
 			);
 		}
 
-		if (isPrimitiveHighlightValue(nestedDataValue)) {
-			return highlightText(nestedDataValue, fulltextHighlightTerms);
-		}
-
 		return children;
-	}
-
-	if (isPrimitiveHighlightValue(dataValue)) {
-		return highlightText(dataValue, fulltextHighlightTerms);
 	}
 
 	return children;
