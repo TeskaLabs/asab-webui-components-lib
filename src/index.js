@@ -35,8 +35,8 @@ export {
 	visualizeWhitespaces,
 	visualizeInvisibleCharacters,
 	createUnicodeVisualizeWrapper,
-} from './utils/textFormatting/visualizeInvisibleCharacters.js';
-export { highlightSearchedFulltexts } from './utils/textFormatting/highlightSearchedFulltexts.js';
+} from './utils/textFormatting/visualizeInvisibleCharacters.jsx';
+export { highlightSearchedFulltexts } from './utils/textFormatting/highlightSearchedFulltexts.jsx';
 export {
 	highlightChildren,
 } from './utils/textFormatting/highlightChildren.jsx';

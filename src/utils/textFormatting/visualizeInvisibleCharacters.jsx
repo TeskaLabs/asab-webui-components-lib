@@ -7,12 +7,42 @@ import React from 'react';
 
 // Possible whitespace unicode code points
 export const SPECIAL_UNICODE_CODE_POINTS = new Set([
-	// Whitespace
+	// C0 Control characters (0x00-0x1F) - Full range
+	0x0000, // Null
+	0x0001, // SOH (Start of Heading)
+	0x0002, // STX (Start of Text)
+	0x0003, // ETX (End of Text)
+	0x0004, // EOT (End of Transmission)
+	0x0005, // ENQ (Enquiry)
+	0x0006, // ACK (Acknowledge)
+	0x0007, // BEL (Bell)
+	0x0008, // BS (Backspace)
 	0x0009, // Tab (HT)
 	0x000A, // Line Feed (LF)
 	0x000B, // Vertical Tab
 	0x000C, // Form Feed
 	0x000D, // Carriage Return (CR)
+	0x000E, // SO (Shift Out)
+	0x000F, // SI (Shift In)
+	0x0010, // DLE (Data Link Escape)
+	0x0011, // DC1 (Device Control 1)
+	0x0012, // DC2 (Device Control 2)
+	0x0013, // DC3 (Device Control 3)
+	0x0014, // DC4 (Device Control 4)
+	0x0015, // NAK (Negative Acknowledge)
+	0x0016, // SYN (Synchronous Idle)
+	0x0017, // ETB (End of Transmission Block)
+	0x0018, // CAN (Cancel)
+	0x0019, // EM (End of Medium)
+	0x001A, // SUB (Substitute)
+	0x001B, // Escape
+	0x001C, // FS (File Separator)
+	0x001D, // GS (Group Separator)
+	0x001E, // RS (Record Separator)
+	0x001F, // US (Unit Separator)
+	0x007F, // Delete
+
+	// Whitespace
 	0x0085, // Next Line (NEL)
 	0x00A0, // No-Break Space
 	0x1680, // Ogham Space Mark
@@ -42,11 +72,6 @@ export const SPECIAL_UNICODE_CODE_POINTS = new Set([
 	0x200E, // Left-to-Right Mark
 	0x200F, // Right-to-Left Mark
 	0x061C, // Arabic Letter Mark
-
-	// C0 / C1 controls (selected singles)
-	0x0000, // Null
-	0x001B, // Escape
-	0x007F, // Delete
 
 	// Other problematic
 	0xFFFC, // Object Replacement Character
@@ -189,6 +214,10 @@ export function visualizeWhitespaces(value) {
 export const visualizeInvisibleCharacters = (children) => {
 	if (typeof children === 'string' || typeof children === 'number') {
 		return visualizeWhitespaces(String(children));
+	}
+
+	if (Array.isArray(children)) {
+		return children.map(child => visualizeInvisibleCharacters(child));
 	}
 
 	return children;

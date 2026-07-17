@@ -1,5 +1,5 @@
 import React from 'react';
-import { highlightSearchedFulltexts } from './highlightSearchedFulltexts.js';
+import { highlightSearchedFulltexts } from './highlightSearchedFulltexts.jsx';
 
 const highlightText = (text, fulltextHighlightTerms) => (
 	highlightSearchedFulltexts(String(text), fulltextHighlightTerms)
