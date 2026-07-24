@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "27.5.6",
+	"version": "27.5.7",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -27,8 +27,8 @@
 		"dist"
 	],
 	"publishConfig": {
-	    "registry": "https://registry.npmjs.org/"
-	 },
+		"registry": "https://registry.npmjs.org/"
+	},
 	"scripts": {
 		"build": "babel src --extensions '.js,.jsx' --out-dir dist && copyfiles -u 1 'src/**/*.{scss,jsx}' dist",
 		"clean": "rimraf dist"

@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.5.7
+
+- Created visualization of whitespaces in Renderer component to show hidden spaces. Replace highlighting of fulltexts to Renderer component (#78)
+
 ## 27.5.6
 
 - Update deprecated node version in github workflow (#86)
