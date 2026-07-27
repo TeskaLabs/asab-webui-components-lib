@@ -1,6 +1,7 @@
 # CHANGELOG for ASAB WebUI Components
 
 ## 27.6.0
+
 - Remove advanced mode and Advanced Card component (#88)
 
 ## 27.5.7
