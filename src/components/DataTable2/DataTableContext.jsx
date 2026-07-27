@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { updateLimit, updateStateLimit } from './components/utils/updateTableLimit.jsx';
@@ -8,12 +8,76 @@ import { translateFromContent } from '../../utils/translateFromContent.js';
 const CreateDataTableContext = createContext();
 
 // AppContextProvider component to wrap the application and provide the context
-const DataTableContextProvider = ({ children, disableParams, initialLimit }) => {
+const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
 	const defaultParams = { p: 1, i: initialLimit };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
+
+	const hasUserParams = () => {
+		const hasFilters = [...searchParams.keys()].some(key => key.startsWith('a'));
+		const hasSorting = searchParams.get('s');
+		const hasSearch = searchParams.get('f');
+
+		return hasFilters || hasSorting || hasSearch;
+	};
+
+	useEffect(() => {
+		if (!initialParams) return;
+		if (hasUserParams()) return;
+
+		applyInitialParams(initialParams);
+	}, []);
+
+	const applyInitialParams = (params) => {
+		let newParams = new URLSearchParams(searchParams);
+
+		// a — filters
+		if (params.a) {
+			Object.entries(params.a).forEach(([key, value]) => {
+				const paramKey = `a${key}`;
+
+
+				if (Array.isArray(value)) {
+					// Remove duplicates and separate them by commas
+					const uniqueValues = [...new Set(value)];
+
+					newParams.set(paramKey, uniqueValues.join(','));
+				} else {
+					newParams.set(paramKey, value);
+				}
+			});
+		}
+
+		// s — sorting
+		if (params.s) {
+			Object.entries(params.s).forEach(([key, value]) => {
+				const paramKey = `s${key}`;
+				newParams.set(paramKey, value);
+			});
+		}
+
+		// f — search/input
+		if (params.f) {
+			newParams.set('f', params.f);
+		}
+
+		// TODO: Should this work with the page and the limit?
+		if (params.p) {
+			newParams.set('p', params.p);
+		} else {
+			newParams.set('p', '1');
+		}
+
+		// i — limit
+		if (params.i) {
+			newParams.set('i', params.i);
+		}
+
+		setSearchParams(newParams);
+	};
+
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
