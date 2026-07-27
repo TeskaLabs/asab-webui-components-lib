@@ -26,7 +26,6 @@ export { deepMerge } from './utils/deepMerge.jsx';
 export { translateFromContent } from './utils/translateFromContent.js';
 export { problemMarkers } from './utils/monaco/problemMarkers.jsx';
 export { ResultCard } from './components/ResultCard/ResultCard';
-export { AdvancedCard } from './components/AdvancedCard/AdvancedCard.jsx';
 export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';

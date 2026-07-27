@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 import { AsabReactJson } from "../AsabReactJson/AsabReactJson.jsx";
 import { Table } from 'reactstrap';
-import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 import { DateTime } from '../DateTime/absolute/DateTime.jsx';
 
@@ -13,7 +12,7 @@ import './DataTable.scss';
 
 const TableCell = ({
 	obj, header, idx,
-	showJson, isSublist
+	isSublist
 }) => {
 	if (!obj) return <td className="ps-3" style={{ whiteSpace: "nowrap" }}>-</td>
 
@@ -36,21 +35,7 @@ const TableCell = ({
 		icon = null;
 	}
 
-	if (showJson) {
-		return (
-			<td className="pe-3 data-table-td" style={{ padding: "auto" }}>
-				<span
-					onClick={showJson}
-					className="data-table-button text-primary"
-					style={{ cursor: "pointer" }}
-				>
-					<i className="bi bi-filetype-json"></i>
-				</span>
-			</td>
-		);
-	}
-
-	else if (header.json) cell = (
+	if (header.json) cell = (
 		<AsabReactJson
 			className="data-table-reactjson"
 			src={obj[header.key]}
@@ -120,10 +105,9 @@ const TableCell = ({
 		);
 };
 
-const Headers = ({ headers, advmode, sublists }) => (
+const Headers = ({ headers, sublists }) => (
 	<>
 		<colgroup className="data-table-colgroup">
-			{advmode && <col style={{ width: "1px" }} />}
 			{sublists && <col style={{ width: "1px" }} />}
 			{headers.map((_, idx) =>
 				<col
@@ -137,7 +121,6 @@ const Headers = ({ headers, advmode, sublists }) => (
 		{/* <thead className={`thead-${theme === "theme-dark" || !theme ? "light" : "dark"} data-table-thead`}> */}
 		<thead className="data-table-thead">
 			<tr className="data-table-tr">
-				{advmode && <th className="ps-3 data-table-adv-header-th">{" "}</th>}
 				{sublists && <th className="ps-3 data-table-sub-header-th">{" "}</th>}
 				{headers.map((header, idx) => <th key={idx} className={`data-table-header-th${idx !== 0 ? " ps-3" : ""}`}>{header.name}</th>)}
 			</tr>
@@ -146,13 +129,11 @@ const Headers = ({ headers, advmode, sublists }) => (
 );
 
 const TableRow = ({
-	obj, advmode, headers,
+	obj, headers,
 	rowStyle, rowClassName, category,
 	collapseChildren, toggleChildrenOnRowClick
 }) => {
-	const [isAdvUnwrapped, setAdvUnwrapped] = useState(false);
 	const [isSubUnwrapped, setSubUnwrapped] = useState((collapseChildren == false) ? true : false);
-	const theme = useAppSelector(state => state?.theme);
 
 	const getStyle = (obj) => {
 		if (rowStyle?.condition && rowStyle?.condition(obj)) {
@@ -180,7 +161,6 @@ const TableRow = ({
 				// Enable onClick only when category is present and toggleChildrenOnRowClick is set to true
 				onClick={() => category && (toggleChildrenOnRowClick == true) && setSubUnwrapped(prev => !prev)}
 			>
-				{advmode && <TableCell obj={obj} showJson={() => setAdvUnwrapped(prev => !prev)}/>}
 				{category && (
 					<td className="data-table-arrow-btn" onClick={() => (toggleChildrenOnRowClick == true) ? null : setSubUnwrapped(prev => !prev)}>
 						<i className={isSubUnwrapped ? "bi bi-arrow-down-circle" : "bi bi-arrow-right-circle"}></i>
@@ -200,7 +180,6 @@ const TableRow = ({
 			{category?.sublistKey && obj[category.sublistKey] && isSubUnwrapped &&
 				obj[category.sublistKey]["data"].map((child, idx) => (
 					<tr className="data-table-tr-child" style={style} key={`child-${idx}`}>
-						{advmode && <td></td>}
 						<td></td>
 						{headers.map((header, idx) => (
 							<TableCell
@@ -214,35 +193,20 @@ const TableRow = ({
 					</tr>
 			))}
 
-
-			{advmode && isAdvUnwrapped && (
-				<tr className="data-table-adv-tr" style={{ backgroundColor: "rgba(0, 0, 0, 0.025)"}}>
-					<td
-						colSpan={category?.sublistKey ? headers.length+2 : headers.length+1}
-						className="data-table-adv-td"
-					>
-						<AsabReactJson
-							src={obj}
-							rootName=""
-						/>
-					</td>
-				</tr>
-			)}
-
 		</>
 	)
 }
 
 const ASABTable = ({
-	data, headers, advmode,
+	data, headers,
 	rowStyle, rowClassName, category,
 	collapseChildren, toggleChildrenOnRowClick
 }) => (
 	<Table hover responsive className="datatable">
-		<Headers sublists={!!category} headers={headers} advmode={advmode}/>
+		<Headers sublists={!!category} headers={headers} />
 		<tbody className="data-table-tbody">
 			{data && data.map((obj, idx) => (
-				<TableRow {...{ obj, advmode, headers, rowStyle, rowClassName, category, collapseChildren, toggleChildrenOnRowClick }} key={idx} />
+				<TableRow {...{ obj, headers, rowStyle, rowClassName, category, collapseChildren, toggleChildrenOnRowClick }} key={idx} />
 			))}
 		</tbody>
 	</Table>
