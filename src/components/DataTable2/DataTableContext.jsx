@@ -64,16 +64,16 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		}
 
 		// TODO: Should this work with the page and the limit?
-		if (params.p) {
-			newParams.set('p', params.p);
-		} else {
-			newParams.set('p', '1');
-		}
-
-		// i — limit
-		if (params.i) {
-			newParams.set('i', params.i);
-		}
+		// if (params.p) {
+		// 	newParams.set('p', params.p);
+		// } else {
+		// 	newParams.set('p', '1');
+		// }
+		//
+		// // i — limit
+		// if (params.i) {
+		// 	newParams.set('i', params.i);
+		// }
 
 		setSearchParams(newParams);
 	};
