@@ -6,77 +6,120 @@ import { translateFromContent } from '../../utils/translateFromContent.js';
 
 // Create an empty context
 const CreateDataTableContext = createContext();
+const transformParamsToFlat = (params1) => {
+	if (!params1) {
+		return;
+	}
+
+	const result = {};
+
+	if (params1.a) {
+		Object.entries(params1.a).forEach(([key, value]) => {
+			const paramKey = `a${key}`;
+
+			if (Array.isArray(value)) {
+
+				result[paramKey] = [...new Set(value)].join(',');
+			} else {
+				result[paramKey] = value;
+			}
+		});
+	}
+
+
+	if (params1.s) {
+		Object.entries(params1.s).forEach(([key, value]) => {
+			const paramKey = `s${key}`;
+			result[paramKey] = value;
+		});
+	}
+
+
+	result.p = params1.p || '1';
+
+
+	if (params1.i) {
+		result.i = params1.i;
+	}
+
+
+	if (params1.f) {
+		result.f = params1.f;
+	}
+
+	return result;
+};
+
 
 // AppContextProvider component to wrap the application and provide the context
 const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
-	const defaultParams = { p: 1, i: initialLimit };
+	console.log(transformParamsToFlat(initialParams));
+	// const defaultParams = { p: 1, i: initialLimit };
+	const defaultParams = { p: 1, i: initialLimit, ...transformParamsToFlat(initialParams) };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
 
-	const hasUserParams = () => {
-		const hasFilters = [...searchParams.keys()].some(key => key.startsWith('a'));
-		const hasSorting = searchParams.get('s');
-		const hasSearch = searchParams.get('f');
-
-		return hasFilters || hasSorting || hasSearch;
-	};
-
-	useEffect(() => {
-		if (!initialParams) return;
-		if (hasUserParams()) return;
-
-		applyInitialParams(initialParams);
-	}, []);
-
-	const applyInitialParams = (params) => {
-		let newParams = new URLSearchParams(searchParams);
-
-		// a — filters
-		if (params.a) {
-			Object.entries(params.a).forEach(([key, value]) => {
-				const paramKey = `a${key}`;
-
-
-				if (Array.isArray(value)) {
-					// Remove duplicates and separate them by commas
-					const uniqueValues = [...new Set(value)];
-
-					newParams.set(paramKey, uniqueValues.join(','));
-				} else {
-					newParams.set(paramKey, value);
-				}
-			});
-		}
-
-		// s — sorting
-		if (params.s) {
-			Object.entries(params.s).forEach(([key, value]) => {
-				const paramKey = `s${key}`;
-				newParams.set(paramKey, value);
-			});
-		}
-
-		// f — search/input
-		if (params.f) {
-			newParams.set('f', params.f);
-		}
-
-		// TODO: Should this work with the page and the limit?
-		// if (params.p) {
-		// 	newParams.set('p', params.p);
-		// } else {
-		// 	newParams.set('p', '1');
-		// }
-		//
-		// // i — limit
-		// if (params.i) {
-		// 	newParams.set('i', params.i);
-		// }
-
-		setSearchParams(newParams);
-	};
+	// const hasUserParams = () => {
+	// 	const hasFilters = [...searchParams.keys()].some(key => key.startsWith('a'));
+	// 	const hasSorting = searchParams.get('s');
+	// 	const hasSearch = searchParams.get('f');
+	//
+	// 	return hasFilters || hasSorting || hasSearch;
+	// };
+	//
+	// useEffect(() => {
+	// 	if (!initialParams) return;
+	// 	if (hasUserParams()) return;
+	//
+	// 	applyInitialParams(initialParams);
+	// }, []);
+	//
+	// const applyInitialParams = (params) => {
+	// 	let newParams = new URLSearchParams(searchParams);
+	//
+	// 	if (params.a) {
+	// 		Object.entries(params.a).forEach(([key, value]) => {
+	// 			const paramKey = `a${key}`;
+	//
+	//
+	// 			if (Array.isArray(value)) {
+	// 				// Remove duplicates and separate them by commas
+	// 				const uniqueValues = [...new Set(value)];
+	//
+	// 				newParams.set(paramKey, uniqueValues.join(','));
+	// 			} else {
+	// 				newParams.set(paramKey, value);
+	// 			}
+	// 		});
+	// 	}
+	//
+	// 	if (params.s) {
+	// 		Object.entries(params.s).forEach(([key, value]) => {
+	// 			const paramKey = `s${key}`;
+	// 			newParams.set(paramKey, value);
+	// 		});
+	// 	}
+	//
+	// 	if (params.f) {
+	// 		newParams.set('f', params.f);
+	// 	}
+	//
+	// 	// TODO: Should this work with the page and the limit?
+	// 	// if (params.p) {
+	// 	// 	newParams.set('p', params.p);
+	// 	// } else {
+	// 	// 	newParams.set('p', '1');
+	// 	// }
+	// 	//
+	//
+	// 	// if (params.i) {
+	// 	// 	newParams.set('i', params.i);
+	// 	// }
+	//
+	// 	setSearchParams(newParams);
+	// };
 
 
 	// Method to get param with option to set up splitting method used for searchParams
