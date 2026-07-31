@@ -18,7 +18,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 	const hasUserParams = () => {
 		const hasFilters = [...searchParams.keys()].some(key => key.startsWith('a'));
 		const hasSorting = [...searchParams.keys()].some(key => key.startsWith('s'));
-		return hasFilters || hasSorting;
+		const isNotFirstPage = searchParams.get('p') > 1;
+		return hasFilters || hasSorting || isNotFirstPage;
 	};
 
 	useEffect(() => {
