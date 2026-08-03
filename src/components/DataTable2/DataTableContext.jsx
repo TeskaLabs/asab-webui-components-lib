@@ -56,7 +56,6 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		setSearchParams(newParams);
 	};
 
-
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
 		if (!disableParams) {
