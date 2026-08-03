@@ -39,7 +39,7 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, limitValues }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
-	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
+	const { watchParams, getParam, setParams, serializeParams, initialParamsApplied, getAllParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
 	const [ count, setCount ] = useState(0);
@@ -161,14 +161,26 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			const height = cardRef.current.parentElement.getBoundingClientRect().height;
 			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
 			if (getParam('i') == 0) {
-				setParams({ i: rows }, true); // Replace the navigation during the DataTable initialization to avoid removal of search params when navigating back in history
+				let newLimit = rows;
+
+				// If initialParams have been applied and the URL has filters, then reduce the limit by 1
+				if (initialParamsApplied) {
+					const allParams = getAllParams();
+					const hasParam = Object.keys(allParams).some(key => key.startsWith('a')) || Object.keys(allParams).some(key => key.startsWith('s'));
+					if (hasParam && newLimit > 1) {
+						newLimit = newLimit - 1;
+					}
+				}
+
+				setParams({ i: newLimit }, true);
 			}
 		}
+
 		// Clearing a cardRef after exiting a component
 		return () => {
 			cardRef.current = null;
 		};
-	}, [cardRef]);
+	}, [cardRef, initialParamsApplied]);
 
 	// Calculate and set new column widths
 	const calculateAndSetColumnWidths = () => {

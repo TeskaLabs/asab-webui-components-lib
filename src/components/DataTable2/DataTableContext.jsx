@@ -15,6 +15,8 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
 
+	const [initialParamsApplied, setInitialParamsApplied] = useState(false);
+
 	const hasUserParams = () => {
 		const hasFilters = [...searchParams.keys()].some(key => key.startsWith('a'));
 		const hasSorting = [...searchParams.keys()].some(key => key.startsWith('s'));
@@ -31,7 +33,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 
 	const applyInitialParams = (params) => {
 		let newParams = new URLSearchParams(searchParams);
-
+		console.log(getParam('i'), 'Context')
 		if (params.a) {
 			Object.entries(params.a).forEach(([key, value]) => {
 				const paramKey = `a${key}`;
@@ -54,6 +56,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		}
 
 		setSearchParams(newParams);
+		setInitialParamsApplied(true);
 	};
 
 	// Method to get param with option to set up splitting method used for searchParams
@@ -429,6 +432,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		setFilterFieldLabel,
 		setCustomPill,
 		getCustomPill,
+		initialParamsApplied,
 		watchParams: { searchParams, stateParams } // Context value for watching params
 	}), [searchParams, stateParams]);
 
