@@ -10,6 +10,7 @@ import {
 
 import { usePubSub } from '../Context/PubSubContext';
 import { DataTableContextProvider, useDataTableContext } from './DataTableContext.jsx';
+import { computeBaseRowLimit } from './components/utils/updateTableLimit.jsx';
 
 import './DataTable2.scss';
 
@@ -39,7 +40,7 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, limitValues }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
-	const { watchParams, getParam, setParams, serializeParams, initialParamsApplied, getAllParams } = useDataTableContext();
+	const { watchParams, getParam, serializeParams, initializeTableParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
 	const [ count, setCount ] = useState(0);
@@ -118,16 +119,13 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 					loadRows();
 				}, 500);
 			}
-		} else {
+		} else if (cardRef.current?.parentElement) {
 			/*
-				Compute rows when we loose the information about the limit.
-
-				This prevents the NaN issues with DataTable and helps to redirect to a
-				initial page when clicking the same route sidebar item.
+				Compute limit when i is missing (first mount or sidebar re-click).
+				Also merges initialParams in the same update when provided.
 			*/
-			const height = cardRef?.current.parentElement.getBoundingClientRect().height;
-			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
-			setParams({ p: 1, i: rows }, true);
+			const height = cardRef.current.parentElement.getBoundingClientRect().height;
+			initializeTableParams(computeBaseRowLimit(height, rowHeight));
 		}
 
 		/*
@@ -154,30 +152,6 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 		};
 		// TODO: .catch(console.error);
 	}, [watchParams, loaderParams]);
-
-	useEffect(() => {
-		// Automatically determine limit based on the free space in the parent container
-		if (cardRef.current) {
-			const height = cardRef.current.parentElement.getBoundingClientRect().height;
-			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
-			if (getParam('i') == 0) {
-				let newLimit = rows;
-				// if (initialParamsApplied) {
-				// 	const allParams = getAllParams();
-				// 	const hasParam = Object.keys(allParams).some(key => key.startsWith('a')) || Object.keys(allParams).some(key => key.startsWith('s'));
-				// 	if (hasParam && newLimit > 1) {
-				// 		newLimit = newLimit - 1;
-				// 	}
-				// }
-				setParams({ i: newLimit }, true);
-			}
-		}
-
-		// Clearing a cardRef after exiting a component
-		return () => {
-			cardRef.current = null;
-		};
-	}, [cardRef]);
 
 	// Calculate and set new column widths
 	const calculateAndSetColumnWidths = () => {
