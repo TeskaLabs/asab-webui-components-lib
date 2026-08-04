@@ -26,11 +26,19 @@ export { deepMerge } from './utils/deepMerge.jsx';
 export { translateFromContent } from './utils/translateFromContent.js';
 export { problemMarkers } from './utils/monaco/problemMarkers.jsx';
 export { ResultCard } from './components/ResultCard/ResultCard';
-export { AdvancedCard } from './components/AdvancedCard/AdvancedCard.jsx';
 export { AsabReactJson } from './components/AsabReactJson/AsabReactJson.jsx';
 export { FullscreenButton } from './components/FullscreenButton.jsx';
 export { AttentionBadge } from './components/AttentionRequired/AttentionRequiredBadge.jsx';
 export { RendererWrapper } from './components/RendererWrapper/RendererWrapper.jsx';
+export {
+	visualizeWhitespaces,
+	visualizeInvisibleCharacters,
+	createUnicodeVisualizeWrapper,
+} from './utils/textFormatting/visualizeInvisibleCharacters.jsx';
+export { highlightSearchedFulltexts } from './utils/textFormatting/highlightSearchedFulltexts.jsx';
+export {
+	highlightChildren,
+} from './utils/textFormatting/highlightChildren.jsx';
 export { ASABProgress } from './components/Progress/ASABProgress.jsx';
 export { FlowbiteIllustration } from './components/FlowbiteIllustration.jsx';
 export { PubSubProvider, usePubSub } from './components/Context/PubSubContext';

@@ -31,7 +31,6 @@ Possible imports:
 - ErrorHandler
 - Credentials, ButtonWithAuthz, LinkWithAuthz, ControlledSwitchWithAuthz, UncontrolledSwitchWithAuthz, isAuthorized
 - ResultCard
-- AdvancedCard
 - PubSubProvider, usePubSub
 - ConsoleModeButton
 - FullscreenButton

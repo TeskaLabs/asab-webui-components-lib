@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '../Context/store/AppStore.jsx';
 
 import {
 	Card, Row, Col,
@@ -31,15 +30,13 @@ export function DataTable ({
 	customRowStyle, customRowClassName,
 	customCardBodyComponent,
 	limitValues = [5, 10, 15, 20, 25, 30, 50],
-	contentLoader = true, category, height, disableAdvMode,
+	contentLoader = true, category, height,
 	collapseChildren = false, toggleChildrenOnRowClick = false
    }) {
 	const [filterValue, setFilterValue] = useState('');
 	const [isLimitOpen, setLimitDropdown] = useState(false);
 	const timeoutRef = useRef(null);
 	const [countDigit, setCountDigit] = useState(1);
-
-	const advMode = useAppSelector(state => state.advmode.enabled);
 
 	const { t } = useTranslation();
 
@@ -65,13 +62,6 @@ export function DataTable ({
 		if (onSearch) onSearch(filterValue);
 		}, 500);
 	}, [filterValue]);
-
-	const advModeState = useMemo(() => {
-		if (disableAdvMode == true) {
-			return false;
-		}
-		return advMode;
-	},[advMode])
 
 	// rounding page number divisible by 5
 	function roundedNumRows(x) {
@@ -136,7 +126,6 @@ export function DataTable ({
 								rowClassName={customRowClassName}
 								collapseChildren={collapseChildren}
 								toggleChildrenOnRowClick={toggleChildrenOnRowClick}
-								advmode={advModeState}
 							/>
 						}
 

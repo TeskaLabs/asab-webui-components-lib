@@ -1,0 +1,234 @@
+import React from 'react';
+
+/*
+	Unicode code points and ranges for whitespace, invisible, bidi,
+	control and other problematic characters (log smuggling / Trojan Source).
+*/
+
+// Possible whitespace unicode code points
+export const SPECIAL_UNICODE_CODE_POINTS = new Set([
+	// C0 Control characters (0x00-0x1F) - Full range
+	0x0000, // Null
+	0x0001, // SOH (Start of Heading)
+	0x0002, // STX (Start of Text)
+	0x0003, // ETX (End of Text)
+	0x0004, // EOT (End of Transmission)
+	0x0005, // ENQ (Enquiry)
+	0x0006, // ACK (Acknowledge)
+	0x0007, // BEL (Bell)
+	0x0008, // BS (Backspace)
+	0x0009, // Tab (HT)
+	0x000A, // Line Feed (LF)
+	0x000B, // Vertical Tab
+	0x000C, // Form Feed
+	0x000D, // Carriage Return (CR)
+	0x000E, // SO (Shift Out)
+	0x000F, // SI (Shift In)
+	0x0010, // DLE (Data Link Escape)
+	0x0011, // DC1 (Device Control 1)
+	0x0012, // DC2 (Device Control 2)
+	0x0013, // DC3 (Device Control 3)
+	0x0014, // DC4 (Device Control 4)
+	0x0015, // NAK (Negative Acknowledge)
+	0x0016, // SYN (Synchronous Idle)
+	0x0017, // ETB (End of Transmission Block)
+	0x0018, // CAN (Cancel)
+	0x0019, // EM (End of Medium)
+	0x001A, // SUB (Substitute)
+	0x001B, // Escape
+	0x001C, // FS (File Separator)
+	0x001D, // GS (Group Separator)
+	0x001E, // RS (Record Separator)
+	0x001F, // US (Unit Separator)
+	0x007F, // Delete
+
+	// Whitespace
+	0x0085, // Next Line (NEL)
+	0x00A0, // No-Break Space
+	0x1680, // Ogham Space Mark
+	0x2028, // Line Separator
+	0x2029, // Paragraph Separator
+	0x202F, // Narrow No-Break Space
+	0x205F, // Medium Mathematical Space
+	0x3000, // Ideographic Space
+	0x180E, // Mongolian Vowel Separator (formerly whitespace)
+
+	// Zero-width / invisible
+	0x200B, // Zero Width Space
+	0x200C, // Zero Width Non-Joiner
+	0x200D, // Zero Width Joiner
+	0x2060, // Word Joiner
+	0xFEFF, // Zero Width No-Break Space / BOM
+	0x00AD, // Soft Hyphen
+	0x034F, // Combining Grapheme Joiner
+	0x115F, // Hangul Choseong Filler
+	0x1160, // Hangul Jungseong Filler
+	0x3164, // Hangul Filler
+	0xFFA0, // Halfwidth Hangul Filler
+	0x17B4, // Khmer Vowel Inherent Aq
+	0x17B5, // Khmer Vowel Inherent Aa
+
+	// Bidirectional control (Trojan Source)
+	0x200E, // Left-to-Right Mark
+	0x200F, // Right-to-Left Mark
+	0x061C, // Arabic Letter Mark
+
+	// Other problematic
+	0xFFFC, // Object Replacement Character
+	0xFFFD, // Replacement Character
+	0xFFFE, // Noncharacter
+	0xFFFF, // Noncharacter
+]);
+
+// Possible whitespace unicode code point ranges
+export const SPECIAL_UNICODE_RANGES = [
+	// Whitespace
+	[0x2000, 0x200A], // En/Em quad, En/Em space, thin/hair space, etc.
+
+	// Bidirectional control
+	[0x202A, 0x202E], // LRE, RLE, PDF, LRO, RLO
+	[0x2066, 0x2069], // LRI, RLI, FSI, PDI
+
+	// C0 / C1 controls
+	[0x0001, 0x0008], // SOH–BS
+	[0x000E, 0x001F], // SO–US
+	[0x0080, 0x009F], // C1 controls (incl. NEL U+0085, CSI U+009B)
+
+	// Other problematic
+	[0xFFF9, 0xFFFB], // Interlinear annotation
+	[0xFDD0, 0xFDEF], // Noncharacters
+	[0xE0000, 0xE007F], // Tag characters (ASCII smuggling)
+	[0xE0100, 0xE01EF], // Variation Selectors Supplement
+	[0xFE00, 0xFE0F], // Variation Selectors
+	[0xD800, 0xDFFF], // Surrogates (invalid standalone)
+	[0xE000, 0xF8FF], // Private Use Area (BMP)
+	[0xF0000, 0xFFFFD], // Private Use Area (supplementary)
+	[0x100000, 0x10FFFD], // Private Use Area (supplementary)
+	[0x2400, 0x2426], // Control Pictures (display glyphs)
+];
+
+// ASCII space code point
+const ASCII_SPACE = 0x20;
+
+// Check if a unicode code point is a special unicode code point
+export function isSpecialUnicodeCodePoint(codePoint) {
+	if (SPECIAL_UNICODE_CODE_POINTS.has(codePoint)) {
+		return true;
+	}
+	return SPECIAL_UNICODE_RANGES.some(([start, end]) => codePoint >= start && codePoint <= end);
+}
+
+
+// Format a unicode code point to a hex string
+function formatCodePointHex(codePoint) {
+	const hex = codePoint.toString(16).toUpperCase();
+	return hex.length < 4 ? hex.padStart(4, '0') : hex;
+}
+
+// Get the leading and trailing edges of the ascii space in a string
+function getAsciiSpaceEdges(value) {
+	let leadingEnd = 0;
+
+	while (leadingEnd < value.length) {
+		const codePoint = value.codePointAt(leadingEnd);
+		if (codePoint !== ASCII_SPACE && !isSpecialUnicodeCodePoint(codePoint)) {
+			break;
+		}
+		leadingEnd += codePoint > 0xFFFF ? 2 : 1;
+	}
+
+	let trailingStart = value.length;
+	while (trailingStart > leadingEnd) {
+		// For trailing, we need to check the previous code point
+		// If trailingStart-1 is a low surrogate, the code point starts at trailingStart-2
+		const prevIndex = trailingStart - 1;
+		const prevChar = value.charCodeAt(prevIndex);
+		const isLowSurrogate = prevChar >= 0xDC00 && prevChar <= 0xDFFF;
+		const cpStart = isLowSurrogate ? prevIndex - 1 : prevIndex;
+		if (cpStart < leadingEnd) break;
+		const cp = value.codePointAt(cpStart);
+		if (cp !== ASCII_SPACE && !isSpecialUnicodeCodePoint(cp)) break;
+		trailingStart = cpStart;
+	}
+
+	return { leadingEnd, trailingStart };
+}
+
+// Append text to the last node or push a new text run (keeps words together for downstream visualizers)
+function pushTextRun(nodes, text) {
+	if (!text) {
+		return;
+	}
+
+	const last = nodes[nodes.length - 1];
+	if (typeof last === 'string') {
+		nodes[nodes.length - 1] = last + text;
+	} else {
+		nodes.push(text);
+	}
+}
+
+// Visualize whitespaces in a string (makes them visible)
+export function visualizeWhitespaces(value) {
+	if ((value == null) || (typeof value !== 'string') || (value.length === 0)) {
+		return value;
+	}
+
+	const { leadingEnd, trailingStart } = getAsciiSpaceEdges(value);
+	const nodes = [];
+
+	for (let i = 0; i < value.length;) {
+		const codePoint = value.codePointAt(i);
+		const char = String.fromCodePoint(codePoint);
+
+		if (codePoint === ASCII_SPACE) {
+			const isEdgeSpace = i < leadingEnd || i >= trailingStart;
+
+			if (isEdgeSpace) {
+				nodes.push(
+					<span key={`${i}-20`} className='renderer-whitespace m-0' data-no-highlight={true}>
+						.
+					</span>,
+				);
+			} else {
+				pushTextRun(nodes, ' ');
+			}
+		} else if (isSpecialUnicodeCodePoint(codePoint)) {
+			const hexUnicode = formatCodePointHex(codePoint);
+
+			nodes.push(
+				<span key={`${i}-${hexUnicode}`} className='renderer-whitespace' data-no-highlight={true}>
+					{`<${hexUnicode}>`}
+				</span>,
+			);
+		} else {
+			pushTextRun(nodes, char);
+		}
+
+		i += codePoint > 0xFFFF ? 2 : 1;
+	}
+
+	return nodes;
+}
+
+export const visualizeInvisibleCharacters = (children) => {
+	if (typeof children === 'string' || typeof children === 'number') {
+		return visualizeWhitespaces(String(children));
+	}
+
+	if (Array.isArray(children)) {
+		return children.map(child => visualizeInvisibleCharacters(child));
+	}
+
+	return children;
+};
+
+export const createUnicodeVisualizeWrapper = (BaseWrapper) => {
+    const UnicodeVisualizeWrapper = (props) => {
+		const { children, ...rest } = props;
+		const visualizedChildren = visualizeInvisibleCharacters(children);
+		return <BaseWrapper {...rest}>{visualizedChildren}</BaseWrapper>;
+	};
+	UnicodeVisualizeWrapper.displayName = `UnicodeVisualizeWrapper(${BaseWrapper.displayName || BaseWrapper.name || 'Component'})`;
+	return UnicodeVisualizeWrapper;
+};
