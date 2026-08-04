@@ -125,7 +125,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 				This prevents the NaN issues with DataTable and helps to redirect to a
 				initial page when clicking the same route sidebar item.
 			*/
-			const height = cardRef.current.parentElement.getBoundingClientRect().height;
+			const height = cardRef?.current.parentElement.getBoundingClientRect().height;
 			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
 			setParams({ p: 1, i: rows }, true);
 		}
@@ -162,16 +162,13 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
 			if (getParam('i') == 0) {
 				let newLimit = rows;
-
-				// If initialParams have been applied and the URL has filters, then reduce the limit by 1
-				if (initialParamsApplied) {
-					const allParams = getAllParams();
-					const hasParam = Object.keys(allParams).some(key => key.startsWith('a')) || Object.keys(allParams).some(key => key.startsWith('s'));
-					if (hasParam && newLimit > 1) {
-						newLimit = newLimit - 1;
-					}
-				}
-
+				// if (initialParamsApplied) {
+				// 	const allParams = getAllParams();
+				// 	const hasParam = Object.keys(allParams).some(key => key.startsWith('a')) || Object.keys(allParams).some(key => key.startsWith('s'));
+				// 	if (hasParam && newLimit > 1) {
+				// 		newLimit = newLimit - 1;
+				// 	}
+				// }
 				setParams({ i: newLimit }, true);
 			}
 		}
@@ -180,11 +177,11 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 		return () => {
 			cardRef.current = null;
 		};
-	}, [cardRef, initialParamsApplied]);
+	}, [cardRef]);
 
 	// Calculate and set new column widths
 	const calculateAndSetColumnWidths = () => {
-		if (cardRef.current != null) {
+		if (cardRef?.current != null) {
 			const columns = cardRef.current.querySelectorAll('th');
 			const newWidth = {};
 			columns.forEach(column => {
