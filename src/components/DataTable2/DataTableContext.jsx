@@ -21,9 +21,10 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		const keys = [...searchParams.keys()];
 		const hasFilters = keys.some(key => key.startsWith('a'));
 		const hasSorting = keys.some(key => key.startsWith('s'));
+		const hasSearch = searchParams.get('f');
 		const page = parseInt(searchParams.get('p') || '1', 10);
 		const isNotFirstPage = page > 1;
-		return hasFilters || hasSorting || isNotFirstPage;
+		return hasFilters || hasSorting || hasSearch || isNotFirstPage;
 	};
 
 	useEffect(() => {
@@ -53,6 +54,10 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 				const paramKey = `s${key}`;
 				newParams.set(paramKey, value);
 			});
+		}
+
+		if (initParams.f) {
+			newParams.set('f', initParams.f);
 		}
 
 		setSearchParams(newParams);
