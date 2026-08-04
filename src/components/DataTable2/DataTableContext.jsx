@@ -33,7 +33,6 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 
 	const applyInitialParams = (params) => {
 		let newParams = new URLSearchParams(searchParams);
-		console.log(getParam('i'), 'Context')
 		if (params.a) {
 			Object.entries(params.a).forEach(([key, value]) => {
 				const paramKey = `a${key}`;
