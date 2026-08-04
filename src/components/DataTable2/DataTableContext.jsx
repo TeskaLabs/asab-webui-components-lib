@@ -17,38 +17,39 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 
 	const [initialParamsApplied, setInitialParamsApplied] = useState(false);
 
-	const hasUserParams = () => {
-		const hasFilters = [...searchParams.keys()].some(key => key.startsWith('a'));
-		const hasSorting = [...searchParams.keys()].some(key => key.startsWith('s'));
-		const isNotFirstPage = searchParams.get('p') > 1;
+	const hasInitParams = () => {
+		const keys = [...searchParams.keys()];
+		const hasFilters = keys.some(key => key.startsWith('a'));
+		const hasSorting = keys.some(key => key.startsWith('s'));
+		const page = parseInt(searchParams.get('p') || '1', 10);
+		const isNotFirstPage = page > 1;
 		return hasFilters || hasSorting || isNotFirstPage;
 	};
 
 	useEffect(() => {
 		if (!initialParams) return;
-		if (hasUserParams()) return;
+		if (hasInitParams()) return;
 
 		applyInitialParams(initialParams);
 	}, []);
 
-	const applyInitialParams = (params) => {
+	const applyInitialParams = (initParams) => {
 		let newParams = new URLSearchParams(searchParams);
-		if (params.a) {
-			Object.entries(params.a).forEach(([key, value]) => {
-				const paramKey = `a${key}`;
-				const normalizedValues = Array.isArray(value) ? value : [value];
+		if (initParams.a) {
+			Object.entries(initParams.a).forEach(([key, value]) => {
+				const values = Array.isArray(value) ? value : [value];
+				const uniqueValues = [
+					...new Set(values.filter((item) => item != null)),
+				];
 
-				if (normalizedValues) {
-					// Remove duplicates and separate them by commas
-					const uniqueValues = [...new Set(normalizedValues)];
-
-					newParams.set(paramKey, uniqueValues.join(','));
+				if (uniqueValues.length > 0) {
+					newParams.set(`a${key}`, uniqueValues.join(','));
 				}
 			});
 		}
 
-		if (params.s) {
-			Object.entries(params.s).forEach(([key, value]) => {
+		if (initParams.s) {
+			Object.entries(initParams.s).forEach(([key, value]) => {
 				const paramKey = `s${key}`;
 				newParams.set(paramKey, value);
 			});
