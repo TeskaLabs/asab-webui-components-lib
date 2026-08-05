@@ -155,7 +155,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 
 	// Calculate and set new column widths
 	const calculateAndSetColumnWidths = () => {
-		if (cardRef?.current != null) {
+		if (cardRef.current != null) {
 			const columns = cardRef.current.querySelectorAll('th');
 			const newWidth = {};
 			columns.forEach(column => {
