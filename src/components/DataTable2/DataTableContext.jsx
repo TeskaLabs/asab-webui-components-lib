@@ -64,6 +64,7 @@ const mergeInitialParamsIntoState = (targetState, initParams) => {
 
 // AppContextProvider component to wrap the application and provide the context
 const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
+	// TODO: Unify initialLimit and initialParams. This is a weird design; initialLimit is obsoleted by the introduction of initialParams
 	if (initialLimit && initialParams) {
 		console.warn('DataTable2: initialLimit and initialParams cannot be used together. initialParams will be ignored.');
 	}
