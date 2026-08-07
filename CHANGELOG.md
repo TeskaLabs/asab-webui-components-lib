@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.6.1
+
+- Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
+
 ## 27.6.0
 
 - Remove advanced mode and Advanced Card component (#88)

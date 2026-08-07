@@ -1,19 +1,120 @@
 import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { updateLimit, updateStateLimit } from './components/utils/updateTableLimit.jsx';
+import { updateLimit, updateStateLimit, adjustLimitForFilterPills } from './components/utils/updateTableLimit.jsx';
 import { translateFromContent } from '../../utils/translateFromContent.js';
 
 // Create an empty context
 const CreateDataTableContext = createContext();
 
+// Merge initialParams into URLSearchParams. Returns true if filter pills were added.
+const mergeInitialParams = (targetParams, initParams) => {
+	let hasFilterPills = false;
+
+	if (initParams?.a) {
+		Object.entries(initParams.a).forEach(([key, value]) => {
+			const values = Array.isArray(value) ? value : [value];
+			const uniqueValues = [...new Set(values.filter((item) => item != null))];
+			if (uniqueValues.length > 0) {
+				targetParams.set(`a${key}`, uniqueValues.join(','));
+				hasFilterPills = true;
+			}
+		});
+	}
+
+	if (initParams?.s) {
+		Object.entries(initParams.s).forEach(([key, value]) => {
+			targetParams.set(`s${key}`, value);
+		});
+	}
+
+	if (initParams?.f) {
+		targetParams.set('f', initParams.f);
+	}
+
+	return hasFilterPills;
+};
+
+const mergeInitialParamsIntoState = (targetState, initParams) => {
+	let hasFilterPills = false;
+
+	if (initParams?.a) {
+		Object.entries(initParams.a).forEach(([key, value]) => {
+			const values = Array.isArray(value) ? value : [value];
+			const uniqueValues = [...new Set(values.filter((item) => item != null))];
+			if (uniqueValues.length > 0) {
+				targetState[`a${key}`] = uniqueValues;
+				hasFilterPills = true;
+			}
+		});
+	}
+
+	if (initParams?.s) {
+		Object.entries(initParams.s).forEach(([key, value]) => {
+			targetState[`s${key}`] = value;
+		});
+	}
+
+	if (initParams?.f) {
+		targetState.f = initParams.f;
+	}
+
+	return hasFilterPills;
+};
+
 // AppContextProvider component to wrap the application and provide the context
-const DataTableContextProvider = ({ children, disableParams, initialLimit }) => {
+const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
+	// TODO: Unify initialLimit and initialParams. This is a weird design; initialLimit is obsoleted by the introduction of initialParams
+	if (initialLimit && initialParams) {
+		console.warn('DataTable2: initialLimit and initialParams cannot be used together. initialParams will be ignored.');
+	}
 	const defaultParams = { p: 1, i: initialLimit };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
+	const initialParamsRef = useRef(initialParams);
+	initialParamsRef.current = initialParams;
+
+	/*
+		Called once card height is known and i == 0.
+		Writes measured limit and initialParams (if any) in a single params update.
+		Skips applying initialParams when the URL/state already has filters, sort, search, or page > 1.
+		Consumer must pass initialParams only when defaults are ready (do not mount with null-then-later).
+	*/
+	const initializeTableParams = (baseLimit) => {
+		const currentLimit = disableParams
+			? parseInt(stateParams.i, 10) || 0
+			: parseInt(searchParams.get('i') || '0', 10);
+		if (currentLimit > 0) return;
+
+		const init = initialParamsRef.current;
+
+		if (!disableParams) {
+			const newParams = new URLSearchParams(searchParams);
+			const keys = [...newParams.keys()];
+			const urlHasUserParams = keys.some((k) => k.startsWith('a') || k.startsWith('s') || k === 'f')
+				|| parseInt(newParams.get('p') || '1', 10) > 1;
+			const hasPills = keys.some((k) => k.startsWith('a'))
+				|| (!urlHasUserParams && init ? mergeInitialParams(newParams, init) : false);
+
+			if (!newParams.get('p')) newParams.set('p', '1');
+			newParams.set('i', String(adjustLimitForFilterPills(baseLimit, hasPills)));
+			setSearchParams(newParams, { replace: true });
+			return;
+		}
+
+		const updatedState = { ...stateParams };
+		const keys = Object.keys(updatedState);
+		const stateHasUserParams = keys.some((k) => k.startsWith('a') || k.startsWith('s') || k === 'f')
+			|| parseInt(updatedState.p || 1, 10) > 1;
+		const hasPills = keys.some((k) => k.startsWith('a'))
+			|| (!stateHasUserParams && init ? mergeInitialParamsIntoState(updatedState, init) : false);
+
+		updatedState.p = updatedState.p ?? 1;
+		updatedState.i = adjustLimitForFilterPills(baseLimit, hasPills);
+		setStateParams(updatedState);
+	};
 
 	// Method to get param with option to set up splitting method used for searchParams
 	const getParam = (param, options = {}) => {
@@ -388,6 +489,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 		setFilterFieldLabel,
 		setCustomPill,
 		getCustomPill,
+		initializeTableParams,
 		watchParams: { searchParams, stateParams } // Context value for watching params
 	}), [searchParams, stateParams]);
 

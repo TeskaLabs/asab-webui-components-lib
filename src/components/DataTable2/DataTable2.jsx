@@ -10,6 +10,7 @@ import {
 
 import { usePubSub } from '../Context/PubSubContext';
 import { DataTableContextProvider, useDataTableContext } from './DataTableContext.jsx';
+import { computeBaseRowLimit } from './components/utils/updateTableLimit.jsx';
 
 import './DataTable2.scss';
 
@@ -17,9 +18,9 @@ const DEFAULT_LIMIT_VALUES = [10, 20, 50, 100];
 
 // Wrapper for datatable context
 export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38,
-								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = DEFAULT_LIMIT_VALUES }) {
+								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = DEFAULT_LIMIT_VALUES, initialParams = null  }) {
 	return (
-		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
+		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit} initialParams={initialParams}>
 			<DataTableCardContent
 				columns={columns}
 				loader={loader}
@@ -39,7 +40,7 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, limitValues }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
-	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
+	const { watchParams, getParam, serializeParams, initializeTableParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
 	const [ count, setCount ] = useState(0);
@@ -118,16 +119,13 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 					loadRows();
 				}, 500);
 			}
-		} else {
+		} else if (cardRef.current?.parentElement) {
 			/*
-				Compute rows when we loose the information about the limit.
-
-				This prevents the NaN issues with DataTable and helps to redirect to a
-				initial page when clicking the same route sidebar item.
+				Compute limit when i is missing (first mount or sidebar re-click).
+				Also merges initialParams in the same update when provided.
 			*/
 			const height = cardRef.current.parentElement.getBoundingClientRect().height;
-			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
-			setParams({ p: 1, i: rows }, true);
+			initializeTableParams(computeBaseRowLimit(height, rowHeight));
 		}
 
 		/*
@@ -154,21 +152,6 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 		};
 		// TODO: .catch(console.error);
 	}, [watchParams, loaderParams]);
-
-	useEffect(() => {
-		// Automatically determine limit based on the free space in the parent container
-		if (cardRef.current) {
-			const height = cardRef.current.parentElement.getBoundingClientRect().height;
-			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
-			if (getParam('i') == 0) {
-				setParams({ i: rows }, true); // Replace the navigation during the DataTable initialization to avoid removal of search params when navigating back in history
-			}
-		}
-		// Clearing a cardRef after exiting a component
-		return () => {
-			cardRef.current = null;
-		};
-	}, [cardRef]);
 
 	// Calculate and set new column widths
 	const calculateAndSetColumnWidths = () => {

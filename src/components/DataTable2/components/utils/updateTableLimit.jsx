@@ -1,3 +1,12 @@
+export const HEADER_FOOTER_OVERHEAD = 200;
+
+export const computeBaseRowLimit = (containerHeight, rowHeight) =>
+	Math.max(Math.floor((containerHeight - HEADER_FOOTER_OVERHEAD) / rowHeight), 5);
+
+// Same ±1 rule as updateLimit for the filter-pill row
+export const adjustLimitForFilterPills = (baseLimit, hasFilterPills) =>
+	hasFilterPills && baseLimit > 1 ? baseLimit - 1 : baseLimit;
+
 export const updateLimit = (action, searchParams) => {
 	if (searchParams && ![...searchParams.entries()].some(([key]) => key.startsWith('a'))) {
 		const currentLimit = parseInt(searchParams.get("i"), 10);
