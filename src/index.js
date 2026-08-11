@@ -46,7 +46,3 @@ export { AppStoreProvider, useAppStore, useAppSelector, createAppStore } from '.
 export { registerReducer } from './components/Context/store/reducer/reducerRegistry.jsx';
 export { CopyableInput } from './components/CopyableInput/CopyableInput';
 export { setBacklink, setBacklinkFromLocation, getBacklink, getBacklinkData, clearBacklink, consumeBacklink, consumeBacklinkData, createBacklinkHandlers } from './utils/backlink/backlink.jsx';
-
-// OBSOLETED COMPONENTS (Aug 2023) - don't use this in a new designs
-export { default as Pagination } from './components/DataTable/Pagination';
-export { DataTable } from './components/DataTable';
