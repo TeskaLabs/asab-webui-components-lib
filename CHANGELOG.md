@@ -1,6 +1,6 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.6.1
+## 27.6.2
 
 - Strip zeros within the invisible characters (#90)
 
