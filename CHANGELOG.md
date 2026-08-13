@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.6.1
+
+- Strip zeros within the invisible characters (#90)
+
 ## 27.6.0
 
 - Remove advanced mode and Advanced Card component (#88)
