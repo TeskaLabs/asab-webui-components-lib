@@ -4,6 +4,10 @@
 
 - Remove legacy DataTable component (#89)
 
+## 27.6.2
+
+- Strip zeros within the invisible characters (#90)
+
 ## 27.6.0
 
 - Remove advanced mode and Advanced Card component (#88)
