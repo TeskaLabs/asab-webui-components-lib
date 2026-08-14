@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.7.0
+
+- Remove legacy DataTable component (#89)
+
 ## 27.6.2
 
 - Strip zeros within the invisible characters (#90)
