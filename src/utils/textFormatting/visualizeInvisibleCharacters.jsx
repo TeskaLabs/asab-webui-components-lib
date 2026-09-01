@@ -121,8 +121,7 @@ export function isSpecialUnicodeCodePoint(codePoint) {
 
 // Format a unicode code point to a hex string
 function formatCodePointHex(codePoint) {
-	const hex = codePoint.toString(16).toUpperCase();
-	return hex.length < 4 ? hex.padStart(4, '0') : hex;
+	return codePoint.toString(16).toUpperCase();
 }
 
 // Get the leading and trailing edges of the ascii space in a string
@@ -224,7 +223,7 @@ export const visualizeInvisibleCharacters = (children) => {
 };
 
 export const createUnicodeVisualizeWrapper = (BaseWrapper) => {
-    const UnicodeVisualizeWrapper = (props) => {
+	const UnicodeVisualizeWrapper = (props) => {
 		const { children, ...rest } = props;
 		const visualizedChildren = visualizeInvisibleCharacters(children);
 		return <BaseWrapper {...rest}>{visualizedChildren}</BaseWrapper>;

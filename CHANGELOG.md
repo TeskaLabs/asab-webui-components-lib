@@ -1,8 +1,16 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.6.1
+## 27.7.1
 
 - Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
+
+## 27.7.0
+
+- Remove legacy DataTable component (#89)
+
+## 27.6.2
+
+- Strip zeros within the invisible characters (#90)
 
 ## 27.6.0
 
