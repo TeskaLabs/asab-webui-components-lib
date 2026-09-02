@@ -200,6 +200,11 @@ export function visualizeWhitespaces(value) {
 					{`<${hexUnicode}>`}
 				</span>,
 			);
+
+			// Keep line feed (LF) as a actual line break after the visible marker
+			if (codePoint === 0x000A) {
+				pushTextRun(nodes, '\n');
+			}
 		} else {
 			pushTextRun(nodes, char);
 		}
