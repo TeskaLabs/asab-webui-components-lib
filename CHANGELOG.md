@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.7.1
+
+- Refactor Line feed marker (displaying invisible character) to actually break the line (#91)
+
 ## 27.7.0
 
 - Remove legacy DataTable component (#89)
