@@ -1,5 +1,15 @@
-export const HEADER_FOOTER_OVERHEAD = 200;
+const HEADER_FOOTER_OVERHEAD = 200;
 
+/**
+ * Computes the base row limit (number of rows) that fits into the visible
+ * area of the card, based on the measured container height and row height.
+ *
+ * The result is intentionally conservative and rounded down. A hard minimum
+ * of 5 rows prevents the table from collapsing on very short containers.
+ *
+ * Note: this is only the *base* limit. When filter pills are present the
+ * effective limit may be reduced by `adjustLimitForFilterPills`.
+ */
 export const computeBaseRowLimit = (containerHeight, rowHeight) =>
 	Math.max(Math.floor((containerHeight - HEADER_FOOTER_OVERHEAD) / rowHeight), 5);
 
