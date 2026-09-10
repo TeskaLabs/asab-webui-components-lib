@@ -82,6 +82,95 @@ To set custom row limits per page, `limitValues={number[]}` should be set. Defau
 />
 ```
 
+## Initial params
+
+`initialParams` sets the default filters, sorting and search that are applied to the table before the user interacts with it.
+Defaults are applied only when there are no user-defined params yet (first mount) and are also reused by the reset action (see below).
+
+The prop accepts **either** the user-friendly shape **or** the internal base
+shape — both are equivalent and can even be mixed:
+
+**User-friendly form** (recommended):
+
+```
+<DataTableCard2
+	app={app}
+	columns={columns}
+	loader={loader}
+	header={<Header />}
+	initialParams={{
+		filters: { status: ["open", "triaged"] },
+		sort: { type: "desc", _c: "asc" },
+		search: "hello",
+	}}
+/>
+```
+
+**Base form** (same result, uses internal keys):
+
+```
+<DataTableCard2
+	app={app}
+	columns={columns}
+	loader={loader}
+	header={<Header />}
+	initialParams={{
+		a: { status: ["open", "triaged"] },
+		s: { type: "d", _c: "a" },
+		f: "hello",
+	}}
+/>
+```
+
+
+**Aliases**
+
+| User-friendly key | Base key | Notes                                              |
+|-------------------|----------|----------------------------------------------------|
+| `filters`         | `a`      | Value is an object `{ field: value | value[] }`.   |
+| `sort`            | `s`      | Value is an object `{ field: "asc" | "desc" }`.    |
+| `search`          | `f`      | Value is a string.                                 |
+
+Sort direction values are also aliased: `"asc" → "a"` and `"desc" → "d"`.
+Field names inside `filters` and `sort` are never modified - they are
+application-specific.
+
+**Note:** `initialParams` works with both `disableParams={false}` (URL mode) and `disableParams={true}` (state mode). Internally the same defaults are written either to the URL or to the component's inner state.
+
+## Reset filters
+
+To reset the table back to the current `initialParams` (discard whatever
+filters, sorting or search the user has applied), publish an
+`Application.reload!` message with the `action: "reset"` payload:
+
+```
+import { usePubSub } from "asab_webui_components";
+
+...
+
+const { publish } = usePubSub();
+
+...
+
+<button
+	type="button"
+	className="btn btn-outline-primary"
+	onClick={() => publish("Application.reload!", { action: "reset" })}
+>
+	Reset filters
+</button>
+```
+
+On reset the table:
+
+- forces page `1`;
+- drops all existing filters, sorting and search;
+- re-applies whatever is currently in `initialParams` (may be empty - then the table ends up with no filters at all);
+- recomputes the row limit to account for the resulting filter pills.
+
+**Note:** The reset action goes through the same `Application.reload!` channel used by regular reloads, so multiple tables on the same screen will all react to it. If you need to target a specific table, distinguish them by the message payload (see the TODO note in the reload section).
+
+
 ## Columns
 
 Provides info about columns in the data table
