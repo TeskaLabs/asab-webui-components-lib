@@ -7,60 +7,197 @@ import { translateFromContent } from '../../utils/translateFromContent.js';
 // Create an empty context
 const CreateDataTableContext = createContext();
 
-// Merge initialParams into URLSearchParams. Returns true if filter pills were added.
-const mergeInitialParams = (targetParams, initParams) => {
+/*
+	Top-level key aliases for user-friendly initialParams input.
+	Any of these keys can appear in the object passed via the `initialParams` prop.
+	The value is the internal base key used by the data-table (and by the URL).
+*/
+const TOP_LEVEL_KEY_ALIASES = {
+	filters: 'a', // advanced filters -> keys `a{field}` in URL/state
+	sort: 's',    // sorting          -> keys `s{field}` in URL/state
+	search: 'f',  // full-text search -> key `f` in URL/state
+};
+/*
+	Sort direction aliases. Only the `s`/`sort` object values are mapped through this.
+	Anything not listed here (e.g. field names like `type`, `_c`) is passed through untouched.
+*/
+const SORT_DIRECTION_ALIASES = {
+	asc: 'a',
+	desc: 'd',
+};
+
+/**
+ * Normalizes user-friendly initialParams into the internal base shape.
+ *
+ * Accepts either the user-friendly form:
+ *   { filters: {...}, sort: { type: 'desc', _c: 'asc' }, search: 'hello' }
+ * or the already-base form:
+ *   { a: {...}, s: { type: 'd', _c: 'a' }, f: 'hello' }
+ *
+ * Rules:
+ *  - Top-level keys are remapped via TOP_LEVEL_KEY_ALIASES (filters -> a, sort -> s, search -> f).
+ *  - Base keys (`a`, `s`, `f`) are kept as-is, so mixing is allowed.
+ *  - Only values inside the sort object are remapped via SORT_DIRECTION_ALIASES (asc -> a, desc -> d).
+ *  - Field names inside filters/sort are never touched — they are application-specific.
+ *  - `null` / non-object input is returned unchanged.
+ */
+const normalizeInitialParams = (params) => {
+	if (!params || typeof params !== 'object') return params;
+
+	// Collect values from both alias and base keys first.
+	// Alias takes precedence over base if both are present (e.g. `filters` wins over `a`).
+	const resolved = {};
+	Object.entries(params).forEach(([key, value]) => {
+		// Map user-friendly key -> base key, keep base keys as-is.
+		const baseKey = TOP_LEVEL_KEY_ALIASES[key] ?? key;
+		resolved[baseKey] = value;
+	});
+
+	const normalized = {};
+
+	// Filters (base key `a`).
+	if (resolved.a) {
+		normalized.a = resolved.a;
+	}
+
+	// Sort (base key `s`): remap direction values, keep field names intact.
+	if (resolved.s) {
+		normalized.s = Object.fromEntries(
+			Object.entries(resolved.s).map(([field, direction]) => [
+				field,
+				SORT_DIRECTION_ALIASES[direction] ?? direction,
+			]),
+		);
+	}
+
+	// Search (base key `f`).
+	if (resolved.f !== undefined) {
+		normalized.f = resolved.f;
+	}
+
+	return normalized;
+};
+
+/**
+ * Generic merger of initialParams into a target collection.
+ *
+ * initialParams shape:
+ *   {
+ *     a: { fieldName: value | value[] }, // advanced filters -> keys `a{field}`
+ *     s: { fieldName: sortDirection },   // sorting         -> keys `s{field}`
+ *     f: string                          // full-text search -> key `f`
+ *   }
+ *
+ * The `applyParam(key, value)` callback abstracts the write operation so the same
+ * traversal can target either a URLSearchParams instance or a plain state object.
+ *
+ * Returns `true` if at least one filter pill (`a{field}`) was actually written.
+ */
+const mergeInitialParamsGeneric = (initParams, applyParam) => {
 	let hasFilterPills = false;
 
+	// Advanced filters: key is prefixed with `a`, value may be a single item or an array.
 	if (initParams?.a) {
 		Object.entries(initParams.a).forEach(([key, value]) => {
+			// Normalize to an array so we can dedupe and drop null/undefined consistently.
 			const values = Array.isArray(value) ? value : [value];
+			// Keep only defined values and remove duplicates to avoid redundant pills.
 			const uniqueValues = [...new Set(values.filter((item) => item != null))];
 			if (uniqueValues.length > 0) {
-				targetParams.set(`a${key}`, uniqueValues.join(','));
+				applyParam(`a${key}`, uniqueValues);
 				hasFilterPills = true;
 			}
 		});
 	}
 
+	// Sorting: key is prefixed with `s`, value is a sort direction ('a' or 'd').
 	if (initParams?.s) {
 		Object.entries(initParams.s).forEach(([key, value]) => {
-			targetParams.set(`s${key}`, value);
+			applyParam(`s${key}`, value);
 		});
 	}
 
+	// Full-text search: single `f` key.
 	if (initParams?.f) {
-		targetParams.set('f', initParams.f);
+		applyParam('f', initParams.f);
 	}
 
 	return hasFilterPills;
 };
 
-const mergeInitialParamsIntoState = (targetState, initParams) => {
-	let hasFilterPills = false;
+/**
+ * Writes initialParams into a URLSearchParams instance.
+ * Arrays are serialized as comma-separated strings (the format used by the URL).
+ */
+const mergeInitialParams = (targetParams, initParams) =>
+	mergeInitialParamsGeneric(initParams, (key, value) => {
+		targetParams.set(key, Array.isArray(value) ? value.join(',') : value);
+	});
 
-	if (initParams?.a) {
-		Object.entries(initParams.a).forEach(([key, value]) => {
-			const values = Array.isArray(value) ? value : [value];
-			const uniqueValues = [...new Set(values.filter((item) => item != null))];
-			if (uniqueValues.length > 0) {
-				targetState[`a${key}`] = uniqueValues;
-				hasFilterPills = true;
-			}
-		});
-	}
+/**
+ * Writes initialParams into a plain state object.
+ * Arrays are stored as-is because state consumers (serializeParams, getParam)
+ * handle arrays differently from URL params.
+ */
+const mergeInitialParamsIntoState = (targetState, initParams) =>
+	mergeInitialParamsGeneric(initParams, (key, value) => {
+		targetState[key] = value;
+	});
 
-	if (initParams?.s) {
-		Object.entries(initParams.s).forEach(([key, value]) => {
-			targetState[`s${key}`] = value;
-		});
-	}
-
-	if (initParams?.f) {
-		targetState.f = initParams.f;
-	}
-
-	return hasFilterPills;
-};
+// // Merge initialParams into URLSearchParams. Returns true if filter pills were added.
+// const mergeInitialParams1 = (targetParams, initParams) => {
+// 	let hasFilterPills = false;
+//
+// 	if (initParams?.a) {
+// 		Object.entries(initParams.a).forEach(([key, value]) => {
+// 			const values = Array.isArray(value) ? value : [value];
+// 			const uniqueValues = [...new Set(values.filter((item) => item != null))];
+// 			if (uniqueValues.length > 0) {
+// 				targetParams.set(`a${key}`, uniqueValues.join(','));
+// 				hasFilterPills = true;
+// 			}
+// 		});
+// 	}
+//
+// 	if (initParams?.s) {
+// 		Object.entries(initParams.s).forEach(([key, value]) => {
+// 			targetParams.set(`s${key}`, value);
+// 		});
+// 	}
+//
+// 	if (initParams?.f) {
+// 		targetParams.set('f', initParams.f);
+// 	}
+//
+// 	return hasFilterPills;
+// };
+//
+// const mergeInitialParamsIntoState1 = (targetState, initParams) => {
+// 	let hasFilterPills = false;
+//
+// 	if (initParams?.a) {
+// 		Object.entries(initParams.a).forEach(([key, value]) => {
+// 			const values = Array.isArray(value) ? value : [value];
+// 			const uniqueValues = [...new Set(values.filter((item) => item != null))];
+// 			if (uniqueValues.length > 0) {
+// 				targetState[`a${key}`] = uniqueValues;
+// 				hasFilterPills = true;
+// 			}
+// 		});
+// 	}
+//
+// 	if (initParams?.s) {
+// 		Object.entries(initParams.s).forEach(([key, value]) => {
+// 			targetState[`s${key}`] = value;
+// 		});
+// 	}
+//
+// 	if (initParams?.f) {
+// 		targetState.f = initParams.f;
+// 	}
+//
+// 	return hasFilterPills;
+// };
 
 // AppContextProvider component to wrap the application and provide the context
 const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
@@ -73,8 +210,38 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
-	const initialParamsRef = useRef(initialParams);
-	initialParamsRef.current = initialParams;
+	// const initialParamsRef = useRef(initialParams);
+	// initialParamsRef.current = initialParams;
+
+	const normalizedInitialParams = useMemo(
+		() => normalizeInitialParams(initialParams),
+		[initialParams],
+	);
+
+	const initialParamsRef = useRef(normalizedInitialParams);
+	initialParamsRef.current = normalizedInitialParams;
+
+
+	const resetParams = () => {
+		if (!disableParams) {
+			const newParams = new URLSearchParams();
+
+			newParams.set('p', '1');
+
+			mergeInitialParams(newParams, initialParamsRef.current);
+
+			setSearchParams(newParams, {replace: true});
+			return;
+		}
+
+		const updatedState = {
+			p: 1
+		};
+
+		mergeInitialParamsIntoState(updatedState, initialParamsRef.current);
+
+		setStateParams(updatedState);
+	};
 
 	/*
 		Called once card height is known and i == 0.
@@ -490,6 +657,7 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		setCustomPill,
 		getCustomPill,
 		initializeTableParams,
+		resetParams,
 		watchParams: { searchParams, stateParams } // Context value for watching params
 	}), [searchParams, stateParams]);
 
