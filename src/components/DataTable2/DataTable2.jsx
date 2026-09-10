@@ -40,7 +40,7 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, limitValues }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
-	const { watchParams, getParam, serializeParams, initializeTableParams } = useDataTableContext();
+	const { watchParams, getParam, serializeParams, initializeTableParams, resetParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
 	const [ count, setCount ] = useState(0);
@@ -121,8 +121,9 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			}
 		} else if (cardRef.current?.parentElement) {
 			/*
-				Compute limit when i is missing (first mount or sidebar re-click).
-				Also merges initialParams in the same update when provided.
+				Compute the table limit when i is missing.
+				This happens on initial table setup and after resetting parameters.
+				InitialParams are applied in the same update when no user parameters exist.
 			*/
 			const height = cardRef.current.parentElement.getBoundingClientRect().height;
 			initializeTableParams(computeBaseRowLimit(height, rowHeight));
@@ -135,6 +136,11 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			in any of the parent/children components
 		*/
 		const subscription = subscribe('Application.reload!', (message) => {
+			if (message?.action === 'reset') {
+				resetParams();
+				return;
+			}
+
 			/*
 				TODO: use message passed from the published event to distinguish between tables
 				if there is more than 1 on the screen
