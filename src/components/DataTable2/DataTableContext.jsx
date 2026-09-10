@@ -17,6 +17,7 @@ const TOP_LEVEL_KEY_ALIASES = {
 	sort: 's',    // sorting          -> keys `s{field}` in URL/state
 	search: 'f',  // full-text search -> key `f` in URL/state
 };
+
 /*
 	Sort direction aliases. Only the `s`/`sort` object values are mapped through this.
 	Anything not listed here (e.g. field names like `type`, `_c`) is passed through untouched.
@@ -195,42 +196,71 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 	};
 
 	/*
-		Called once card height is known and i == 0.
-		Writes measured limit and initialParams (if any) in a single params update.
-		Skips applying initialParams when the URL/state already has filters, sort, search, or page > 1.
-		Consumer must pass initialParams only when defaults are ready (do not mount with null-then-later).
+		Initializes table parameters when the limit is not set.
+		Calculates the limit based on the container height and adjusts it
+		when filter pills are present.
+		Applies initialParams only when no user-defined filters, sorting,
+		search, or pagination are already set.
 	*/
 	const initializeTableParams = (baseLimit) => {
+		// Get the current table limit from URL params or internal state
 		const currentLimit = disableParams
 			? parseInt(stateParams.i, 10) || 0
 			: parseInt(searchParams.get('i') || '0', 10);
-		if (currentLimit > 0) return;
 
+		// Do not reinitialize parameters if the table limit is already set
+		if (currentLimit > 0) {
+			return;
+		}
+
+		// Get the latest initial parameters from the ref
 		const init = initialParamsRef.current;
 
+		// Update URL search parameters when URL params are enabled
 		if (!disableParams) {
 			const newParams = new URLSearchParams(searchParams);
+
+			// Get all currently defined URL parameter keys
 			const keys = [...newParams.keys()];
+
+			// Check whether the URL already contains user-defined table parameters
 			const urlHasUserParams = keys.some((k) => k.startsWith('a') || k.startsWith('s') || k === 'f')
 				|| parseInt(newParams.get('p') || '1', 10) > 1;
+
+			// Check for existing filter pills or apply initial filters when no user parameters exist
 			const hasPills = keys.some((k) => k.startsWith('a'))
 				|| (!urlHasUserParams && init ? mergeInitialParams(newParams, init) : false);
 
-			if (!newParams.get('p')) newParams.set('p', '1');
+			// Set the first page if the page parameter is not already defined.
+			if (!newParams.get('p')) {
+				newParams.set('p', '1');
+			}
+
+			// Set the calculated limit and reduce it when filter pills require an extra row
 			newParams.set('i', String(adjustLimitForFilterPills(baseLimit, hasPills)));
+
+			// Replace the current URL parameters without adding a new history entry
 			setSearchParams(newParams, { replace: true });
 			return;
 		}
 
 		const updatedState = { ...stateParams };
 		const keys = Object.keys(updatedState);
+
+		// Check whether the state already contains user-defined table parameters
 		const stateHasUserParams = keys.some((k) => k.startsWith('a') || k.startsWith('s') || k === 'f')
 			|| parseInt(updatedState.p || 1, 10) > 1;
+
+		// Check for existing filter pills or apply initial filters when no user parameters exist
 		const hasPills = keys.some((k) => k.startsWith('a'))
 			|| (!stateHasUserParams && init ? mergeInitialParamsIntoState(updatedState, init) : false);
 
+		// Set the first page if the page parameter is not already defined
 		updatedState.p = updatedState.p ?? 1;
+
+		// Set the calculated limit and reduce it when filter pills require an extra row
 		updatedState.i = adjustLimitForFilterPills(baseLimit, hasPills);
+
 		setStateParams(updatedState);
 	};
 
