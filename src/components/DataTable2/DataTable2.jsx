@@ -136,6 +136,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			in any of the parent/children components
 		*/
 		const subscription = subscribe('Application.reload!', (message) => {
+			// Reset action: discard current params and restore initialParams defaults
 			if (message?.action === 'reset') {
 				resetParams();
 				return;
