@@ -26,21 +26,21 @@ const SORT_DIRECTION_ALIASES = {
 	desc: 'd',
 };
 
-/**
- * Normalizes user-friendly initialParams into the internal base shape.
- *
- * Accepts either the user-friendly form:
- *   { filters: {...}, sort: { type: 'desc', _c: 'asc' }, search: 'hello' }
- * or the already-base form:
- *   { a: {...}, s: { type: 'd', _c: 'a' }, f: 'hello' }
- *
- * Rules:
- *  - Top-level keys are remapped via TOP_LEVEL_KEY_ALIASES (filters -> a, sort -> s, search -> f).
- *  - Base keys (`a`, `s`, `f`) are kept as-is, so mixing is allowed.
- *  - Only values inside the sort object are remapped via SORT_DIRECTION_ALIASES (asc -> a, desc -> d).
- *  - Field names inside filters/sort are never touched — they are application-specific.
- *  - `null` / non-object input is returned unchanged.
- */
+/*
+	Normalizes user-friendly initialParams into the internal base shape.
+
+	Accepts either the user-friendly form:
+		{ filters: {...}, sort: { type: 'desc', _c: 'asc' }, search: 'hello' }
+	or the already-base form:
+		{ a: {...}, s: { type: 'd', _c: 'a' }, f: 'hello' }
+
+	Rules:
+		- Top-level keys are remapped via TOP_LEVEL_KEY_ALIASES (filters -> a, sort -> s, search -> f).
+		- Base keys (`a`, `s`, `f`) are kept as-is, so mixing is allowed.
+		- Only values inside the sort object are remapped via SORT_DIRECTION_ALIASES (asc -> a, desc -> d).
+		- Field names inside filters/sort are never touched — they are application-specific.
+		- `null` / non-object input is returned unchanged.
+*/
 const normalizeInitialParams = (params) => {
 	if (!params || typeof params !== 'object') return params;
 
@@ -78,21 +78,13 @@ const normalizeInitialParams = (params) => {
 	return normalized;
 };
 
-/**
- * Generic merger of initialParams into a target collection.
- *
- * initialParams shape:
- *   {
- *     a: { fieldName: value | value[] }, // advanced filters -> keys `a{field}`
- *     s: { fieldName: sortDirection },   // sorting         -> keys `s{field}`
- *     f: string                          // full-text search -> key `f`
- *   }
- *
- * The `applyParam(key, value)` callback abstracts the write operation so the same
- * traversal can target either a URLSearchParams instance or a plain state object.
- *
- * Returns `true` if at least one filter pill (`a{field}`) was actually written.
- */
+/*
+	Generic merger of initialParams into a target collection.
+	The `applyParam(key, value)` callback abstracts the write operation so the same
+	traversal can target either a URLSearchParams instance or a plain state object.
+
+	Returns `true` if at least one filter pill (`a{field}`) was actually written.
+*/
 const mergeInitialParamsGeneric = (initParams, applyParam) => {
 	let hasFilterPills = false;
 
@@ -125,79 +117,24 @@ const mergeInitialParamsGeneric = (initParams, applyParam) => {
 	return hasFilterPills;
 };
 
-/**
- * Writes initialParams into a URLSearchParams instance.
- * Arrays are serialized as comma-separated strings (the format used by the URL).
- */
+/*
+	Writes initialParams into a URLSearchParams instance.
+	Arrays are serialized as comma-separated strings (the format used by the URL).
+*/
 const mergeInitialParams = (targetParams, initParams) =>
 	mergeInitialParamsGeneric(initParams, (key, value) => {
 		targetParams.set(key, Array.isArray(value) ? value.join(',') : value);
 	});
 
-/**
- * Writes initialParams into a plain state object.
- * Arrays are stored as-is because state consumers (serializeParams, getParam)
- * handle arrays differently from URL params.
- */
+/*
+	Writes initialParams into a plain state object.
+	Arrays are stored as-is because state consumers (serializeParams, getParam)
+	handle arrays differently from URL params.
+*/
 const mergeInitialParamsIntoState = (targetState, initParams) =>
 	mergeInitialParamsGeneric(initParams, (key, value) => {
 		targetState[key] = value;
 	});
-
-// // Merge initialParams into URLSearchParams. Returns true if filter pills were added.
-// const mergeInitialParams1 = (targetParams, initParams) => {
-// 	let hasFilterPills = false;
-//
-// 	if (initParams?.a) {
-// 		Object.entries(initParams.a).forEach(([key, value]) => {
-// 			const values = Array.isArray(value) ? value : [value];
-// 			const uniqueValues = [...new Set(values.filter((item) => item != null))];
-// 			if (uniqueValues.length > 0) {
-// 				targetParams.set(`a${key}`, uniqueValues.join(','));
-// 				hasFilterPills = true;
-// 			}
-// 		});
-// 	}
-//
-// 	if (initParams?.s) {
-// 		Object.entries(initParams.s).forEach(([key, value]) => {
-// 			targetParams.set(`s${key}`, value);
-// 		});
-// 	}
-//
-// 	if (initParams?.f) {
-// 		targetParams.set('f', initParams.f);
-// 	}
-//
-// 	return hasFilterPills;
-// };
-//
-// const mergeInitialParamsIntoState1 = (targetState, initParams) => {
-// 	let hasFilterPills = false;
-//
-// 	if (initParams?.a) {
-// 		Object.entries(initParams.a).forEach(([key, value]) => {
-// 			const values = Array.isArray(value) ? value : [value];
-// 			const uniqueValues = [...new Set(values.filter((item) => item != null))];
-// 			if (uniqueValues.length > 0) {
-// 				targetState[`a${key}`] = uniqueValues;
-// 				hasFilterPills = true;
-// 			}
-// 		});
-// 	}
-//
-// 	if (initParams?.s) {
-// 		Object.entries(initParams.s).forEach(([key, value]) => {
-// 			targetState[`s${key}`] = value;
-// 		});
-// 	}
-//
-// 	if (initParams?.f) {
-// 		targetState.f = initParams.f;
-// 	}
-//
-// 	return hasFilterPills;
-// };
 
 // AppContextProvider component to wrap the application and provide the context
 const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
@@ -210,9 +147,6 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 	const [stateParams, setStateParams] = useState(defaultParams);
 	const filterFieldsRef = useRef({}); // Ref to store filter fields persistently without triggering re-renders
 	const customPillRef = useRef({}); // Ref for store obj with custom pills with individual key access
-	// const initialParamsRef = useRef(initialParams);
-	// initialParamsRef.current = initialParams;
-
 	const normalizedInitialParams = useMemo(
 		() => normalizeInitialParams(initialParams),
 		[initialParams],
@@ -221,25 +155,42 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 	const initialParamsRef = useRef(normalizedInitialParams);
 	initialParamsRef.current = normalizedInitialParams;
 
-
+	/*
+		Resets filters, sorting and search back to the latest `initialParams` defaults
+		(URL or state mode) and forces page 1. Does not set `i` — the limit is
+		recomputed later by `initializeTableParams` based on the resulting pills.
+	*/
 	const resetParams = () => {
+		// URL mode
 		if (!disableParams) {
 			const newParams = new URLSearchParams();
 
+			// Always return to the first page after a reset.
 			newParams.set('p', '1');
 
+			/*
+				Re-apply the current defaults. May be empty/undefined — in that case
+				nothing is added and the table ends up with no filters at all.
+			*/
 			mergeInitialParams(newParams, initialParamsRef.current);
 
-			setSearchParams(newParams, {replace: true});
+			// Replace the whole URL state in one shot, without pushing a new entry.
+			setSearchParams(newParams, { replace: true });
 			return;
 		}
 
+		// State mode: same idea as above, but using a plain object as the target.
 		const updatedState = {
-			p: 1
+			p: 1,
 		};
 
+		// Re-apply the current defaults into the state object.
 		mergeInitialParamsIntoState(updatedState, initialParamsRef.current);
 
+		/*
+			Replace the entire state (not merged with the previous one) to guarantee
+			a clean slate, matching the URL-mode behavior above.
+		*/
 		setStateParams(updatedState);
 	};
 
