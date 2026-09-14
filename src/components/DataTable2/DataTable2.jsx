@@ -137,7 +137,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 		*/
 		const subscription = subscribe('Application.reload!', (message) => {
 			// Reset action: discard current params and restore initialParams defaults
-			if (message?.action === 'reset') {
+			if (message?.action === 'resetFilters') {
 				resetParams();
 				return;
 			}

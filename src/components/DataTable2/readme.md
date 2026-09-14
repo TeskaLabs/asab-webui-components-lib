@@ -141,7 +141,7 @@ application-specific.
 
 To reset the table back to the current `initialParams` (discard whatever
 filters, sorting or search the user has applied), publish an
-`Application.reload!` message with the `action: "reset"` payload:
+`Application.reload!` message with the `action: "resetFilters"` payload:
 
 ```
 import { usePubSub } from "asab_webui_components";
@@ -155,7 +155,7 @@ const { publish } = usePubSub();
 <button
 	type="button"
 	className="btn btn-outline-primary"
-	onClick={() => publish("Application.reload!", { action: "reset" })}
+	onClick={() => publish("Application.reload!", { action: "resetFilters" })}
 >
 	Reset filters
 </button>
