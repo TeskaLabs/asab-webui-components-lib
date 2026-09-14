@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.7.1
+## 27.7.2
 
 - Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
+
+## 27.7.1
+
+- Refactor Line feed marker (displaying invisible character) to actually break the line (#91)
 
 ## 27.7.0
 
