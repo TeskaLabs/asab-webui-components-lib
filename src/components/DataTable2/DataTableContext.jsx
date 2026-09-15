@@ -13,18 +13,22 @@ const CreateDataTableContext = createContext();
 	The `applyParam(key, value)` callback abstracts the write operation so the same
 	traversal can target either a URLSearchParams instance or a plain state object.
 
-	Returns `true` if at least one filter pill (`a{field}`) was actually written.
+	Returns `true` if at least one valid filter pill (`a{field}`) was written.
 */
 const mergeInitialParamsGeneric = (initParams, applyParam) => {
 	let hasFilterPills = false;
 
-	// Advanced filters: key is prefixed with `a`, value may be a single item or an array.
-	if (initParams?.a) {
+	// Advanced filters: must be an object, with an array of values for each field
+	if (initParams?.a && (typeof initParams.a === 'object') && !Array.isArray(initParams.a)) {
 		Object.entries(initParams.a).forEach(([key, value]) => {
-			// Normalize to an array so we can dedupe and drop null/undefined consistently.
-			const values = Array.isArray(value) ? value : [value];
-			// Keep only defined values and remove duplicates to avoid redundant pills.
-			const uniqueValues = [...new Set(values.filter((item) => item != null))];
+			// Ignore filter fields with invalid values
+			if (!Array.isArray(value)) {
+				return;
+			}
+
+			// Remove null/undefined values and duplicates before writing the parameter
+			const uniqueValues = [...new Set(value.filter((item) => item != null))];
+
 			if (uniqueValues.length > 0) {
 				applyParam(`a${key}`, uniqueValues);
 				hasFilterPills = true;
@@ -32,15 +36,20 @@ const mergeInitialParamsGeneric = (initParams, applyParam) => {
 		});
 	}
 
-	// Sorting: key is prefixed with `s`, value is a sort direction ('a' or 'd').
-	if (initParams?.s) {
+	// Sorting: must be an object with valid normalized sort directions
+	if (initParams?.s && (typeof initParams.s === 'object') && !Array.isArray(initParams.s)) {
 		Object.entries(initParams.s).forEach(([key, value]) => {
+			// Ignore sort fields with invalid directions
+			if (!['a', 'd'].includes(value)) {
+				return;
+			}
+
 			applyParam(`s${key}`, value);
 		});
 	}
 
-	// Full-text search: single `f` key.
-	if (initParams?.f) {
+	// Full-text search: must be a string
+	if (typeof initParams?.f === 'string') {
 		applyParam('f', initParams.f);
 	}
 

@@ -16,54 +16,68 @@ const TOP_LEVEL_KEY_ALIASES = {
 const SORT_DIRECTION_ALIASES = {
 	asc: 'a',
 	desc: 'd',
+	a: 'a',
+	d: 'd',
 };
 
 /*
-	Normalizes user-friendly initialParams into the internal base shape.
+	Normalizes initialParams into the internal data-table format.
 
-	Accepts either the user-friendly form:
-		{ filters: {...}, sort: { type: 'desc', _c: 'asc' }, search: 'hello' }
-	or the already-base form:
-		{ a: {...}, s: { type: 'd', _c: 'a' }, f: 'hello' }
+	Supported input:
+		{
+			filters: { status: ['open', 'triaged'] },
+			sort: { type: 'desc' },
+			search: 'Ticket-01'
+		}
+
+	Base keys (a, s, f) are also supported.
 
 	Rules:
-		- Top-level keys are remapped via TOP_LEVEL_KEY_ALIASES (filters -> a, sort -> s, search -> f).
-		- Base keys (`a`, `s`, `f`) are kept as-is, so mixing is allowed.
-		- Only values inside the sort object are remapped via SORT_DIRECTION_ALIASES (asc -> a, desc -> d).
-		- Field names inside filters/sort are never touched — they are application-specific.
-		- `null` / non-object input is returned unchanged.
+		- filters / a must be an object, and each filter value must be an array.
+		- sort / s must be an object, and each direction must be 'asc', 'desc', 'a', or 'd'.
+		- 'asc' and 'desc' are converted to 'a' and 'd'.
+		- search / f must be a string.
+		- Invalid values are ignored.
+		- Unknown top-level keys are ignored.
+		- User-friendly aliases take precedence over base keys.
 */
 export const normalizeInitialParams = (params) => {
-	if (!params || typeof params !== 'object') return params;
+	// Return an empty object for invalid top-level input
+	if (!params || (typeof params !== 'object') || Array.isArray(params)) {
+		return {};
+	}
 
-	// Collect values from both alias and base keys first.
-	// Alias takes precedence over base if both are present (e.g. `filters` wins over `a`).
+	// Resolve supported input aliases to the internal data-table keys
 	const resolved = {};
-	Object.entries(params).forEach(([key, value]) => {
-		// Map user-friendly key -> base key, keep base keys as-is.
-		const baseKey = TOP_LEVEL_KEY_ALIASES[key] ?? key;
-		resolved[baseKey] = value;
+
+	Object.entries(TOP_LEVEL_KEY_ALIASES).forEach(([alias, baseKey]) => {
+		resolved[baseKey] = params[alias] ?? params[baseKey];
 	});
 
 	const normalized = {};
 
-	// Filters (base key `a`).
-	if (resolved.a) {
-		normalized.a = resolved.a;
-	}
-
-	// Sort (base key `s`): remap direction values, keep field names intact.
-	if (resolved.s) {
-		normalized.s = Object.fromEntries(
-			Object.entries(resolved.s).map(([field, direction]) => [
-				field,
-				SORT_DIRECTION_ALIASES[direction] ?? direction,
-			]),
+	// Keep only filters with array values.
+	if (resolved.a && typeof (resolved.a === 'object') && !Array.isArray(resolved.a)) {
+		normalized.a = Object.fromEntries(
+			Object.entries(resolved.a)
+				.filter(([, value]) => Array.isArray(value)),
 		);
 	}
 
-	// Search (base key `f`).
-	if (resolved.f !== undefined) {
+	// Keep only supported sort directions and normalize their aliases
+	if (resolved.s && typeof (resolved.s === 'object') && !Array.isArray(resolved.s)) {
+		normalized.s = Object.fromEntries(
+			Object.entries(resolved.s)
+				.filter(([, direction]) => SORT_DIRECTION_ALIASES[direction] !== undefined)
+				.map(([field, direction]) => [
+					field,
+					SORT_DIRECTION_ALIASES[direction],
+				]),
+		);
+	}
+
+	// Keep search only when it is a string
+	if (typeof resolved.f === 'string') {
 		normalized.f = resolved.f;
 	}
 
