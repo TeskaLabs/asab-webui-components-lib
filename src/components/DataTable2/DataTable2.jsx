@@ -19,6 +19,7 @@ const DEFAULT_LIMIT_VALUES = [10, 20, 50, 100];
 // Wrapper for datatable context
 export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38,
 								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = DEFAULT_LIMIT_VALUES, initialParams = null  }) {
+	// TODO: Unify initialLimit and initialParams. This is a weird design; initialLimit is obsoleted by the introduction of initialParams
 	return (
 		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit} initialParams={initialParams}>
 			<DataTableCardContent
