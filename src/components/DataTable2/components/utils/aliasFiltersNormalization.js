@@ -57,7 +57,7 @@ export const normalizeInitialParams = (params) => {
 	const normalized = {};
 
 	// Keep only filters with array values.
-	if (resolved.a && typeof (resolved.a === 'object') && !Array.isArray(resolved.a)) {
+	if (resolved.a && (typeof resolved.a === 'object') && !Array.isArray(resolved.a)) {
 		normalized.a = Object.fromEntries(
 			Object.entries(resolved.a)
 				.filter(([, value]) => Array.isArray(value)),
