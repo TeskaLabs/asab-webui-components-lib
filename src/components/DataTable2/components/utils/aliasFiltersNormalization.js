@@ -67,7 +67,7 @@ export const normalizeInitialParams = (params) => {
 	}
 
 	// Normalize sort only when it is provided as an object
-	if (normalized.s && typeof normalized.s === 'object' && !Array.isArray(normalized.s)) {
+	if (normalized.s && (typeof normalized.s === 'object') && !Array.isArray(normalized.s)) {
 		normalized.s = Object.fromEntries(
 			Object.entries(normalized.s)
 				.filter(([, direction]) => SORT_DIRECTION_ALIASES[direction] !== undefined)
