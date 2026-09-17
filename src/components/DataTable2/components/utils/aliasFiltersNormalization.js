@@ -47,27 +47,29 @@ export const normalizeInitialParams = (params) => {
 		return {};
 	}
 
-	// Resolve supported input aliases to the internal data-table keys
-	const resolved = {};
+	// Copy all parameters so unknown keys are preserved unchanged.
+	const normalized = { ...params };
 
+	// Normalize top-level aliases and remove their original names
 	Object.entries(TOP_LEVEL_KEY_ALIASES).forEach(([alias, baseKey]) => {
-		resolved[baseKey] = params[alias] ?? params[baseKey];
+		if (params[alias] !== undefined) {
+			normalized[baseKey] = params[alias];
+			delete normalized[alias];
+		}
 	});
 
-	const normalized = {};
-
-	// Keep only filters with array values.
-	if (resolved.a && (typeof resolved.a === 'object') && !Array.isArray(resolved.a)) {
+	// Normalize filters only when they are provided as an object
+	if (normalized.a && (typeof normalized.a === 'object') && !Array.isArray(normalized.a)) {
 		normalized.a = Object.fromEntries(
-			Object.entries(resolved.a)
+			Object.entries(normalized.a)
 				.filter(([, value]) => Array.isArray(value)),
 		);
 	}
 
-	// Keep only supported sort directions and normalize their aliases
-	if (resolved.s && typeof (resolved.s === 'object') && !Array.isArray(resolved.s)) {
+	// Normalize sort only when it is provided as an object
+	if (normalized.s && typeof normalized.s === 'object' && !Array.isArray(normalized.s)) {
 		normalized.s = Object.fromEntries(
-			Object.entries(resolved.s)
+			Object.entries(normalized.s)
 				.filter(([, direction]) => SORT_DIRECTION_ALIASES[direction] !== undefined)
 				.map(([field, direction]) => [
 					field,
@@ -77,8 +79,8 @@ export const normalizeInitialParams = (params) => {
 	}
 
 	// Keep search only when it is a string
-	if (typeof resolved.f === 'string') {
-		normalized.f = resolved.f;
+	if (normalized.f != undefined && (typeof normalized.f !== 'string')) {
+		delete normalized.f;
 	}
 
 	return normalized;
