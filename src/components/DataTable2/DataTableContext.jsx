@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { updateLimit, updateStateLimit, adjustLimitForFilterPills } from './components/utils/updateTableLimit.jsx';
@@ -77,10 +77,6 @@ const mergeInitialParamsIntoState = (targetState, initParams) =>
 
 // AppContextProvider component to wrap the application and provide the context
 const DataTableContextProvider = ({ children, disableParams, initialLimit, initialParams }) => {
-	// TODO: Unify initialLimit and initialParams. This is a weird design; initialLimit is obsoleted by the introduction of initialParams
-	if (initialLimit && initialParams) {
-		console.warn('DataTable2: initialLimit and initialParams cannot be used together. initialParams will be ignored.');
-	}
 	const defaultParams = { p: 1, i: initialLimit };
 	const [searchParams, setSearchParams] = useSearchParams(defaultParams);
 	const [stateParams, setStateParams] = useState(defaultParams);
@@ -93,6 +89,13 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 
 	const initialParamsRef = useRef(normalizedInitialParams);
 	initialParamsRef.current = normalizedInitialParams;
+
+	// TODO: Unify initialLimit and initialParams. This is a weird design; initialLimit is obsoleted by the introduction of initialParams
+	useEffect(() => {
+		if (initialLimit && initialParams) {
+			console.warn('DataTable2: initialLimit and initialParams cannot be used together. initialParams will be ignored.');
+		}
+	}, []);
 
 	/*
 		Resets filters, sorting and search back to the latest `initialParams` defaults
