@@ -10,8 +10,8 @@ const TOP_LEVEL_KEY_ALIASES = {
 };
 
 /*
-	Sort direction aliases. Only the `s`/`sort` object values are mapped through this.
-	Anything not listed here (e.g. field names like `type`, `_c`) is passed through untouched.
+	Supported sort directions and their internal values.
+	Both user-friendly (`asc` / `desc`) and internal (`a` / `d`) values are accepted.
 */
 const SORT_DIRECTION_ALIASES = {
 	asc: 'a',
@@ -33,12 +33,12 @@ const SORT_DIRECTION_ALIASES = {
 	Base keys (a, s, f) are also supported.
 
 	Rules:
-		- filters / a must be an object, and each filter value must be an array.
-		- sort / s must be an object, and each direction must be 'asc', 'desc', 'a', or 'd'.
+		- filters / a must be an object, and only fields with array values are kept.
+		- sort / s must be an object, and only fields with supported sort directions are kept.
 		- 'asc' and 'desc' are converted to 'a' and 'd'.
 		- search / f must be a string.
-		- Invalid values are ignored.
-		- Unknown top-level keys are ignored.
+		- Invalid values inside filters and sort are dropped.
+		- Unknown top-level keys are preserved unchanged.
 		- User-friendly aliases take precedence over base keys.
 */
 export const normalizeInitialParams = (params) => {
@@ -47,7 +47,7 @@ export const normalizeInitialParams = (params) => {
 		return {};
 	}
 
-	// Copy all parameters so unknown keys are preserved unchanged.
+	// Normalize only known parameters and preserve all other top-level keys unchanged
 	const normalized = { ...params };
 
 	// Normalize top-level aliases and remove their original names
@@ -70,11 +70,11 @@ export const normalizeInitialParams = (params) => {
 	if (normalized.s && (typeof normalized.s === 'object') && !Array.isArray(normalized.s)) {
 		normalized.s = Object.fromEntries(
 			Object.entries(normalized.s)
-				.filter(([, direction]) => SORT_DIRECTION_ALIASES[direction] !== undefined)
 				.map(([field, direction]) => [
 					field,
-					SORT_DIRECTION_ALIASES[direction],
-				]),
+					SORT_DIRECTION_ALIASES[direction] ?? direction,
+				])
+				.filter(([, direction]) => direction === 'a' || direction === 'd'),
 		);
 	}
 
