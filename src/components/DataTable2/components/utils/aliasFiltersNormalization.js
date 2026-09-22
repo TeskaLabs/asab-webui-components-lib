@@ -16,8 +16,6 @@ const TOP_LEVEL_KEY_ALIASES = {
 const SORT_DIRECTION_ALIASES = {
 	asc: 'a',
 	desc: 'd',
-	a: 'a',
-	d: 'd',
 };
 
 /*
