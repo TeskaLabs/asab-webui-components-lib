@@ -358,10 +358,11 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit }) => 
 
 	// Inner method to update search params
 	const _updateSearchParams = (searchParams, params) => {
+		const updatedParams = new URLSearchParams(searchParams);
 		Object.entries(params).forEach(([key, value]) => {
-			searchParams.set(key, value);
+			updatedParams.set(key, value);
 		});
-		return searchParams;
+		return updatedParams;
 	};
 
 	// Method to parse the given parameter into an integer with the specified base. The default base is 10
