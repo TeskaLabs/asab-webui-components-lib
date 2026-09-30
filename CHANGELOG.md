@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.8.1
+
+- Fix DataTable2 filter input cursor jumping always to the end of the text (#92)
+
 ## 27.8.0
 
 - Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
