@@ -399,7 +399,12 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 function DataTableBadge({ item, value, isLoading, onRemove }) {
 	const { getFilterFieldLabel, getNormalizedFieldItems, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
-	const fieldKey = item.substring(1);
+	let fieldKey;
+	if (item.startsWith('r')) {
+		fieldKey = item;
+	} else {
+		fieldKey = item.substring(1);
+	}
 
 	// Get custom pill
 	const CustomBadge = getCustomPill(fieldKey);
