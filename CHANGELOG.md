@@ -1,5 +1,10 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 27.8.1
+
+- Make spinner consistent while in re-renders (#94)
+- Fix DateTime issue with react hooks (#94)
+
 ## 27.8.0
 
 - Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
