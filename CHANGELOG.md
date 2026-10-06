@@ -3,6 +3,7 @@
 ## 27.8.1
 
 - Make spinner consistent while in re-renders (#94)
+- Fix DateTime issue with react hooks (#94)
 
 ## 27.8.0
 
