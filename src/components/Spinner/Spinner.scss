@@ -80,6 +80,16 @@
 		border-left-color: transparent;
 		border-right-color: transparent;
 	}
+
+	// Reduce motion for accessibility
+	@media (prefers-reduced-motion: reduce) {
+		.asab-spinner-container,
+		.asab-spinner-layer,
+		.asab-spinner-clipper-left .asab-spinner-circle,
+		.asab-spinner-clipper-right .asab-spinner-circle {
+			animation: none;
+		}
+	}
 }
 
 @keyframes asab-spinner-container-rotate {
