@@ -3,12 +3,7 @@ import React, { useEffect } from 'react';
 import { useDataTableContext } from '../../DataTableContext.jsx';
 
 // Registers a custom pill for every field/mode combination.
-export function DataTableAdvCustomRangeFilter({
-												  fields,
-												  modes,
-												  content,
-												  customPill,
-											  }) {
+export function DataTableAdvCustomRangeFilter({ fields, modes, content, customPill }) {
 	const { setCustomPill } = useDataTableContext();
 
 	useEffect(() => {
