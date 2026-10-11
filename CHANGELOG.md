@@ -1,8 +1,13 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 27.8.1
+## 27.8.2
 
 - Fix DataTable2 filter input cursor jumping always to the end of the text (#92)
+
+## 27.8.1
+
+- Make spinner consistent while in re-renders (#94)
+- Fix DateTime issue with react hooks (#94)
 
 ## 27.8.0
 
