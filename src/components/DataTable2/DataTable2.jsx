@@ -346,7 +346,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 function DataTableCardPill2({ isLoading, rowHeight }) {
 	const { getParam, watchParams, getAllParams, removeMultiPill, removeSinglePill } = useDataTableContext();
 	const displayPillArea = useMemo(() => {
-		if (getAllParams() && Object.keys(getAllParams()).some(key => key.startsWith('a'))) {
+		if (getAllParams() && Object.keys(getAllParams()).some(key => key.startsWith('a') || key.startsWith('r'))) {
 			return true;
 		} else {
 			return false;
@@ -357,7 +357,7 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 		displayPillArea &&
 		<div className='datatable-cardpill-area' style={{minHeight: rowHeight}}>
 			{Object.keys(getAllParams()).map((key) => {
-				if (key.startsWith('a')) {
+				if (key.startsWith('a') || key.startsWith('r')) {
 					const value = getParam(key, {splitBy: ','});
 					return (
 						(value.length > 1) ?
@@ -399,7 +399,12 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 function DataTableBadge({ item, value, isLoading, onRemove }) {
 	const { getFilterFieldLabel, getNormalizedFieldItems, getCustomPill } = useDataTableContext();
 	const { t } = useTranslation();
-	const fieldKey = item.substring(1);
+	let fieldKey;
+	if (item.startsWith('r')) {
+		fieldKey = item;
+	} else {
+		fieldKey = item.substring(1);
+	}
 
 	// Get custom pill
 	const CustomBadge = getCustomPill(fieldKey);
