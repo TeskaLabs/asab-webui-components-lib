@@ -69,3 +69,29 @@ timeToString('2025-01-02T03:04:05.123456Z', 'long', false, cs);
   - dateTimeFormat (undefined|'medium'|'long'|'iso'|'\<any date-fns supported format\>') - format of the datetime, default is `undefined`
   - addSuffix (undefined|true|false) - display the suffix, default is `false`
   - locale (undefined|'date-fns/locale') - locale to translation, default is `undefined`
+
+# DateTimeDuration
+
+- display a duration (delta time in seconds) in a human readable form, e.g. `1 h 10 m 5 s`
+- the raw value (in seconds) is shown on hover
+- vanilla JS only (no date-fns)
+
+## DateTimeDuration
+
+```
+<DateTimeDuration value={3600} />;
+<DateTimeDuration value={4215} />;
+```
+
+`props`
+  - value ('number') - duration in seconds, mandatory parameter
+
+## timeToStringDuration
+
+```
+timeToStringDuration(3600);
+timeToStringDuration(4215);
+```
+
+`props`
+  - value ('number') - duration in seconds, mandatory parameter
