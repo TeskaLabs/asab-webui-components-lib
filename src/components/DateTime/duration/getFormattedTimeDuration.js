@@ -1,6 +1,6 @@
 /*
 	Formats a duration (delta time in seconds) into a human readable form,
-	e.g. "1 h 10 m 5 s".
+	e.g. "1h 10m 5s".
 */
 export const getFormattedTimeDuration = (value) => {
 	if ((typeof value !== 'number') || isNaN(value)) {
@@ -20,17 +20,17 @@ export const getFormattedTimeDuration = (value) => {
 	// Collect non-zero units, keeping the order from the largest to the smallest
 	const parts = [];
 	if (days > 0) {
-		parts.push(`${days} d`);
+		parts.push(`${days}d`);
 	}
 	if (hours > 0) {
-		parts.push(`${hours} h`);
+		parts.push(`${hours}h`);
 	}
 	if (minutes > 0) {
-		parts.push(`${minutes} m`);
+		parts.push(`${minutes}m`);
 	}
-	// Seconds are shown also on zero, so that e.g. 0 is displayed as "0 s"
+	// Seconds are shown also on zero, so that e.g. 0 is displayed as "0s"
 	if ((seconds > 0) || (parts.length === 0)) {
-		parts.push(`${formatSeconds(seconds)} s`);
+		parts.push(`${formatSeconds(seconds)}s`);
 	}
 
 	return { duration: `${sign}${parts.join(' ')}`, value };
