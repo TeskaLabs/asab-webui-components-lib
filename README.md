@@ -60,13 +60,14 @@ module.exports = {
   plugins: [
     new MonacoWebpackPlugin({
       // list only the languages your app uses; keeping this list small reduces bundle size
-      languages: ['json', 'javascript', 'typescript', 'css', 'html'],
+      // note: `typescript` pulls in the multi‑MB `ts.worker.js` (also used for JavaScript IntelliSense)
+      languages: ['json', 'javascript', 'html', 'yaml', 'xml', 'markdown'],
     }),
   ],
 };
 ```
 
-The plugin emits these worker files next to your `remoteEntry.js` / `main.js`:
+The plugin emits these worker files next to your `remoteEntry.js` / `main.js` (only for languages you listed that need a worker):
 
 | File | Language(s) |
 |---|---|
@@ -74,9 +75,27 @@ The plugin emits these worker files next to your `remoteEntry.js` / `main.js`:
 | `json.worker.js` | JSON |
 | `css.worker.js` | CSS, SCSS, Less |
 | `html.worker.js` | HTML, Handlebars, Razor |
-| `ts.worker.js` | TypeScript, JavaScript |
+| `ts.worker.js` | TypeScript, JavaScript (language service) |
 
-`asab_webui_components/monaco/setup` expects these exact filenames at your build's `output.publicPath`.
+`javascript` in `languages` alone registers syntax highlighting and does **not** emit `ts.worker.js`. Only including `typescript` does.
+
+`asab_webui_components/monaco/setup` maps known labels to these filenames at your build's `output.publicPath`; unmapped labels fall back to `editor.worker.js`.
+
+#### 1b. Tree-shaking with Monaco ≥ 0.57
+
+From Monaco 0.57, `import 'monaco-editor'` resolves to `esm/vs/index.js`, which side-effect-imports **all** languages (including TypeScript). That bypasses `MonacoWebpackPlugin({ languages })` and can pull in a multi‑MB `ts.worker` chunk even when `typescript` is not in your list.
+
+The plugin only rewrites `editor.api` / `editor.main`. Point the package root at the exported editor API entry so filtering works:
+
+```js
+// webpack.common.js — resolve.alias
+{
+  // exported subpath → esm/vs/editor/editor.api.js (do not use monaco-editor/esm/vs/... under 0.57 package exports)
+  'monaco-editor$': 'monaco-editor/editor/editor.api',
+}
+```
+
+Keep this alias in every federated app that depends on `monaco-editor` (including builds that only pull Monaco via `asab_webui_components/monaco/setup`, which imports `monaco-editor`).
 
 #### 2. Import the environment setup before using Monaco
 
