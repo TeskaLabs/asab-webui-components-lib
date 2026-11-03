@@ -40,7 +40,7 @@ Possible imports:
 - itemExtensionHandler
 - removeFileExtension
 - deepMerge
-- problemMarkers
+- Monaco helpers via optional entries (requires `monaco-editor` peer): import `asab_webui_components/monaco/setup` for MF workers, then `{ problemMarkers }` from `asab_webui_components/monaco`
 - setBacklink, setBacklinkFromLocation, getBacklink, getBacklinkData, clearBacklink, consumeBacklink, consumeBacklinkData, createBacklinkHandlers
 - AppStoreProvider, useAppStore, useAppSelector, createAppStore, registerReducer
 

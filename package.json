@@ -21,7 +21,9 @@
 	"main": "dist/index.js",
 	"exports": {
 		".": "./dist/index.js",
-		"./seacat-auth": "./dist/seacat-auth/index.js"
+		"./seacat-auth": "./dist/seacat-auth/index.js",
+		"./monaco": "./dist/monaco/index.js",
+		"./monaco/setup": "./dist/monaco/setup.js"
 	},
 	"files": [
 		"dist"
@@ -50,6 +52,7 @@
 		"bootstrap-icons": "^1.10.5",
 		"date-fns": "^4.1.0",
 		"i18next": "^26.5.0",
+		"monaco-editor": "^0.57.0",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
 		"react-i18next": "^17.1.0",
@@ -57,5 +60,10 @@
 		"@json-edit-react/themes": "^1.0.0",
 		"react-router": "^8.5.0",
 		"reactstrap": "^9.2.0"
+	},
+	"peerDependenciesMeta": {
+		"monaco-editor": {
+			"optional": true
+		}
 	}
 }
