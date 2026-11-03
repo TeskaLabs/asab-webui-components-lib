@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { JsonEditor, JsonViewer } from 'json-edit-react';
 import { githubDarkTheme, githubLightTheme } from '@json-edit-react/themes';
@@ -68,6 +68,48 @@ const mapCustomNodeDefinitions = (definitions) => {
 	});
 };
 
+// Recursively converts BigInt values to strings for display (json-edit-react cannot render BigInt).
+const convertBigIntToString = (data) => {
+	if (typeof data === 'bigint') {
+		return data.toString();
+	} else if (Array.isArray(data)) {
+		return data.map(item => convertBigIntToString(item));
+	} else if (typeof data === 'object' && data !== null) {
+		return Object.fromEntries(
+			Object.entries(data).map(([key, value]) => [key, convertBigIntToString(value)])
+		);
+	}
+	return data;
+};
+
+/*
+	Restore BigInt values in `updated` by comparing against `original`.
+	When the original was a BigInt and the updated value is its string
+	representation, the BigInt is put back. All other values are kept as-is.
+	This keeps the caller's data intact after an edit round-trip.
+*/
+const restoreBigInts = (original, updated) => {
+	if (typeof original === 'bigint' && typeof updated === 'string' && updated === original.toString()) {
+		return original;
+	}
+	if (Array.isArray(original) && Array.isArray(updated)) {
+		return updated.map((item, i) => restoreBigInts(original[i], item));
+	}
+	if (typeof original === 'object' && original !== null && typeof updated === 'object' && updated !== null) {
+		return Object.fromEntries(
+			Object.entries(updated).map(([key, value]) => [key, restoreBigInts(original[key], value)])
+		);
+	}
+	return updated;
+};
+
+const hasBigInt = (data) => {
+	if (typeof data === 'bigint') return true;
+	if (Array.isArray(data)) return data.some(hasBigInt);
+	if (typeof data === 'object' && data !== null) return Object.values(data).some(hasBigInt);
+	return false;
+};
+
 // Component wraps JsonEditor/JsonViewer to handle BigInt numbers and turn them into strings
 export const AsabReactJson = ({
 	src,
@@ -87,6 +129,9 @@ export const AsabReactJson = ({
 	indent,
 	indentWidth,
 	style,
+	allowEdit: callerAllowEdit,
+	allowAdd: callerAllowAdd,
+	allowDelete: callerAllowDelete,
 	// Legacy react-json-view leftovers (ignored by json-edit-react)
 	name: _name,
 	displayArrayKey: _displayArrayKey,
@@ -95,19 +140,22 @@ export const AsabReactJson = ({
 }) => {
 	const theme = useAppSelector(state => state.theme);
 
-	// The function looks through the received data and if there is a BigInt there, it transforms it into a string
-	const convertBigIntToString = (data) => {
-		if (typeof data === 'bigint') {
-			return data.toString();
-		} else if (Array.isArray(data)) {
-			return data.map(item => convertBigIntToString(item)); // Recursion for array
-		} else if ((typeof data === 'object') && (data !== null)) {
-			return Object.fromEntries(
-				Object.entries(data).map(([key, value]) => [key, convertBigIntToString(value)]) // Recursion for an object
-			);
-		}
-		return data;
-	};
+	/*
+		convertBigIntToString is applied to `data` so json-edit-react can render
+		BigInt values (it cannot handle them natively). In edit mode the editor
+		passes the converted document back via setData, which would silently turn
+		BigInts into strings. wrappedSetData restores the original BigInt values
+		before forwarding to the caller.
+	*/
+	const srcHasBigInt = useMemo(() => hasBigInt(src), [src]);
+
+	const wrappedSetData = useCallback(
+		(newData) => {
+			if (typeof setData !== 'function') return;
+			setData(srcHasBigInt ? restoreBigInts(src, newData) : newData);
+		},
+		[setData, src, srcHasBigInt]
+	);
 
 	const resolvedCustomNodeDefinitions = useMemo(() => {
 		if (customNodeDefinitions) {
@@ -116,6 +164,14 @@ export const AsabReactJson = ({
 		return displayDataTypes ? [displayDataTypeDefinition] : undefined;
 	}, [customNodeDefinitions, displayDataTypes]);
 
+	const resolvedShowClipboardButton = showClipboardButton
+		?? (typeof enableClipboard === 'function' ? true : enableClipboard)
+		?? true;
+
+	const resolvedOnCopy = typeof enableClipboard === 'function'
+		? ({ key, path, value, type }) => enableClipboard({ src: value, name: key, namespace: path, type })
+		: undefined;
+
 	const commonProps = {
 		data: convertBigIntToString(src),
 		customNodeDefinitions: resolvedCustomNodeDefinitions,
@@ -123,7 +179,8 @@ export const AsabReactJson = ({
 		// Preserve v1 fully-expanded default unless callers override
 		collapse: collapse ?? collapsed ?? false,
 		baseFontSize: baseFontSize ?? rootFontSize,
-		showClipboardButton: showClipboardButton ?? enableClipboard ?? true,
+		showClipboardButton: resolvedShowClipboardButton,
+		...(resolvedOnCopy ? { onCopy: resolvedOnCopy } : {}),
 		showArrayIndexes: showArrayIndexes ?? showArrayIndices,
 		indent: indent ?? indentWidth,
 		theme: [
@@ -156,10 +213,10 @@ export const AsabReactJson = ({
 	return (
 		<JsonEditor
 			{...commonProps}
-			setData={setData}
-			allowEdit={!viewOnly}
-			allowAdd={!viewOnly}
-			allowDelete={!viewOnly}
+			setData={wrappedSetData}
+			allowEdit={callerAllowEdit ?? !viewOnly}
+			allowAdd={callerAllowAdd ?? !viewOnly}
+			allowDelete={callerAllowDelete ?? !viewOnly}
 		/>
 	);
 };
