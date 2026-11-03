@@ -44,9 +44,10 @@ const workerFiles = {
 
 // Base URL of this remote's build output (worker files are emitted next to remoteEntry.js).
 // __webpack_public_path__ is replaced by webpack with the runtime public path of this build.
-const baseUrl
-	= (typeof __webpack_public_path__ === 'string' && __webpack_public_path__)
-	|| document.baseURI;
+const baseUrl = new URL(
+	(typeof __webpack_public_path__ === 'string' && __webpack_public_path__) || '',
+	document.baseURI
+).href;
 
 export function setupMonacoEnvironment() {
 	self.MonacoEnvironment = {
