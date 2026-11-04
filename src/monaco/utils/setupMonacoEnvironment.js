@@ -2,26 +2,21 @@
 	Fix for broken Monaco Editor web workers in the microfrontend (Module Federation) setup.
 
 	Root cause:
-	- `monaco-editor` is shared as a singleton, so the single Monaco instance (including the
-	  `MonacoEnvironment` injected by monaco-editor-webpack-plugin) may be provided by *another*
-	  remote (e.g. lmio_alert_management_webui). Its `getWorkerUrl()` then builds worker URLs
-	  against *that* remote's webpack publicPath, i.e. a different origin than the shell app.
-	- For cross-origin worker URLs monaco-editor-webpack-plugin bootstraps the worker via a Blob
-	  containing `import "<url>"` (ESM syntax), but Monaco spawns a *classic* worker from it.
-	  Classic workers cannot execute `import` -> "Uncaught SyntaxError: Cannot use import
-	  statement outside a module", the worker dies and every language feature fails with
-	  "Error: Unexpected usage" (loadForeignModule).
+	- Monaco (and its workers) are served from a *remote* `publicPath` / origin, while the shell
+	  app runs on another origin. monaco-editor-webpack-plugin's default `getWorkerUrl` may
+	  bootstrap cross-origin workers via a Blob with ESM `import "…"`, but Monaco spawns a
+	  *classic* worker - classic workers cannot `import` → worker dies ("Unexpected usage").
 
 	Fix:
 	- Define our own `MonacoEnvironment.getWorker` (Monaco prefers it over `getWorkerUrl`).
-	  Cross-origin workers are bootstrapped via a Blob with `importScripts()`, which - unlike
-	  ESM `import` - is allowed to load cross-origin classic scripts.
+	  Cross-origin workers use a Blob with `importScripts()`, which is allowed for classic workers.
 
-	NOTE: `import 'monaco-editor'` below is intentional. monaco-editor-webpack-plugin assigns
-	its (broken) `MonacoEnvironment` when the monaco module is evaluated, so this module must
-	be evaluated *after* monaco to win. Importing monaco here guarantees the order no matter
-	where this module is imported from. Prefer `import 'asab_webui_components/monaco/setup'`
-	from a lazily-loaded screen to avoid loading monaco on app start.
+	NOTE: Do not MF-share `monaco-editor` as a singleton across remotes (each remote should own
+	its Monaco + trimmed languages[]). This setup still applies per remote for worker URLs.
+
+	NOTE: `import 'monaco-editor'` below is intentional. The plugin assigns `MonacoEnvironment`
+	when monaco is evaluated; this module must run *after* that so our getWorker wins.
+	Prefer `import 'asab_webui_components/monaco/setup'` from a lazily-loaded screen.
 */
 
 import 'monaco-editor';

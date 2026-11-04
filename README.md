@@ -59,9 +59,9 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 module.exports = {
   plugins: [
     new MonacoWebpackPlugin({
-      // list only the languages your app uses; keeping this list small reduces bundle size
-      // note: `typescript` pulls in the multi‑MB `ts.worker.js` (also used for JavaScript IntelliSense)
-      languages: ['json', 'javascript', 'html', 'yaml', 'xml', 'markdown'],
+      // List only languages this remote's editors use (keeps workers small).
+      // Do not put `typescript` / `css` here unless you accept their large workers.
+      languages: ['yaml'], // example - match this app's editors
     }),
   ],
 };
@@ -106,15 +106,10 @@ import 'asab_webui_components/monaco/setup';
 
 Importing from the lazy entry keeps Monaco out of the initial bundle.
 
-#### 3. Module Federation: shared singleton
+#### 3. Module Federation: do **not** share `monaco-editor`
 
-Mark `monaco-editor` as a shared singleton so all remotes share one instance:
+Do **not** put `monaco-editor` in Module Federation `shared` (especially not as a singleton).
+If remotes share one Monaco instance, only the first remote’s `languages[]` / workers apply - other remotes lose highlighting or pick up the wrong worker URLs.
 
-```js
-// webpack.common.js  — ModuleFederationPlugin shared section
-shared: {
-  'monaco-editor': { singleton: true, requiredVersion: packageJson.dependencies['monaco-editor'] },
-}
-```
-
-The `monaco/setup` entry handles the cross-origin worker bootstrapping that is required when the singleton is served from a different remote origin than the shell app.
+Each Monaco remote should bundle its own Monaco with its own trimmed `languages[]`.
+`import 'asab_webui_components/monaco/setup'` still configures workers for cross-origin remote `publicPath` vs the shell origin.
