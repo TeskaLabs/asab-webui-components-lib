@@ -57,7 +57,7 @@ export function setupMonacoEnvironment() {
 
 			// Cross origin (shell app + remotes on different ports/origins):
 			// bootstrap via a Blob with importScripts, allowed for cross-origin classic scripts
-			const blob = new Blob([`importScripts("${workerUrl}");`], { type: 'application/javascript' });
+			const blob = new Blob([`importScripts(${JSON.stringify(workerUrl)});`], { type: 'application/javascript' });
 			return new Worker(URL.createObjectURL(blob));
 		},
 	};
