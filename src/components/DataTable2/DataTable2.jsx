@@ -174,13 +174,9 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	const calculateAndSetColumnWidths = () => {
 		if (cardRef.current != null) {
 			const columns = cardRef.current.querySelectorAll('th');
-			const newWidth = {};
+
 			columns.forEach(column => {
-				const { id, offsetWidth } = column;
-				newWidth[id] = offsetWidth;
-				if (newWidth.hasOwnProperty(id)) {
-					column.style.width = `${newWidth[id]}px`;
-				}
+				column.style.width = `${column.offsetWidth}px`;
 			});
 		}
 	};
@@ -194,10 +190,10 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 				<DataTableCardPill2 isLoading={isLoading} rowHeight={rowHeight}/>
 				{isLoading
 					? <DataTable2
+						loading
 						columns={columns}
 						rows={Array(getParam('i') ? getParam('i') : 10).fill({})} // Simulate rows
 						limit={getParam('i')}
-						loading
 						rowHeight={rowHeight}
 						rowStyle={rowStyle}
 					/>
@@ -223,8 +219,8 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	);
 }
 
-export function DataTableCardFooter2({page, limit, count, rows, isLoading, limitValues = DEFAULT_LIMIT_VALUES}) {
-	const { getParam, setParams } = useDataTableContext();
+export function DataTableCardFooter2({ page, limit, count, rows, isLoading, limitValues = DEFAULT_LIMIT_VALUES }) {
+	const { setParams } = useDataTableContext();
 	const { t } = useTranslation();
 	const [ isLimitDropDownOpen, setLimitDropDownOpen ] = useState(false);
 
@@ -276,11 +272,9 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 					{!isNaN(limit) ? limit : 0}
 				</DropdownToggle>
 				<DropdownMenu>
-				{
-					limitValues.map((value, idx) => <DropdownItem onClick={() => {
-						setLimitValue(value)
-					}} key={idx}>{value}</DropdownItem>)
-				}
+					{
+						limitValues.map((value, idx) => <DropdownItem onClick={() => setLimitValue(value)} key={idx}>{value}</DropdownItem>)
+					}
 				</DropdownMenu>
 			</Dropdown>
 			<button disabled={isLoading} type='button' className='btn btn-outline-secondary' onClick={prevPage}>
@@ -294,12 +288,12 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 }
 
 
-export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle}) {
+export function DataTable2({ columns, rows, limit, loading, rowHeight, rowStyle }) {
 	return (
 		<Table className='datatable2 placeholder-glow'>
 			<colgroup>
 				{columns.map((column, idx) => (
-					<col key={idx} style={column?.colStyle}/>
+					<col key={idx} style={column?.colStyle} />
 				))}
 			</colgroup>
 
@@ -323,13 +317,13 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 			<tbody>
 				{rows.map((row, ridx) => (
 					<tr key={ridx} style={{ ...rowStyle ? rowStyle(row) : {}, height: rowHeight }}>
-						{ loading
+						{loading
 						? <td colSpan={columns.length}>
 							<span className='placeholder w-100 bg-secondary'></span>
 						</td>
 						: columns.map((column, cidx) =>
 							<td key={cidx} style={column?.tdStyle}>
-								{ (column?.render != undefined)
+								{(column?.render != undefined)
 								? column.render({row, column, ridx})
 								: <span className='placeholder w-100 bg-secondary' title='Missing render method'></span>
 								}
@@ -341,7 +335,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 
 			{(limit - rows.length > 0) && <tfoot /* This is rendering of the empty rows to make height of table fixed */>
 				{Array(limit - rows.length).fill(0).map((_, ridx) => (
-					<tr key={'e'+ridx} style={{height: rowHeight}}>
+					<tr key={'e'+ridx} style={{ height: rowHeight }}>
 						<td colSpan={columns.length}>&nbsp;</td>
 					</tr>
 				))}
@@ -354,17 +348,16 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 // Renders filter pills based on data table filter params
 function DataTableCardPill2({ isLoading, rowHeight }) {
 	const { getParam, watchParams, getAllParams, removeMultiPill, removeSinglePill } = useDataTableContext();
+
 	const displayPillArea = useMemo(() => {
-		if (getAllParams() && Object.keys(getAllParams()).some(key => key.startsWith('a'))) {
-			return true;
-		} else {
-			return false;
-		}
+		const params = getAllParams();
+
+		return Boolean(params && Object.keys(params).some(key => key.startsWith('a')));
 	}, [watchParams]);
 
 	return(
 		displayPillArea &&
-		<div className='datatable-cardpill-area' style={{minHeight: rowHeight}}>
+		<div className='datatable-cardpill-area' style={{ minHeight: rowHeight }}>
 			{Object.keys(getAllParams()).map((key) => {
 				if (key.startsWith('a')) {
 					const value = getParam(key, {splitBy: ','});
