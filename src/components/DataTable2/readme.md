@@ -84,13 +84,11 @@ To set custom row limits per page, `limitValues={number[]}` should be set. Defau
 
 ## Initial params
 
-`initialParams` sets the default filters, sorting and search that are applied to the table before the user interacts with it.
-Defaults are applied only when there are no user-defined params yet (first mount) and are also reused by the reset action (see below).
+`initialParams` defines default filters, sorting, search and the initial number of rows per page.
 
-The prop accepts **either** the user-friendly shape **or** the internal base
-shape — both are equivalent and can even be mixed:
+Defaults are applied during the table's initialization, only when the corresponding conditions are met.
 
-**User-friendly form** (recommended):
+### User-friendly form (recommended)
 
 ```
 <DataTableCard2
@@ -99,14 +97,21 @@ shape — both are equivalent and can even be mixed:
 	loader={loader}
 	header={<Header />}
 	initialParams={{
-		filters: { status: ["open", "triaged"] },
-		sort: { type: "desc", _c: "asc" },
-		search: "hello",
+		filters: {
+			status: ['open', 'triaged'],
+			type: ['host'],
+		},
+		sort: {
+			type: 'desc',
+			_c: 'asc',
+		},
+		search: 'hello',
+		limit: 1000,
 	}}
 />
 ```
 
-**Base form** (same result, uses internal keys):
+### Base form
 
 ```
 <DataTableCard2
@@ -115,27 +120,50 @@ shape — both are equivalent and can even be mixed:
 	loader={loader}
 	header={<Header />}
 	initialParams={{
-		a: { status: ["open", "triaged"] },
-		s: { type: "d", _c: "a" },
-		f: "hello",
+		a: {
+			status: ['open', 'triaged'],
+			type: ['host'],
+		},
+		s: {
+			type: 'desc',
+			_c: 'asc',
+		},
+		f: 'hello',
+		i: 1000,
 	}}
 />
 ```
 
+### Aliases
 
-**Aliases**
+| User-friendly name | Base name | Description |
+| --- | --- | --- |
+| `filters` | `a` | Default filters |
+| `sort` | `s` | Default sorting |
+| `search` | `f` | Default search string |
+| `limit` | `i` | Initial number of rows per page |
 
-| User-friendly key | Base key | Notes                                              |
-|-------------------|----------|----------------------------------------------------|
-| `filters`         | `a`      | Value is an object `{ field: value | value[] }`.   |
-| `sort`            | `s`      | Value is an object `{ field: "asc" | "desc" }`.    |
-| `search`          | `f`      | Value is a string.                                 |
+Both forms can be mixed. If both an alias and its base name are provided, the base name takes precedence.
 
-Sort direction values are also aliased: `"asc" → "a"` and `"desc" → "d"`.
-Field names inside `filters` and `sort` are never modified - they are
-application-specific.
+`limit` must be a positive integer number. String values, zero, negative numbers and decimal values are ignored.
 
-**Note:** `initialParams` works with both `disableParams={false}` (URL mode) and `disableParams={true}` (state mode). Internally the same defaults are written either to the URL or to the component's inner state.
+### When are defaults applied?
+
+**Filters, sorting and search**
+
+Defaults are applied only if the URL (or current table state) does not already contain user-defined parameters: filters (`a`), sorting (`s`), search (`f`) or a page number greater than `1` (`p`).
+
+If any of these parameters exist, all defaults for filters, sorting and search are skipped. Existing parameters are preserved and are not merged with `initialParams`.
+
+**Limit**
+
+The initial limit follows separate rules:
+
+1. If a valid `i` already exists in the URL or current table state, it is preserved.
+2. Otherwise, `initialParams.i` (or `initialParams.limit`) is used, if it is a valid positive integer.
+3. If no valid initial limit is provided, the limit is calculated automatically based on the available container height and row height.
+
+When custom filter pills are displayed, the automatically calculated limit is reduced by one to account for the additional space they occupy.
 
 ## Reset filters
 
