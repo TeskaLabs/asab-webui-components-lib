@@ -6,17 +6,16 @@
 	Example of usage
 
 	```
-		import * as monaco from 'monaco-editor'; // Import monaco
+		import * as monaco from 'monaco-editor';
+		import 'asab_webui_components/monaco/setup';
+		import { problemMarkers } from 'asab_webui_components/monaco';
 		...
 
-		const model = editorRef.current.getModel(); // Set model (this is just an example)
+		const model = editorRef.current.getModel();
 		...
 
-		// Use setProblemMarkers as a method wherever needed to set a problem markers
 		const setProblemMarkers = (problems, model) => {
-			// Use problemMarkers util from asab webui components to get the monaco markers
-			const markers = problemMarkers({problems, model});
-
+			const markers = problemMarkers({ problems, model });
 			monaco.editor.setModelMarkers(model, 'owner', markers);
 		};
 		...
