@@ -113,3 +113,5 @@ If remotes share one Monaco instance, only the first remote’s `languages[]` / 
 
 Each Monaco remote should bundle its own Monaco with its own trimmed `languages[]`.
 `import 'asab_webui_components/monaco/setup'` still configures workers for cross-origin remote `publicPath` vs the shell origin.
+
+`MonacoEnvironment` is page-global. Because Monaco is not MF-shared, setup wraps that remote’s `monaco.editor.create` / `createDiffEditor` / `createModel` to rebind `getWorker` to this remote’s `publicPath` right before create — so remounting an editor (e.g. alerts) does not keep using another remote’s worker URLs. Two remotes with live editors at once can still race on a late worker spawn.

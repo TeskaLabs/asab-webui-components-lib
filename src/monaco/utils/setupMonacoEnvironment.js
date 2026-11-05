@@ -11,15 +11,23 @@
 	- Define our own `MonacoEnvironment.getWorker` (Monaco prefers it over `getWorkerUrl`).
 	  Cross-origin workers use a Blob with `importScripts()`, which is allowed for classic workers.
 
+	Multi-remote note:
+	- `self.MonacoEnvironment` is page-global. Monaco is not MF-shared, so each remote has its
+	  own `monaco` module. Setup rebinds getWorker to this remote's publicPath, and wraps
+	  this remote's editor factories to rebind again right before create/createModel — so a
+	  remount (e.g. alerts) does not keep using another remote's worker base URL.
+	- Residual: two remotes with live editors at once can still race on a late worker spawn;
+	  normal navigation is one active Monaco remote at a time.
+
 	NOTE: Do not MF-share `monaco-editor` as a singleton across remotes (each remote should own
 	its Monaco + trimmed languages[]). This setup still applies per remote for worker URLs.
 
-	NOTE: `import 'monaco-editor'` below is intentional. The plugin assigns `MonacoEnvironment`
+	NOTE: `import * as monaco` below is intentional. The plugin assigns `MonacoEnvironment`
 	when monaco is evaluated; this module must run *after* that so our getWorker wins.
 	Prefer `import 'asab_webui_components/monaco/setup'` from a lazily-loaded screen.
 */
 
-import 'monaco-editor';
+import * as monaco from 'monaco-editor';
 
 /* global __webpack_public_path__ */
 
@@ -44,7 +52,10 @@ const baseUrl = new URL(
 	document.baseURI
 ).href;
 
-export function setupMonacoEnvironment() {
+// One wrap per module instance (avoids nested wrappers if setup runs again).
+let didWrapEditorApis = false;
+
+function applyEnv() {
 	self.MonacoEnvironment = {
 		getWorker(moduleId, label) {
 			const fileName = workerFiles[label] || workerFiles.editorWorkerService;
@@ -57,8 +68,35 @@ export function setupMonacoEnvironment() {
 
 			// Cross origin (shell app + remotes on different ports/origins):
 			// bootstrap via a Blob with importScripts, allowed for cross-origin classic scripts
-			const blob = new Blob([`importScripts(${JSON.stringify(workerUrl)});`], { type: 'application/javascript' });
+			const blob = new Blob(
+				[`importScripts(${JSON.stringify(workerUrl)});`],
+				{ type: 'application/javascript' }
+			);
 			return new Worker(URL.createObjectURL(blob));
 		},
 	};
+}
+
+function wrapEditorApis() {
+	if (didWrapEditorApis) {
+		return;
+	}
+	didWrapEditorApis = true;
+
+	for (const name of ['create', 'createDiffEditor', 'createModel']) {
+		const original = monaco.editor[name];
+		if (typeof original !== 'function') {
+			continue;
+		}
+		monaco.editor[name] = function (...args) {
+			applyEnv();
+			return original.apply(this, args);
+		};
+	}
+}
+
+export function setupMonacoEnvironment() {
+	applyEnv();
+	// Rebind before this remote creates editors/models (covers alerts dispose → remount).
+	wrapEditorApis();
 }
