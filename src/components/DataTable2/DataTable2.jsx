@@ -358,35 +358,38 @@ function DataTableCardPill2({ isLoading, rowHeight }) {
 		<div className='datatable-cardpill-area' style={{minHeight: rowHeight}}>
 			{Object.keys(getAllParams()).map((key) => {
 				if (key.startsWith('a') || key.startsWith('r')) {
-					const value = getParam(key, {splitBy: ','});
+					const value = key.startsWith('r')
+						? getParam(key)
+						: getParam(key, { splitBy: ',' });
+
 					return (
-						(value.length > 1) ?
+						(Array.isArray(value) ? value.length > 1 : false) ?
 							value.map(val => (
 								<span
 									key={`${key}${val}`}
 									className='datatable-cardpill mx-1'
 								>
-									<DataTableBadge
-										item={key}
-										value={val}
-										isLoading={isLoading}
-										onRemove={() => removeMultiPill(key, val)}
-									/>
-								</span>
+				<DataTableBadge
+					item={key}
+					value={val}
+					isLoading={isLoading}
+					onRemove={() => removeMultiPill(key, val)}
+				/>
+			</span>
 							))
-						:
+							:
 							<span
 								key={`${key}${value}`}
 								className='datatable-cardpill mx-1'
 							>
-								<DataTableBadge
-									item={key}
-									value={value}
-									isLoading={isLoading}
-									onRemove={() => removeSinglePill(key)}
-								/>
-							</span>
-					)
+			<DataTableBadge
+				item={key}
+				value={value}
+				isLoading={isLoading}
+				onRemove={() => removeSinglePill(key)}
+			/>
+		</span>
+					);
 				} else {
 					return null;
 				}
