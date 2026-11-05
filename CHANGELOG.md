@@ -1,5 +1,10 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 28.0.0
+
+- Version bumps of external dependencies, updating the code accordingly (#96)
+- Making separate `monaco` exports (entry point) with a shareable setup of the monaco environment (workers) (#96)
+
 ## 27.8.2
 
 - Fix DataTable2 filter input cursor jumping always to the end of the text (#92)
