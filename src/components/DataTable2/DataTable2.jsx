@@ -117,7 +117,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			}
 			/*
 				Load rows with timeout on cases where filter is not undefined
-				and its not an empty string. It avoid triggering requests to service
+				and it's not an empty string. It avoids triggering requests to service
 				on every filter change and thus overloading the service.
 			*/
 			if ((getParam('f') != '') && (getParam('f') != undefined)) {
@@ -187,7 +187,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 
 	return (
 		<div className={`card ${className || ''}`} ref={cardRef}>
-			<CardHeader className="card-header-flex">
+			<CardHeader className='card-header-flex'>
 				{header}
 			</CardHeader>
 			<CardBody className='datatable2-card-body'>
@@ -250,13 +250,13 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 	}
 
 	return (
-		<CardFooter className="card-footer-flex">
-			<div className="border-end flex-fill">
+		<CardFooter className='card-footer-flex'>
+			<div className='border-end flex-fill'>
 				{(count != undefined) &&
 					`${1 + (page - 1) * limit} - ${Math.min(limit + (page - 1) * limit, count)} ${t('General|of')} ${count} ${t('General|item(s)')}`
 				}
 			</div>
-			<div className="border-end">
+			<div className='border-end'>
 				{`${t('General|Page')}: ${page}`}
 				{(count != undefined) &&
 					` ${t('General|of')} ${Math.ceil(count / limit)} ${t('General|page(s)')}`
@@ -264,13 +264,13 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 			</div>
 
 			<div className='pe-0'>
-				{t("General|Items per page")}:
+				{t('General|Items per page')}:
 			</div>
 			<Dropdown
-				className="border-end"
+				className='border-end'
 				toggle={() => setLimitDropDownOpen(!isLimitDropDownOpen)}
 				isOpen={isLimitDropDownOpen}
-				direction="up"
+				direction='up'
 			>
 				<DropdownToggle outline caret>
 					{!isNaN(limit) ? limit : 0}
@@ -283,11 +283,11 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 				}
 				</DropdownMenu>
 			</Dropdown>
-			<button disabled={isLoading} type="button" className="btn btn-outline-secondary" onClick={prevPage}>
-				<i className="bi bi-chevron-double-left" />
+			<button disabled={isLoading} type='button' className='btn btn-outline-secondary' onClick={prevPage}>
+				<i className='bi bi-chevron-double-left' />
 			</button>
-			<button disabled={isLoading} type="button" className="btn btn-outline-secondary" onClick={nextPage}>
-				<i className="bi bi-chevron-double-right" />
+			<button disabled={isLoading} type='button' className='btn btn-outline-secondary' onClick={nextPage}>
+				<i className='bi bi-chevron-double-right' />
 			</button>
 		</CardFooter>
 	);
@@ -296,7 +296,7 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 
 export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle}) {
 	return (
-		<Table className="datatable2 placeholder-glow">
+		<Table className='datatable2 placeholder-glow'>
 			<colgroup>
 				{columns.map((column, idx) => (
 					<col key={idx} style={column?.colStyle}/>
@@ -306,7 +306,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 			<thead>
 				<tr>
 					{columns.map((column, idx) => (
-						<th key={idx} style={column?.thStyle} className="pt-0" id={`datatable-column-${idx}`}>
+						<th key={idx} style={column?.thStyle} className='pt-0' id={`datatable-column-${idx}`}>
 							{column?.sort ?
 								<DataTableSort2
 									title={column?.title}
@@ -325,13 +325,13 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 					<tr key={ridx} style={{ ...rowStyle ? rowStyle(row) : {}, height: rowHeight }}>
 						{ loading
 						? <td colSpan={columns.length}>
-							<span className="placeholder w-100 bg-secondary"></span>
+							<span className='placeholder w-100 bg-secondary'></span>
 						</td>
 						: columns.map((column, cidx) =>
 							<td key={cidx} style={column?.tdStyle}>
 								{ (column?.render != undefined)
 								? column.render({row, column, ridx})
-								: <span className="placeholder w-100 bg-secondary" title="Missing render method"></span>
+								: <span className='placeholder w-100 bg-secondary' title='Missing render method'></span>
 								}
 							</td>
 						)}
@@ -341,7 +341,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 
 			{(limit - rows.length > 0) && <tfoot /* This is rendering of the empty rows to make height of table fixed */>
 				{Array(limit - rows.length).fill(0).map((_, ridx) => (
-					<tr key={"e"+ridx} style={{height: rowHeight}}>
+					<tr key={'e'+ridx} style={{height: rowHeight}}>
 						<td colSpan={columns.length}>&nbsp;</td>
 					</tr>
 				))}
