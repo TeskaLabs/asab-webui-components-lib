@@ -149,13 +149,17 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 			? parseInt(stateParams.i, 10) || 0
 			: parseInt(searchParams.get('i') || '0', 10);
 
-		// Do not reinitialize parameters if the table limit is already set
+		// Do not reinitialize parameters if the limit is already set
 		if (currentLimit > 0) {
 			return;
 		}
 
 		// Get the latest initial parameters from the ref
 		const init = initialParamsRef.current;
+
+		// Get the initial limit if it is a valid positive integer
+		const initialLimit = Number(init?.i);
+		const hasInitialLimit = Number.isInteger(initialLimit) && initialLimit > 0;
 
 		// Update URL search parameters when URL params are enabled
 		if (!disableParams) {
@@ -172,19 +176,23 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 			const hasPills = keys.some((k) => k.startsWith('a'))
 				|| (!urlHasUserParams && init ? mergeInitialParams(newParams, init) : false);
 
-			// Set the first page if the page parameter is not already defined.
+			// Set the first page if the page parameter is not already defined
 			if (!newParams.get('p')) {
 				newParams.set('p', '1');
 			}
 
-			// Set the calculated limit and reduce it when filter pills require an extra row
-			newParams.set('i', String(adjustLimitForFilterPills(baseLimit, hasPills)));
+			// Use initialParams.i if provided, otherwise calculate the limit
+			const limit = hasInitialLimit
+				? initialLimit
+				: adjustLimitForFilterPills(baseLimit, hasPills);
 
-			// Replace the current URL parameters without adding a new history entry
+			newParams.set('i', String(limit));
+
 			setSearchParams(newParams, { replace: true });
 			return;
 		}
 
+		// State mode
 		const updatedState = { ...stateParams };
 		const keys = Object.keys(updatedState);
 
@@ -199,8 +207,10 @@ const DataTableContextProvider = ({ children, disableParams, initialLimit, initi
 		// Set the first page if the page parameter is not already defined
 		updatedState.p = updatedState.p ?? 1;
 
-		// Set the calculated limit and reduce it when filter pills require an extra row
-		updatedState.i = adjustLimitForFilterPills(baseLimit, hasPills);
+		// Use initialParams.i if provided, otherwise calculate the limit
+		updatedState.i = hasInitialLimit
+			? initialLimit
+			: adjustLimitForFilterPills(baseLimit, hasPills);
 
 		setStateParams(updatedState);
 	};

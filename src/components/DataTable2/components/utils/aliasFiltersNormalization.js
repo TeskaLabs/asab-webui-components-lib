@@ -5,8 +5,9 @@
 */
 const TOP_LEVEL_KEY_ALIASES = {
 	filters: 'a', // advanced filters -> keys `a{field}` in URL/state
-	sort: 's',    // sorting          -> keys `s{field}` in URL/state
-	search: 'f',  // full-text search -> key `f` in URL/state
+	sort: 's', // sorting -> keys `s{field}` in URL/state
+	search: 'f', // full-text search -> key `f` in URL/state
+	limit: 'i', // limit -> keys `i` in URL/state
 };
 
 /*
@@ -79,6 +80,11 @@ export const normalizeInitialParams = (params) => {
 	// Keep search only when it is a string
 	if (normalized.f != undefined && (typeof normalized.f !== 'string')) {
 		delete normalized.f;
+	}
+
+	// Keep limit only when it is a valid number
+	if ((typeof normalized.i !== 'number') || !Number.isInteger(normalized.i) || (normalized.i <= 0)) {
+		delete normalized.i;
 	}
 
 	return normalized;
