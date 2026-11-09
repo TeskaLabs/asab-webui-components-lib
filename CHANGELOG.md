@@ -1,5 +1,19 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 28.0.0
+
+- Version bumps of external dependencies, updating the code accordingly (#96)
+- Making separate `monaco` exports (entry point) with a shareable setup of the monaco environment (workers) (#96)
+
+## 27.8.2
+
+- Fix DataTable2 filter input cursor jumping always to the end of the text (#92)
+
+## 27.8.1
+
+- Make spinner consistent while in re-renders (#94)
+- Fix DateTime issue with react hooks (#94)
+
 ## 27.8.0
 
 - Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
