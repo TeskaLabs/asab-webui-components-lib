@@ -1,5 +1,9 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 28.0.1
+
+- Add Polish localization of relative/absolute DateTime component (#97)
+
 ## 28.0.0
 
 - Version bumps of external dependencies, updating the code accordingly (#96)
