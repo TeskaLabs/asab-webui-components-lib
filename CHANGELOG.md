@@ -1,5 +1,10 @@
 # CHANGELOG for ASAB WebUI Components
 
+
+## 28.1.0
+
+- Unified table initialization parameters under `initialParams` and removed the separate `initialLimit` prop (#98)
+
 ## 28.0.0
 
 - Version bumps of external dependencies, updating the code accordingly (#96)
