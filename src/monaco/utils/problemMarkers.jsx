@@ -6,11 +6,13 @@
 	Example of usage
 
 	```
-		import * as monaco from 'monaco-editor';
-		import 'asab_webui_components/monaco/setup';
+		import * as monaco from 'asab_webui_components/monaco/api';
+		import { initializeMonaco } from 'asab_webui_components/monaco/initialize';
 		import { problemMarkers } from 'asab_webui_components/monaco';
 		...
 
+		await initializeMonaco();
+		await import('asab_webui_components/monaco/languages/yaml');
 		const model = editorRef.current.getModel();
 		...
 

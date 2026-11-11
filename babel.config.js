@@ -8,6 +8,8 @@ module.exports = {
 					esmodules: true, // Targeting modern environments that support ESModules
 				},
 				shippedProposals: true, // Allows modern (proposed/not widely implemented) features like BigInt regardless the environment
+				// Keep `import()` so consumer webpack can split Monaco language chunks
+				exclude: ["transform-dynamic-import"],
 			}
 		],
 		[
