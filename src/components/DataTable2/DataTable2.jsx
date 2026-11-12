@@ -174,9 +174,13 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	const calculateAndSetColumnWidths = () => {
 		if (cardRef.current != null) {
 			const columns = cardRef.current.querySelectorAll('th');
-
+			const newWidth = {};
 			columns.forEach(column => {
-				column.style.width = `${column.offsetWidth}px`;
+				const { id, offsetWidth } = column;
+				newWidth[id] = offsetWidth;
+				if (newWidth.hasOwnProperty(id)) {
+					column.style.width = `${newWidth[id]}px`;
+				}
 			});
 		}
 	};
