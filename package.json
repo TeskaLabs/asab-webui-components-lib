@@ -1,6 +1,6 @@
 {
 	"name": "asab_webui_components",
-	"version": "28.0.1",
+	"version": "28.1.0",
 	"license": "BSD-3-Clause",
 	"description": "TeskaLabs ASAB WebUI Components Library",
 	"contributors": [
@@ -23,7 +23,8 @@
 		".": "./dist/index.js",
 		"./seacat-auth": "./dist/seacat-auth/index.js",
 		"./monaco": "./dist/monaco/index.js",
-		"./monaco/setup": "./dist/monaco/setup.js"
+		"./monaco/initialize": "./dist/monaco/initialize.js",
+		"./monaco/loadLanguage": "./dist/monaco/loadLanguage.js"
 	},
 	"files": [
 		"dist"
