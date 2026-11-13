@@ -13,18 +13,18 @@
 
 	Multi-remote note:
 	- `self.MonacoEnvironment` is page-global. Monaco is not MF-shared, so each remote has its
-	  own `monaco` module. Setup rebinds getWorker to this remote's publicPath, and wraps
+	  own `monaco` module. Initialization rebinds getWorker to this remote's publicPath, and wraps
 	  this remote's editor factories to rebind again right before create/createModel — so a
 	  remount (e.g. alerts) does not keep using another remote's worker base URL.
 	- Residual: two remotes with live editors at once can still race on a late worker spawn;
 	  normal navigation is one active Monaco remote at a time.
 
 	NOTE: Do not MF-share `monaco-editor` as a singleton across remotes (each remote should own
-	its Monaco + trimmed languages[]). This setup still applies per remote for worker URLs.
+	its Monaco + trimmed languages[]). This initialization still applies per remote for worker URLs.
 
 	NOTE: `import * as monaco` below is intentional. The plugin assigns `MonacoEnvironment`
 	when monaco is evaluated; this module must run *after* that so our getWorker wins.
-	Prefer `import 'asab_webui_components/monaco/setup'` from a lazily-loaded screen.
+	Prefer `import 'asab_webui_components/monaco/initialize'` from a lazily-loaded screen.
 */
 
 import * as monaco from 'monaco-editor';
@@ -52,7 +52,7 @@ const baseUrl = new URL(
 	document.baseURI
 ).href;
 
-// One wrap per module instance (avoids nested wrappers if setup runs again).
+// One wrap per module instance (avoids nested wrappers if initialize runs again).
 let didWrapEditorApis = false;
 
 function applyEnv() {
@@ -95,7 +95,7 @@ function wrapEditorApis() {
 	}
 }
 
-export function setupMonacoEnvironment() {
+export function initializeMonacoEnvironment() {
 	applyEnv();
 	// Rebind before this remote creates editors/models (covers alerts dispose → remount).
 	wrapEditorApis();

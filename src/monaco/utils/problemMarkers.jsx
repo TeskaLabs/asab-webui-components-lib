@@ -7,7 +7,7 @@
 
 	```
 		import * as monaco from 'monaco-editor';
-		import 'asab_webui_components/monaco/setup';
+		import 'asab_webui_components/monaco/initialize';
 		import { problemMarkers } from 'asab_webui_components/monaco';
 		...
 
