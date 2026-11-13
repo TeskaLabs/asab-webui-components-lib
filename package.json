@@ -23,7 +23,8 @@
 		".": "./dist/index.js",
 		"./seacat-auth": "./dist/seacat-auth/index.js",
 		"./monaco": "./dist/monaco/index.js",
-		"./monaco/initialize": "./dist/monaco/initialize.js"
+		"./monaco/initialize": "./dist/monaco/initialize.js",
+		"./monaco/loadLanguage": "./dist/monaco/loadLanguage.js"
 	},
 	"files": [
 		"dist"
