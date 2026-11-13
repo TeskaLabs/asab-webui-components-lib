@@ -5,8 +5,9 @@
 */
 const TOP_LEVEL_KEY_ALIASES = {
 	filters: 'a', // advanced filters -> keys `a{field}` in URL/state
-	sort: 's',    // sorting          -> keys `s{field}` in URL/state
-	search: 'f',  // full-text search -> key `f` in URL/state
+	sort: 's', // sorting -> keys `s{field}` in URL/state
+	search: 'f', // full-text search -> key `f` in URL/state
+	limit: 'i', // limit -> keys `i` in URL/state
 };
 
 /*
@@ -19,25 +20,27 @@ const SORT_DIRECTION_ALIASES = {
 };
 
 /*
-	Normalizes initialParams into the internal data-table format.
+    Normalizes initialParams into the internal data-table format.
 
-	Supported input:
-		{
-			filters: { status: ['open', 'triaged'] },
-			sort: { type: 'desc' },
-			search: 'Ticket-01'
-		}
+    Supported input:
+        {
+            filters: { status: ['open', 'triaged'] },
+            sort: { type: 'desc' },
+            search: 'Ticket-01',
+            limit: 20
+        }
 
-	Base keys (a, s, f) are also supported.
+    Base keys (a, s, f, i) are also supported.
 
-	Rules:
-		- filters / a must be an object, and only fields with array values are kept.
-		- sort / s must be an object, and only fields with supported sort directions are kept.
-		- 'asc' and 'desc' are converted to 'a' and 'd'.
-		- search / f must be a string.
-		- Invalid values inside filters and sort are dropped.
-		- Unknown top-level keys are preserved unchanged.
-		- User-friendly aliases take precedence over base keys.
+    Rules:
+        - filters / a must be an object, and only fields with array values are kept.
+        - sort / s must be an object, and only fields with supported sort directions are kept.
+        - 'asc' and 'desc' are converted to 'a' and 'd'.
+        - search / f must be a string.
+        - limit / i must be a positive integer.
+        - When both an alias and its base key are provided, the base key takes precedence.
+        - Invalid values inside filters and sort are dropped.
+        - Unknown top-level keys are preserved unchanged.
 */
 export const normalizeInitialParams = (params) => {
 	// Return an empty object for invalid top-level input
@@ -51,7 +54,9 @@ export const normalizeInitialParams = (params) => {
 	// Normalize top-level aliases and remove their original names
 	Object.entries(TOP_LEVEL_KEY_ALIASES).forEach(([alias, baseKey]) => {
 		if (params[alias] !== undefined) {
-			normalized[baseKey] = params[alias];
+			if (params[baseKey] === undefined) {
+				normalized[baseKey] = params[alias];
+			}
 			delete normalized[alias];
 		}
 	});
@@ -79,6 +84,11 @@ export const normalizeInitialParams = (params) => {
 	// Keep search only when it is a string
 	if (normalized.f != undefined && (typeof normalized.f !== 'string')) {
 		delete normalized.f;
+	}
+
+	// Keep limit only when it is a valid number
+	if ((typeof normalized.i !== 'number') || !Number.isInteger(normalized.i) || (normalized.i <= 0)) {
+		delete normalized.i;
 	}
 
 	return normalized;
