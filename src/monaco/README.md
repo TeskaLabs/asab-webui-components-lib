@@ -57,10 +57,10 @@ module.exports = {
 |--------------------------|---------------|--------|
 | (none / unlisted) | `editor.worker.js` | Fallback for highlighting-only languages |
 | `json` | `json.worker.js` | JSON language service |
-| `css`, `scss`, `less` | `css.worker.js` | |
-| `html`, `handlebars`, `razor` | `html.worker.js` | |
+| `css` | `css.worker.js` | `scss` / `less` share this worker - list **`css` only** (not `scss` / `less`) |
+| `html` | `html.worker.js` | `handlebars` / `razor` share this worker - list **`html` only** (not `handlebars` / `razor`) |
 | `typescript` | `ts.worker.js` | Large; also used for JS **language service** when TS is included |
-| `javascript` alone | (no `ts.worker`) | Syntax registration only |
+| `javascript` | (no `ts.worker`) | Syntax registration only - does **not** emit `ts.worker.js` unless `typescript` is also listed |
 
 `initialize` maps Monaco worker labels to these filenames using the remote’s webpack `publicPath`.
 
@@ -174,7 +174,7 @@ await loadMonacoLanguageForPath(path, { languages: libraryMap });
 const id = languageIdForPath(path, libraryMap);
 ```
 
-Supported lazy loaders (see `languageLoaders/`): `html`, `json`, `css`, `scss`, `javascript`, `typescript`, `python`, `yaml`, `xml`, `markdown`, `sql`. Each loads in its own async chunk on first use.
+Supported lazy loaders (see `languageLoaders/`): `html`, `json`, `css`, `scss`, `less`, `javascript`, `typescript`, `python`, `yaml`, `xml`, `markdown`, `sql`. Each loads in its own async chunk on first use.
 
 `loadMonacoLanguage` is idempotent per page load (cached in a `Set`). Unknown ids and `plaintext` are no-ops.
 
