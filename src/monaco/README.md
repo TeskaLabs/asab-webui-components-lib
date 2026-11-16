@@ -16,7 +16,7 @@ Peer dependency: `monaco-editor` (^0.57.0, optional in `package.json` but requir
 
 ## Quick checklist (new remote with Monaco)
 
-1. Add dependencies in the **remote app** (confirm versions with your WebUI stack):
+1. Add dependencies in the **remote app** (align versions with the rest of the WebUI stack):
    - `monaco-editor`
    - `monaco-editor-webpack-plugin`
 2. In `webpack.common.js`:
@@ -27,7 +27,7 @@ Peer dependency: `monaco-editor` (^0.57.0, optional in `package.json` but requir
    - `import 'asab_webui_components/monaco/initialize'`
    - `import * as monaco from 'monaco-editor'`
    - `await loadMonacoLanguage(...)` or `loadMonacoLanguageForPath(...)` before `createModel` / set language.
-5. After changing `languages[]` or editor file types, run bundle analysis (see repo WebUI bundle-analyze skill).
+5. After changing `languages[]` or editor file types, run bundle analysis on the remote build.
 
 ---
 
@@ -64,19 +64,19 @@ module.exports = {
 
 `initialize` maps Monaco worker labels to these filenames using the remote’s webpack `publicPath`.
 
-**Keep plugin config in sync with your editors** - in webpack, add a short comment pointing at the screen or module that picks the Monaco language (extension map, `loadMonacoLanguageForPath`, etc.).
+**Keep plugin config in sync with editor screens** — in webpack, add a short comment pointing at the module that selects the Monaco language (extension map, `loadMonacoLanguageForPath`, etc.).
 
 #### Choosing `languages[]` (common patterns)
 
-Pick **workers** from what editors need for **language service** (validation, HTML/JSON assistance), not from every file extension you syntax-highlight. Additional extensions use **`loadMonacoLanguage` / `loadMonacoLanguageForPath`** at runtime (see `defaultLanguageByExtension`).
+List **workers** for languages that need **language service** (validation, HTML/JSON assistance), not for every extension that only needs syntax highlighting. Other extensions rely on **`loadMonacoLanguage` / `loadMonacoLanguageForPath`** at runtime (see `defaultLanguageByExtension`).
 
 | Pattern | When to use it | `MonacoWebpackPlugin` | Runtime |
 |--------|----------------|----------------------|---------|
-| **Multi-type editor + JSON/HTML services** | One editor opens many extensions (YAML, JS, TS, MD, ...) but only **JSON** and **HTML** need worker-backed IntelliSense | `['json', 'html']` | `loadMonacoLanguageForPath` for other types - **syntax** for TS/JS/etc., **not** `ts.worker` unless you add `typescript` to the plugin |
-| **JSON validation only** | Editors are mostly SQL, plaintext, or other langs with no Monaco worker; you still want JSON schema / diagnostics | `['json']` | `loadMonacoLanguage('sql')`, plaintext without `loadMonacoLanguage`, etc. |
+| **Multi-type editor + JSON/HTML services** | One editor opens many extensions (YAML, JS, TS, MD, ...) but only **JSON** and **HTML** need worker-backed IntelliSense | `['json', 'html']` | `loadMonacoLanguageForPath` for other types - **syntax** for TS/JS/etc., **not** `ts.worker` unless `typescript` is added to the plugin |
+| **JSON validation only** | Editors are mostly SQL, plaintext, or other langs with no Monaco worker; JSON schema / diagnostics are still required | `['json']` | `loadMonacoLanguage('sql')`, plaintext without `loadMonacoLanguage`, etc. |
 | **Syntax only, no extra workers** | Single language like YAML, or only `plaintext` - highlighting via lazy definitions, no `json`/`html`/`css` workers | `[]` | `loadMonacoLanguage('yaml')` (and similar) when opening a file |
 
-Use **one** `MonacoWebpackPlugin` per app - pick the variant that matches a row in the table above:
+Use **one** `MonacoWebpackPlugin` per app - choose the variant that matches a row in the table above:
 
 **Multi-type editor + JSON/HTML IntelliSense**
 
@@ -120,7 +120,7 @@ Use the exported subpath `monaco-editor/editor/editor.api`, not deep `monaco-edi
 
 ### 3. Local development (optional)
 
-PoC apps often alias the components lib source in `webpack.dev.js` so Monaco changes apply without republishing:
+For local work on this library, webpack dev configs can alias the components source so Monaco changes apply without republishing the package:
 
 ```js
 // webpack.dev.js - merge into resolve.alias
@@ -137,7 +137,7 @@ PoC apps often alias the components lib source in `webpack.dev.js` so Monaco cha
 }
 ```
 
-Adjust paths to your monorepo layout.
+Paths must match the local monorepo layout.
 
 ---
 
@@ -178,7 +178,7 @@ await loadMonacoLanguage('yaml');
 const languageId = await loadMonacoLanguageForPath('/tenant/rules/foo.yaml');
 const model = monaco.editor.createModel(content, languageId ?? 'plaintext');
 
-// App-specific extension map (recommended when you only support a few types)
+// Custom extension map (for a restricted set of file types)
 const libraryMap = { '.yaml': 'yaml', '.yml': 'yaml', '.json': 'json' };
 await loadMonacoLanguageForPath(path, { languages: libraryMap });
 const id = languageIdForPath(path, libraryMap);
@@ -228,7 +228,7 @@ editor.setModel(model);
 
 ### 4. Dynamic language switching
 
-If content language can change after edit (e.g. SQL vs JSON heuristics), call `loadMonacoLanguage` then `monaco.editor.setModelLanguage(model, id)` when the id changes. Handle the promise without `void` if your ESLint config disallows it:
+If content language can change after edit (e.g. SQL vs JSON heuristics), call `loadMonacoLanguage` then `monaco.editor.setModelLanguage(model, id)` when the id changes. When ESLint disallows floating promises, handle the rejection explicitly:
 
 ```js
 applyModelLanguage(model, languageId).catch(() => undefined);
@@ -274,7 +274,7 @@ List **workers** in the plugin; register **extra** languages at runtime when edi
 1. Add `languageLoaders/<id>.js` importing the correct Monaco 0.57 `register` modules (definitions vs features - mirror an existing similar language).
 2. Register the loader in `loadLanguage.js` (`languageLoaders` + `defaultLanguageByExtension` if applicable).
 3. Document whether the consuming app must add the id to `MonacoWebpackPlugin` for a worker.
-4. Run bundle analysis on every PoC app that imports `loadLanguage`.
+4. Run bundle analysis on remotes that import `loadLanguage`.
 
 ---
 

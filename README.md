@@ -48,4 +48,4 @@ Possible imports:
 
 ### Monaco Editor
 
-Setup, webpack (`MonacoWebpackPlugin`, `editor.api` alias), Module Federation rules, React usage, and PoC examples are documented in **[`src/monaco/README.md`](src/monaco/README.md)**.
+Setup, webpack (`MonacoWebpackPlugin`, `editor.api` alias), Module Federation rules, React usage and examples are documented in **[`src/monaco/README.md`](src/monaco/README.md)**.

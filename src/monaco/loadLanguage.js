@@ -1,7 +1,7 @@
 /*
 	Lazy-load Monaco language contributions (definitions and, where needed, language services).
 
-	Does not run at import time — call only when opening or switching editor content.
+	Does not run at import time - call only when opening or switching editor content.
 
 		import { loadMonacoLanguage, loadMonacoLanguageForPath } from 'asab_webui_components/monaco/loadLanguage';
 
@@ -9,7 +9,7 @@
 		const language = await loadMonacoLanguageForPath('/rules/foo.yaml');
 
 	Each language is a separate module under ./languageLoaders/ so webpack can split Monaco
-	registrations into async chunks (see loadLanguage.js — no direct monaco-editor imports here).
+	registrations into async chunks (see loadLanguage.js - no direct monaco-editor imports here).
 */
 
 /** @type {Record<string, string>} extension (with dot) → Monaco language id */
