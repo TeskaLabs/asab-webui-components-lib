@@ -45,13 +45,13 @@ module.exports = {
   plugins: [
     // ...
     new MonacoWebpackPlugin({
-      languages: ['json', 'html'], // example: ASAB Library
+      languages: ['json', 'html'], // see “Choosing languages[]” below
     }),
   ],
 };
 ```
 
-**`languages: []`** is valid when editors only use built-in `plaintext` or languages that need **no** dedicated worker (e.g. YAML syntax via lazy `loadLanguage` only). Parser builder uses this; declaration editor loads YAML at runtime.
+**`languages: []`** is valid when editors only use built-in `plaintext` or languages that need **no** dedicated worker (e.g. YAML syntax via lazy `loadMonacoLanguage` only).
 
 | Plugin `languages` entry | Worker file | Notes |
 |--------------------------|---------------|--------|
@@ -64,11 +64,21 @@ module.exports = {
 
 `initialize` maps Monaco worker labels to these filenames using the remote’s webpack `publicPath`.
 
-**Keep plugin config in sync with your editors** - add a short comment in webpack pointing at the component that decides languages (see `asab_library_webui`, `bs_query_webui`, `lmio_parser_builder_webui` in the PoC).
+**Keep plugin config in sync with your editors** - in webpack, add a short comment pointing at the screen or module that picks the Monaco language (extension map, `loadMonacoLanguageForPath`, etc.).
 
-#### Examples from PoC remotes
+#### Choosing `languages[]` (common patterns)
 
-**Many file types, JSON/HTML IntelliSense** (`asab_library_webui`):
+Pick **workers** from what editors need for **language service** (validation, HTML/JSON assistance), not from every file extension you syntax-highlight. Additional extensions use **`loadMonacoLanguage` / `loadMonacoLanguageForPath`** at runtime (see `defaultLanguageByExtension`).
+
+| Pattern | When to use it | `MonacoWebpackPlugin` | Runtime |
+|--------|----------------|----------------------|---------|
+| **Multi-type editor + JSON/HTML services** | One editor opens many extensions (YAML, JS, TS, MD, ...) but only **JSON** and **HTML** need worker-backed IntelliSense | `['json', 'html']` | `loadMonacoLanguageForPath` for other types - **syntax** for TS/JS/etc., **not** `ts.worker` unless you add `typescript` to the plugin |
+| **JSON validation only** | Editors are mostly SQL, plaintext, or other langs with no Monaco worker; you still want JSON schema / diagnostics | `['json']` | `loadMonacoLanguage('sql')`, plaintext without `loadMonacoLanguage`, etc. |
+| **Syntax only, no extra workers** | Single language like YAML, or only `plaintext` - highlighting via lazy definitions, no `json`/`html`/`css` workers | `[]` | `loadMonacoLanguage('yaml')` (and similar) when opening a file |
+
+Use **one** `MonacoWebpackPlugin` per app - pick the variant that matches a row in the table above:
+
+**Multi-type editor + JSON/HTML IntelliSense**
 
 ```js
 new MonacoWebpackPlugin({
@@ -76,7 +86,7 @@ new MonacoWebpackPlugin({
 }),
 ```
 
-**Export query editor - JSON worker only** (`bs_query_webui`; SQL/plaintext via `loadMonacoLanguage`):
+**JSON language service only**
 
 ```js
 new MonacoWebpackPlugin({
@@ -84,7 +94,7 @@ new MonacoWebpackPlugin({
 }),
 ```
 
-**YAML-only, no extra workers** (`lmio_parser_builder_webui`):
+**No dedicated workers (lazy syntax only)**
 
 ```js
 new MonacoWebpackPlugin({
