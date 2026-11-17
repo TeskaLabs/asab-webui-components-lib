@@ -1,8 +1,12 @@
 # CHANGELOG for ASAB WebUI Components
 
-## 28.1.0
+## 28.2.0
 
 - Unified table initialization parameters under `initialParams` and removed the separate `initialLimit` prop (#98)
+
+## 28.1.0
+
+- Add `asab_webui_components/monaco/loadLanguage` for lazy language loading by file extension (async chunks), rename import of `asab_webui_components/monaco/setup` to `asab_webui_components/monaco/initialize` (#100)
 
 ## 28.0.1
 
