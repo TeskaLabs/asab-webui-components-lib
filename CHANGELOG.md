@@ -1,5 +1,13 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 28.1.0
+
+- Add `asab_webui_components/monaco/loadLanguage` for lazy language loading by file extension (async chunks), rename import of `asab_webui_components/monaco/setup` to `asab_webui_components/monaco/initialize` (#100)
+
+## 28.0.1
+
+- Add Polish localization of relative/absolute DateTime component (#97)
+
 ## 28.0.0
 
 - Version bumps of external dependencies, updating the code accordingly (#96)
