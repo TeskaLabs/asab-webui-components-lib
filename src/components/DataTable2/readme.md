@@ -151,9 +151,17 @@ Both forms can be mixed. If both an alias and its base name are provided, the ba
 
 **Filters, sorting and search**
 
-Defaults are applied only if the URL (or current table state) does not already contain user-defined parameters: filters (`a`), sorting (`s`), search (`f`) or a page number greater than `1` (`p`).
+Default filters, sorting and search are applied only during the initial table setup when no existing user-defined parameters are present.
 
-If any of these parameters exist, all defaults for filters, sorting and search are skipped. Existing parameters are preserved and are not merged with `initialParams`.
+Defaults are skipped if the URL (or current table state) contains at least one of the following:
+- Filters (`a` or `a*` parameters).
+- Sorting (`s` or `s*` parameters.
+- Search (`f`).
+- A page number greater than `1` (`p`).
+
+If any of these parameters exist, default filters, sorting and search are skipped. Existing parameters are preserved and are not merged with `initialParams`.
+
+Defaults are also skipped if a valid positive limit (`i`) already exists. In this case, the table loads directly using the existing parameters.
 
 **Limit**
 
