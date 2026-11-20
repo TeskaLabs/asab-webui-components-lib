@@ -31,7 +31,7 @@ import './ResultCard.scss';
 		</ResultCard>
 */
 
-export function ResultCard({ children, status = 'success' }) {
+export function ResultCard({ children, status = 'success', fullWidth = false }) {
 
 	const getIconAndColor = () => {
 		switch (status) {
@@ -47,7 +47,7 @@ export function ResultCard({ children, status = 'success' }) {
 	};
 
 	return (
-		<Card className='result-card'>
+		<Card className={`result-card ${fullWidth ? 'full-width' : ''}`}>
 			<CardBody className='text-center d-flex align-items-center justify-content-center'>
 				<div className='justify-content-center pb-2 w-75'>
 					<i className={`pe-2 mb-3 fs-1 bi ${getIconAndColor()}`}></i>
