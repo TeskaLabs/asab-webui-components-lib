@@ -17,13 +17,10 @@ export class Renderer extends Component {
 			return (
 				<AsabReactJson
 					src={value}
-					name={false}
-					collapsed={false}
+					collapse={false}
 					displayDataTypes={false}
-					displayArrayKey={false}
-					quotesOnKeys={false}
 					enableClipboard={false}
-					indentWidth={8}
+					indent={8}
 				/>
 			)
 		}

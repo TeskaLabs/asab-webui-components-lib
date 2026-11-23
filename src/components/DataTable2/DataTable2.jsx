@@ -10,16 +10,28 @@ import {
 
 import { usePubSub } from '../Context/PubSubContext';
 import { DataTableContextProvider, useDataTableContext } from './DataTableContext.jsx';
+import { computeBaseRowLimit } from './components/utils/updateTableLimit.jsx';
 
 import './DataTable2.scss';
 
 const DEFAULT_LIMIT_VALUES = [10, 20, 50, 100];
 
 // Wrapper for datatable context
-export function DataTableCard2({ columns, loader, loaderParams, header, className, initialLimit = 0, rowHeight = 38,
-								   disableParams = undefined, hideFooter = false, rowStyle, limitValues = DEFAULT_LIMIT_VALUES }) {
+export function DataTableCard2({
+	columns,
+	loader,
+	loaderParams,
+	header,
+	className,
+	rowHeight = 38,
+	disableParams = undefined,
+	hideFooter = false,
+	rowStyle,
+	limitValues = DEFAULT_LIMIT_VALUES,
+	initialParams = null,
+}) {
 	return (
-		<DataTableContextProvider disableParams={disableParams} initialLimit={initialLimit}>
+		<DataTableContextProvider disableParams={disableParams} initialParams={initialParams}>
 			<DataTableCardContent
 				columns={columns}
 				loader={loader}
@@ -35,11 +47,10 @@ export function DataTableCard2({ columns, loader, loaderParams, header, classNam
 	);
 }
 
-
 function DataTableCardContent({ columns, loader, loaderParams, header, className, rowHeight, rowStyle, hideFooter, limitValues }) {
 	// Getting application object and PubSub subscription
 	const { app, subscribe } = usePubSub();
-	const { watchParams, getParam, setParams, serializeParams } = useDataTableContext();
+	const { watchParams, getParam, serializeParams, initializeTableParams, resetParams } = useDataTableContext();
 
 	const [ rows, setRows ] = useState([]);
 	const [ count, setCount ] = useState(0);
@@ -106,7 +117,7 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			}
 			/*
 				Load rows with timeout on cases where filter is not undefined
-				and its not an empty string. It avoid triggering requests to service
+				and it's not an empty string. It avoids triggering requests to service
 				on every filter change and thus overloading the service.
 			*/
 			if ((getParam('f') != '') && (getParam('f') != undefined)) {
@@ -118,16 +129,14 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 					loadRows();
 				}, 500);
 			}
-		} else {
+		} else if (cardRef.current?.parentElement) {
 			/*
-				Compute rows when we loose the information about the limit.
-
-				This prevents the NaN issues with DataTable and helps to redirect to a
-				initial page when clicking the same route sidebar item.
+				Compute the table limit when i is missing.
+				This happens on initial table setup and after resetting parameters.
+				InitialParams are applied in the same update when no user parameters exist.
 			*/
 			const height = cardRef.current.parentElement.getBoundingClientRect().height;
-			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
-			setParams({ p: 1, i: rows }, true);
+			initializeTableParams(computeBaseRowLimit(height, rowHeight));
 		}
 
 		/*
@@ -137,6 +146,12 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 			in any of the parent/children components
 		*/
 		const subscription = subscribe('Application.reload!', (message) => {
+			// Reset action: discard current params and restore initialParams defaults
+			if (message?.action === 'resetFilters') {
+				resetParams();
+				return;
+			}
+
 			/*
 				TODO: use message passed from the published event to distinguish between tables
 				if there is more than 1 on the screen
@@ -155,21 +170,6 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 		// TODO: .catch(console.error);
 	}, [watchParams, loaderParams]);
 
-	useEffect(() => {
-		// Automatically determine limit based on the free space in the parent container
-		if (cardRef.current) {
-			const height = cardRef.current.parentElement.getBoundingClientRect().height;
-			const rows = Math.max(Math.floor((height - 200 /*header and footer overhead*/) / rowHeight /* row height */), 5);
-			if (getParam('i') == 0) {
-				setParams({ i: rows }, true); // Replace the navigation during the DataTable initialization to avoid removal of search params when navigating back in history
-			}
-		}
-		// Clearing a cardRef after exiting a component
-		return () => {
-			cardRef.current = null;
-		};
-	}, [cardRef]);
-
 	// Calculate and set new column widths
 	const calculateAndSetColumnWidths = () => {
 		if (cardRef.current != null) {
@@ -187,17 +187,17 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 
 	return (
 		<div className={`card ${className || ''}`} ref={cardRef}>
-			<CardHeader className="card-header-flex">
+			<CardHeader className='card-header-flex'>
 				{header}
 			</CardHeader>
 			<CardBody className='datatable2-card-body'>
 				<DataTableCardPill2 isLoading={isLoading} rowHeight={rowHeight}/>
 				{isLoading
 					? <DataTable2
+						loading
 						columns={columns}
 						rows={Array(getParam('i') ? getParam('i') : 10).fill({})} // Simulate rows
 						limit={getParam('i')}
-						loading
 						rowHeight={rowHeight}
 						rowStyle={rowStyle}
 					/>
@@ -223,8 +223,8 @@ function DataTableCardContent({ columns, loader, loaderParams, header, className
 	);
 }
 
-export function DataTableCardFooter2({page, limit, count, rows, isLoading, limitValues = DEFAULT_LIMIT_VALUES}) {
-	const { getParam, setParams } = useDataTableContext();
+export function DataTableCardFooter2({ page, limit, count, rows, isLoading, limitValues = DEFAULT_LIMIT_VALUES }) {
+	const { setParams } = useDataTableContext();
 	const { t } = useTranslation();
 	const [ isLimitDropDownOpen, setLimitDropDownOpen ] = useState(false);
 
@@ -250,13 +250,13 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 	}
 
 	return (
-		<CardFooter className="card-footer-flex">
-			<div className="border-end flex-fill">
+		<CardFooter className='card-footer-flex'>
+			<div className='border-end flex-fill'>
 				{(count != undefined) &&
 					`${1 + (page - 1) * limit} - ${Math.min(limit + (page - 1) * limit, count)} ${t('General|of')} ${count} ${t('General|item(s)')}`
 				}
 			</div>
-			<div className="border-end">
+			<div className='border-end'>
 				{`${t('General|Page')}: ${page}`}
 				{(count != undefined) &&
 					` ${t('General|of')} ${Math.ceil(count / limit)} ${t('General|page(s)')}`
@@ -264,49 +264,47 @@ export function DataTableCardFooter2({page, limit, count, rows, isLoading, limit
 			</div>
 
 			<div className='pe-0'>
-				{t("General|Items per page")}:
+				{t('General|Items per page')}:
 			</div>
 			<Dropdown
-				className="border-end"
+				className='border-end'
 				toggle={() => setLimitDropDownOpen(!isLimitDropDownOpen)}
 				isOpen={isLimitDropDownOpen}
-				direction="up"
+				direction='up'
 			>
 				<DropdownToggle outline caret>
 					{!isNaN(limit) ? limit : 0}
 				</DropdownToggle>
 				<DropdownMenu>
-				{
-					limitValues.map((value, idx) => <DropdownItem onClick={() => {
-						setLimitValue(value)
-					}} key={idx}>{value}</DropdownItem>)
-				}
+					{
+						limitValues.map((value, idx) => <DropdownItem onClick={() => setLimitValue(value)} key={idx}>{value}</DropdownItem>)
+					}
 				</DropdownMenu>
 			</Dropdown>
-			<button disabled={isLoading} type="button" className="btn btn-outline-secondary" onClick={prevPage}>
-				<i className="bi bi-chevron-double-left" />
+			<button disabled={isLoading} type='button' className='btn btn-outline-secondary' onClick={prevPage}>
+				<i className='bi bi-chevron-double-left' />
 			</button>
-			<button disabled={isLoading} type="button" className="btn btn-outline-secondary" onClick={nextPage}>
-				<i className="bi bi-chevron-double-right" />
+			<button disabled={isLoading} type='button' className='btn btn-outline-secondary' onClick={nextPage}>
+				<i className='bi bi-chevron-double-right' />
 			</button>
 		</CardFooter>
 	);
 }
 
 
-export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle}) {
+export function DataTable2({ columns, rows, limit, loading, rowHeight, rowStyle }) {
 	return (
-		<Table className="datatable2 placeholder-glow">
+		<Table className='datatable2 placeholder-glow'>
 			<colgroup>
 				{columns.map((column, idx) => (
-					<col key={idx} style={column?.colStyle}/>
+					<col key={idx} style={column?.colStyle} />
 				))}
 			</colgroup>
 
 			<thead>
 				<tr>
 					{columns.map((column, idx) => (
-						<th key={idx} style={column?.thStyle} className="pt-0" id={`datatable-column-${idx}`}>
+						<th key={idx} style={column?.thStyle} className='pt-0' id={`datatable-column-${idx}`}>
 							{column?.sort ?
 								<DataTableSort2
 									title={column?.title}
@@ -323,15 +321,15 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 			<tbody>
 				{rows.map((row, ridx) => (
 					<tr key={ridx} style={{ ...rowStyle ? rowStyle(row) : {}, height: rowHeight }}>
-						{ loading
+						{loading
 						? <td colSpan={columns.length}>
-							<span className="placeholder w-100 bg-secondary"></span>
+							<span className='placeholder w-100 bg-secondary'></span>
 						</td>
 						: columns.map((column, cidx) =>
 							<td key={cidx} style={column?.tdStyle}>
-								{ (column?.render != undefined)
+								{(column?.render != undefined)
 								? column.render({row, column, ridx})
-								: <span className="placeholder w-100 bg-secondary" title="Missing render method"></span>
+								: <span className='placeholder w-100 bg-secondary' title='Missing render method'></span>
 								}
 							</td>
 						)}
@@ -341,7 +339,7 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 
 			{(limit - rows.length > 0) && <tfoot /* This is rendering of the empty rows to make height of table fixed */>
 				{Array(limit - rows.length).fill(0).map((_, ridx) => (
-					<tr key={"e"+ridx} style={{height: rowHeight}}>
+					<tr key={'e'+ridx} style={{ height: rowHeight }}>
 						<td colSpan={columns.length}>&nbsp;</td>
 					</tr>
 				))}
@@ -354,17 +352,16 @@ export function DataTable2({columns, rows, limit, loading, rowHeight, rowStyle})
 // Renders filter pills based on data table filter params
 function DataTableCardPill2({ isLoading, rowHeight }) {
 	const { getParam, watchParams, getAllParams, removeMultiPill, removeSinglePill } = useDataTableContext();
+
 	const displayPillArea = useMemo(() => {
-		if (getAllParams() && Object.keys(getAllParams()).some(key => key.startsWith('a'))) {
-			return true;
-		} else {
-			return false;
-		}
+		const params = getAllParams();
+
+		return Boolean(params && Object.keys(params).some(key => key.startsWith('a')));
 	}, [watchParams]);
 
 	return(
 		displayPillArea &&
-		<div className='datatable-cardpill-area' style={{minHeight: rowHeight}}>
+		<div className='datatable-cardpill-area' style={{ minHeight: rowHeight }}>
 			{Object.keys(getAllParams()).map((key) => {
 				if (key.startsWith('a')) {
 					const value = getParam(key, {splitBy: ','});

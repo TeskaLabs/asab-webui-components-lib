@@ -82,6 +82,131 @@ To set custom row limits per page, `limitValues={number[]}` should be set. Defau
 />
 ```
 
+## Initial params
+
+`initialParams` defines default filters, sorting, search and the initial number of rows per page.
+
+Defaults are applied during the table's initialization, only when the corresponding conditions are met.
+
+### User-friendly form (recommended)
+
+```
+<DataTableCard2
+	app={app}
+	columns={columns}
+	loader={loader}
+	header={<Header />}
+	initialParams={{
+		filters: {
+			status: ['open', 'triaged'],
+			type: ['host'],
+		},
+		sort: {
+			type: 'desc',
+			_c: 'asc',
+		},
+		search: 'hello',
+		limit: 1000,
+	}}
+/>
+```
+
+### Base form
+
+```
+<DataTableCard2
+	app={app}
+	columns={columns}
+	loader={loader}
+	header={<Header />}
+	initialParams={{
+		a: {
+			status: ['open', 'triaged'],
+			type: ['host'],
+		},
+		s: {
+			type: 'desc',
+			_c: 'asc',
+		},
+		f: 'hello',
+		i: 1000,
+	}}
+/>
+```
+
+### Aliases
+
+| User-friendly name | Base name | Description |
+| --- | --- | --- |
+| `filters` | `a` | Default filters |
+| `sort` | `s` | Default sorting |
+| `search` | `f` | Default search string |
+| `limit` | `i` | Initial number of rows per page |
+
+Both forms can be mixed. If both an alias and its base name are provided, the base name takes precedence.
+
+`limit` must be a positive integer number. String values, zero, negative numbers and decimal values are ignored.
+
+### When are defaults applied?
+
+**Filters, sorting and search**
+
+Default filters, sorting and search are applied only during the initial table setup when no existing user-defined parameters are present.
+
+Defaults are skipped if the URL (or current table state) contains at least one of the following:
+- Filters (`a` or `a*` parameters).
+- Sorting (`s` or `s*` parameters.
+- Search (`f`).
+- A page number greater than `1` (`p`).
+
+If any of these parameters exist, default filters, sorting and search are skipped. Existing parameters are preserved and are not merged with `initialParams`.
+
+Defaults are also skipped if a valid positive limit (`i`) already exists. In this case, the table loads directly using the existing parameters.
+
+**Limit**
+
+The initial limit follows separate rules:
+
+1. If a valid `i` already exists in the URL or current table state, it is preserved.
+2. Otherwise, `initialParams.i` (or `initialParams.limit`) is used, if it is a valid positive integer.
+3. If no valid initial limit is provided, the limit is calculated automatically based on the available container height and row height.
+
+When custom filter pills are displayed, the automatically calculated limit is reduced by one to account for the additional space they occupy.
+
+## Reset filters
+
+To reset the table back to the current `initialParams` (discard whatever
+filters, sorting or search the user has applied), publish an
+`Application.reload!` message with the `action: "resetFilters"` payload:
+
+```
+import { usePubSub } from "asab_webui_components";
+
+...
+
+const { publish } = usePubSub();
+
+...
+
+<button
+	type="button"
+	className="btn btn-outline-primary"
+	onClick={() => publish("Application.reload!", { action: "resetFilters" })}
+>
+	Reset filters
+</button>
+```
+
+On reset the table:
+
+- forces page `1`;
+- drops all existing filters, sorting and search;
+- re-applies whatever is currently in `initialParams` (may be empty - then the table ends up with no filters at all);
+- recomputes the row limit to account for the resulting filter pills.
+
+**Note:** The reset action goes through the same `Application.reload!` channel used by regular reloads, so multiple tables on the same screen will all react to it. If you need to target a specific table, distinguish them by the message payload (see the TODO note in the reload section).
+
+
 ## Columns
 
 Provides info about columns in the data table

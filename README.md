@@ -40,10 +40,12 @@ Possible imports:
 - itemExtensionHandler
 - removeFileExtension
 - deepMerge
-- problemMarkers
 - setBacklink, setBacklinkFromLocation, getBacklink, getBacklinkData, clearBacklink, consumeBacklink, consumeBacklinkData, createBacklinkHandlers
 - AppStoreProvider, useAppStore, useAppSelector, createAppStore, registerReducer
+- Monaco helpers (optional `monaco-editor` peer): see **[`src/monaco/README.md`](src/monaco/README.md)** - webpack, Module Federation, `initialize`, `loadLanguage`, examples
 
 ## Documentation
 
-**TODO**
+### Monaco Editor
+
+Setup, webpack (`MonacoWebpackPlugin`, `editor.api` alias), Module Federation rules, React usage and examples are documented in **[`src/monaco/README.md`](src/monaco/README.md)**.

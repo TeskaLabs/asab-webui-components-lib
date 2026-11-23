@@ -12,9 +12,12 @@ export function DateTimeRelative(props) {
 		);
 	}
 
-	// Declaration of locale must be below span returned for `undefined` values to avoid bad react state handling in useDateFNSLocale
-	const locale = useDateFNSLocale();
+	return <DateTimeRelativeValue {...props} />;
+}
 
+// DateTime relative value component with hooks
+function DateTimeRelativeValue(props) {
+	const locale = useDateFNSLocale();
 	const date = getFormattedTimeRelative(props.value, props.dateTimeFormat, props.addSuffix, locale);
 
 	// Check for invalid date from getFormattedTimeRelative method

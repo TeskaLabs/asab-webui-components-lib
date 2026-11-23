@@ -1,5 +1,39 @@
 # CHANGELOG for ASAB WebUI Components
 
+## 28.2.0
+
+- Unified table initialization parameters under `initialParams` and removed the separate `initialLimit` prop (#98)
+
+## 28.1.0
+
+- Add `asab_webui_components/monaco/loadLanguage` for lazy language loading by file extension (async chunks), rename import of `asab_webui_components/monaco/setup` to `asab_webui_components/monaco/initialize` (#100)
+
+## 28.0.1
+
+- Add Polish localization of relative/absolute DateTime component (#97)
+
+## 28.0.0
+
+- Version bumps of external dependencies, updating the code accordingly (#96)
+- Making separate `monaco` exports (entry point) with a shareable setup of the monaco environment (workers) (#96)
+
+## 27.8.2
+
+- Fix DataTable2 filter input cursor jumping always to the end of the text (#92)
+
+## 27.8.1
+
+- Make spinner consistent while in re-renders (#94)
+- Fix DateTime issue with react hooks (#94)
+
+## 27.8.0
+
+- Implement initalParams prop for DataTable2, refactor auto row calculation (#87)
+
+## 27.7.1
+
+- Refactor Line feed marker (displaying invisible character) to actually break the line (#91)
+
 ## 27.7.0
 
 - Remove legacy DataTable component (#89)
