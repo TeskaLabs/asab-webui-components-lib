@@ -2,9 +2,6 @@ import React from 'react';
 
 import { Card, CardBody } from 'reactstrap';
 
-import './ResultCard.scss';
-
-
 /*
 	Status card component that displays content with an appropriate status icon
 
@@ -31,7 +28,7 @@ import './ResultCard.scss';
 		</ResultCard>
 */
 
-export function ResultCard({ children, status = 'success', fullWidth = false }) {
+export function ResultCard({ children, status = 'success'}) {
 
 	const getIconAndColor = () => {
 		switch (status) {
@@ -47,7 +44,7 @@ export function ResultCard({ children, status = 'success', fullWidth = false }) 
 	};
 
 	return (
-		<Card className={`result-card ${fullWidth ? 'full-width' : ''}`}>
+		<Card className='result-card w-100 border-primary'>
 			<CardBody className='text-center d-flex align-items-center justify-content-center'>
 				<div className='justify-content-center pb-2 w-75'>
 					<i className={`pe-2 mb-3 fs-1 bi ${getIconAndColor()}`}></i>
