@@ -8,10 +8,14 @@ export function DataTableAdvCustomRangeFilter({ modes, content, customPill }) {
 		modes.forEach((mode) => {
 			const rangeKey = `r${mode}`;
 
-			setCustomPill(
-				React.cloneElement(customPill, { rangeKey }),
-				rangeKey
-			);
+			['tsc', 'tec'].forEach((boundary) => {
+				const paramKey = `${rangeKey}.${boundary}`;
+
+				setCustomPill(
+					React.cloneElement(customPill, { rangeKey, paramKey }),
+					paramKey
+				);
+			});
 		});
 	}, [modes, customPill, setCustomPill]);
 
