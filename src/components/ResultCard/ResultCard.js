@@ -4,6 +4,7 @@ import { Card, CardBody } from 'reactstrap';
 
 import './ResultCard.scss';
 
+
 /*
 	Status card component that displays content with an appropriate status icon
 
