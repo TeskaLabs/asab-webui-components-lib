@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Card, CardBody } from 'reactstrap';
 
+import './ResultCard.scss';
+
 /*
 	Status card component that displays content with an appropriate status icon
 
@@ -44,7 +46,7 @@ export function ResultCard({ children, status = 'success' }) {
 	};
 
 	return (
-		<Card className='result-card w-100 border-primary'>
+		<Card className='result-card w-100'>
 			<CardBody className='text-center d-flex align-items-center justify-content-center'>
 				<div className='justify-content-center pb-2 w-75'>
 					<i className={`pe-2 mb-3 fs-1 bi ${getIconAndColor()}`}></i>
