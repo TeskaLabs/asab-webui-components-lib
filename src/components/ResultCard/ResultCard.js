@@ -28,7 +28,7 @@ import { Card, CardBody } from 'reactstrap';
 		</ResultCard>
 */
 
-export function ResultCard({ children, status = 'success'}) {
+export function ResultCard({ children, status = 'success' }) {
 
 	const getIconAndColor = () => {
 		switch (status) {
